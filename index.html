@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AroMi — Your Everyday Health Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --pink: #f9a8d4;
+    --lavender: #c4b5fd;
+    --mint: #6ee7b7;
+    --pink-deep: #ec4899;
+    --lav-deep: #8b5cf6;
+    --mint-deep: #10b981;
+    --glass-bg: rgba(255,255,255,0.25);
+    --glass-border: rgba(255,255,255,0.45);
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius-btn: 50px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: var(--font-body);
+  }
+
+  /* ── Gradient mesh background ── */
+  .bg-mesh {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      linear-gradient(150deg, #fdf2f8, #f5f0ff, #f0fdf9, #fdf2f8);
+  }
+  .bg-mesh::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 5% 10%,  rgba(249,168,212,0.70) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 60% at 90% 5%,  rgba(196,181,253,0.65) 0%, transparent 70%),
+      radial-gradient(ellipse 55% 70% at 50% 95%, rgba(110,231,183,0.55) 0%, transparent 70%),
+      radial-gradient(ellipse 70% 50% at 95% 65%, rgba(249,168,212,0.45) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 20% 70%, rgba(196,181,253,0.40) 0%, transparent 70%);
+  }
+
+  /* ── Welcome overlay ── */
+  #welcome {
+    position: relative; z-index: 10;
+    width: 100%; height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  #welcome.fade-out {
+    opacity: 0;
+    transform: scale(1.04);
+    pointer-events: none;
+  }
+
+  /* ── Companion badge ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.72);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #555;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 16px rgba(180,120,200,0.10);
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s forwards;
+  }
+  .badge-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--mint-deep);
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.25);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(16,185,129,0.25); }
+    50%       { box-shadow: 0 0 0 6px rgba(16,185,129,0.10); }
+  }
+
+  /* ── "Welcome to" text ── */
+  .welcome-to {
+    margin-top: 28px;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(20px, 2.5vw, 32px);
+    color: #6b6b80;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.6s forwards;
+  }
+
+  /* ── AroMi logo text ── */
+  .aromi-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(80px, 16vw, 160px);
+    line-height: 1;
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 45%, #22d3ee 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    transform: translateY(24px) scale(0.92);
+    animation: titleSpring 0.9s cubic-bezier(0.34,1.4,0.64,1) 1s forwards;
+    letter-spacing: -2px;
+    margin-top: 4px;
+  }
+  @keyframes titleSpring {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ── Subtitle ── */
+  .subtitle {
+    margin-top: 24px;
+    font-size: clamp(15px, 1.6vw, 18px);
+    font-weight: 300;
+    color: #7a7a90;
+    line-height: 1.7;
+    max-width: 420px;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.8s forwards;
+  }
+
+  /* ── Get Started button ── */
+  .btn-start {
+    margin-top: 44px;
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 16px 40px;
+    border-radius: var(--radius-btn);
+    border: none; cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 8px 32px rgba(139,92,246,0.35), 0 2px 8px rgba(236,72,153,0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 2.5s forwards;
+  }
+  .btn-start:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 14px 40px rgba(139,92,246,0.45), 0 4px 12px rgba(236,72,153,0.30);
+  }
+  .btn-start:active { transform: scale(0.97); }
+  .btn-arrow {
+    font-size: 1.1rem;
+    transition: transform 0.2s ease;
+  }
+  .btn-start:hover .btn-arrow { transform: translateX(4px); }
+
+  /* ── Floating orb particles ── */
+  .orbs-container {
+    position: fixed; inset: 0; z-index: 1;
+    pointer-events: none; overflow: hidden;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    animation: riseOrb linear forwards;
+  }
+  @keyframes riseOrb {
+    0%   { opacity: 0;    transform: translateY(0) scale(0.6); }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.5; }
+    100% { opacity: 0;    transform: translateY(-110vh) scale(1.1); }
+  }
+
+  /* ── Generic fadeUp keyframe ── */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 480px) {
+    .aromi-title { font-size: clamp(64px, 20vw, 96px); }
+    .btn-start   { padding: 14px 32px; font-size: 0.95rem; }
+  }
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:600px){
+  .aromi-title{font-size:clamp(60px,18vw,100px) !important;letter-spacing:-1px;}
+  .welcome-to{font-size:clamp(16px,4vw,22px) !important;margin-top:20px;}
+  .subtitle{font-size:14px !important;padding:0 8px;}
+  .btn-start{padding:13px 32px !important;font-size:.92rem !important;margin-top:32px;}
+  .badge{font-size:.75rem;padding:6px 15px;}
+}
+@media(max-width:380px){
+  .aromi-title{font-size:56px !important;}
+}
+
+</style>
+</head>
+<body>
+
+<!-- Background mesh -->
+<div class="bg-mesh"></div>
+
+<!-- Floating orbs -->
+<div class="orbs-container" id="orbsContainer"></div>
+
+<!-- Welcome screen -->
+<div id="welcome">
+  <div class="badge">
+    <span class="badge-dot"></span>
+    Your Everyday Health Companion
+  </div>
+
+  <p class="welcome-to">Welcome to</p>
+
+  <h1 class="aromi-title">AroMi</h1>
+
+  <p class="subtitle">
+    Analyze your health in real time, receive personalized AI insights,
+    and live your best life — every single day.
+  </p>
+
+  <a href="auth-choice.html" class="btn-start" id="getStartedBtn">
+    Get Started <span class="btn-arrow">→</span>
+  </a>
+</div>
+
+<script>
+  /* ── Spawn rising orbs ── */
+  const orbColors = [
+    'rgba(249,168,212,0.65)',
+    'rgba(196,181,253,0.60)',
+    'rgba(110,231,183,0.55)',
+    'rgba(251,191,36,0.50)',
+    'rgba(236,72,153,0.45)',
+    'rgba(139,92,246,0.45)',
+  ];
+
+  function spawnOrb(container) {
+    const orb = document.createElement('div');
+    orb.className = 'orb';
+    const size = 6 + Math.random() * 18;
+    const left = 5 + Math.random() * 90;
+    const delay = Math.random() * 4;
+    const duration = 7 + Math.random() * 7;
+    const color = orbColors[Math.floor(Math.random() * orbColors.length)];
+    orb.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${left}%;
+      bottom:${-size}px;
+      background:${color};
+      animation-duration:${duration}s;
+      animation-delay:${delay}s;
+      filter: blur(${size > 18 ? 3 : 1}px);
+    `;
+    container.appendChild(orb);
+    orb.addEventListener('animationend', () => orb.remove());
+  }
+
+  const container = document.getElementById('orbsContainer');
+  // Initial batch
+  for (let i = 0; i < 6; i++) spawnOrb(container);
+  // Continuous spawn
+  setInterval(() => spawnOrb(container), 1400);
+
+  /* ── Get Started → fade out then redirect ── */
+  document.getElementById('getStartedBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    const dest = this.getAttribute('href');
+    document.getElementById('welcome').classList.add('fade-out');
+    document.querySelector('.bg-mesh').style.transition = 'opacity 0.6s ease';
+    setTimeout(() => { window.location.href = dest; }, 620);
+  });
+</script>
+</body>
+</html>

@@ -1,1080 +1,1459 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AroMi — Your Health Analysis</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<style>
-:root{
-  --pink:#f9a8d4;--lavender:#c4b5fd;--mint:#6ee7b7;
-  --pink-deep:#ec4899;--lav-deep:#8b5cf6;--mint-deep:#10b981;
-  --font-display:'Playfair Display',serif;--font-body:'DM Sans',sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--font-body);background:#fdf2f8;color:#1a0a2e;min-height:100vh;overflow-x:hidden;}
-::-webkit-scrollbar{width:5px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(139,92,246,0.3);border-radius:10px;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AroMi — Health Topic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --pink:    #f9a8d4;
+      --lavender:#c4b5fd;
+      --mint:    #6ee7b7;
+      --glass-bg: rgba(255,255,255,0.35);
+      --glass-border: rgba(255,255,255,0.55);
+      --glass-shadow: rgba(180,140,200,0.18);
+      --text-dark: #2d1a3e;
+      --text-mid:  #5b4a72;
+      --text-soft: #9b87b0;
+    }
 
-/* MESH BG */
-.mesh-bg{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 70% 60% at 5% 10%,rgba(249,168,212,0.7) 0%,transparent 55%),
-    radial-gradient(ellipse 60% 60% at 90% 5%,rgba(196,181,253,0.65) 0%,transparent 50%),
-    radial-gradient(ellipse 55% 70% at 50% 95%,rgba(110,231,183,0.55) 0%,transparent 55%),
-    radial-gradient(ellipse 70% 50% at 95% 65%,rgba(249,168,212,0.45) 0%,transparent 50%),
-    radial-gradient(ellipse 50% 40% at 20% 70%,rgba(196,181,253,0.40) 0%,transparent 50%),
-    linear-gradient(150deg,#fdf2f8 0%,#f5f0ff 35%,#f0fdf9 70%,#fdf2f8 100%);
-  animation:meshAnim 15s ease-in-out infinite alternate;
-}
-@keyframes meshAnim{
-  0%{filter:hue-rotate(0deg) brightness(1);}
-  50%{filter:hue-rotate(8deg) brightness(1.02);}
-  100%{filter:hue-rotate(-5deg) brightness(0.99);}
-}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* GLASS */
-.glass{background:rgba(255,255,255,0.30);border:1px solid rgba(255,255,255,0.60);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:24px;box-shadow:0 8px 32px rgba(180,120,200,0.15),inset 0 1px 0 rgba(255,255,255,0.8);}
-.glass-card{background:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.75);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-radius:20px;box-shadow:0 12px 40px rgba(180,120,200,0.18),inset 0 1px 0 rgba(255,255,255,0.9);}
-.grad{background:linear-gradient(135deg,#ec4899 0%,#8b5cf6 50%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    html { scroll-behavior: smooth; }
 
-/* NAVBAR */
-#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.25);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.5);box-shadow:0 2px 20px rgba(180,120,200,0.1);transition:transform 0.45s cubic-bezier(0.4,0,0.2,1),opacity 0.4s ease;}
-#navbar.nav-hidden{transform:translateY(-100%);opacity:0;}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.nav-dot{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#8b5cf6,#10b981);animation:navPulse 3s ease-in-out infinite;flex-shrink:0;}
-@keyframes navPulse{0%,100%{box-shadow:0 4px 14px rgba(139,92,246,0.45);}50%{box-shadow:0 4px 26px rgba(139,92,246,0.75);}}
-.nav-name{font-family:var(--font-display);font-weight:700;font-size:22px;background:linear-gradient(135deg,#ec4899,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-links{display:flex;align-items:center;gap:8px;}
-.nav-links a{font-size:14px;font-weight:500;color:#4a2070;text-decoration:none;padding:7px 16px;border-radius:50px;transition:all 0.2s;}
-.nav-links a:hover{background:rgba(255,255,255,0.6);color:#8b5cf6;}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;}
-.hamburger span{display:block;width:22px;height:2px;background:#4a2070;border-radius:2px;}
-.mobile-menu{display:none;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);padding:16px 24px;z-index:999;border-bottom:1px solid rgba(255,255,255,0.5);}
-.mobile-menu.open{display:flex;}
-.mobile-menu a{padding:12px 0;font-size:15px;color:#4a2070;text-decoration:none;border-bottom:1px solid rgba(196,181,253,0.2);}
-@media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}#navbar{padding:0 20px;}}
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #fdf6ff;
+      color: var(--text-dark);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
 
-/* BUTTONS */
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;font-family:var(--font-body);font-weight:600;font-size:14px;padding:11px 24px;border-radius:50px;border:none;cursor:pointer;text-decoration:none;box-shadow:0 4px 18px rgba(139,92,246,0.35);transition:all 0.25s;}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(139,92,246,0.5);}
-.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.55);border:1.5px solid rgba(255,255,255,0.8);color:#4a2070;font-family:var(--font-body);font-weight:500;font-size:14px;padding:11px 24px;border-radius:50px;cursor:pointer;text-decoration:none;transition:all 0.25s;}
-.btn-secondary:hover{background:rgba(255,255,255,0.85);transform:translateY(-1px);}
+    /* ── GRADIENT MESH BACKGROUND ── */
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 20%,  rgba(249,168,212,0.45) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 85% 15%,  rgba(196,181,253,0.40) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 60% at 50% 90%,  rgba(110,231,183,0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 90% 70%,  rgba(249,168,212,0.30) 0%, transparent 50%),
+        linear-gradient(135deg, #fdf2fb 0%, #f0ebff 50%, #ebfdf6 100%);
+      animation: meshShift 12s ease-in-out infinite alternate;
+    }
+    @keyframes meshShift {
+      0%   { filter: hue-rotate(0deg) brightness(1); }
+      100% { filter: hue-rotate(8deg) brightness(1.04); }
+    }
 
-/* REVEAL */
-.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.6s ease,transform 0.6s ease;}
-.reveal.in{opacity:1;transform:none;}
+    /* ── FLOATING ORBS ── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+      animation: orbFloat 8s ease-in-out infinite alternate;
+    }
+    .orb-1 { width:320px; height:320px; background:var(--pink);    top:-80px;  left:-80px;  animation-delay:0s; }
+    .orb-2 { width:260px; height:260px; background:var(--lavender);bottom:10%; right:-60px; animation-delay:2s; }
+    .orb-3 { width:200px; height:200px; background:var(--mint);    bottom:5%;  left:15%;    animation-delay:4s; }
+    @keyframes orbFloat {
+      0%   { transform: translateY(0px)   scale(1); }
+      100% { transform: translateY(-30px) scale(1.06); }
+    }
 
-/* TOAST */
-#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);z-index:9999;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.8);border-radius:50px;padding:12px 28px;font-size:14px;font-weight:500;color:#4a2070;box-shadow:0 8px 32px rgba(180,120,200,0.25);transition:transform 0.5s cubic-bezier(0.34,1.3,0.64,1);}
-#toast.show{transform:translateX(-50%) translateY(0);}
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 4px 24px rgba(180,140,200,0.10);
+      transition: transform 0.4s cubic-bezier(.4,0,.2,1), opacity 0.4s;
+    }
+    nav.hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--lavender), var(--mint));
+      box-shadow: 0 2px 12px rgba(196,181,253,0.4);
+      flex-shrink: 0;
+    }
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #c026d3, #7c3aed, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 6px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-mid);
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links a:hover {
+      background: rgba(196,181,253,0.25);
+      color: #7c3aed;
+    }
+    .nav-profile {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--lavender), var(--pink));
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(196,181,253,0.35);
+      transition: transform 0.2s;
+    }
+    .nav-profile:hover { transform: scale(1.08); }
+    .nav-profile svg { width:18px; height:18px; fill:white; }
 
-/* ===== LOADING SCREEN ===== */
-#loadingScreen{
-  position:fixed;inset:0;z-index:500;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:linear-gradient(150deg,#fdf2f8 0%,#f5f0ff 35%,#f0fdf9 70%,#fdf2f8 100%);
-  transition:opacity 0.7s ease,transform 0.7s ease;
-}
-#loadingScreen.fade-out{opacity:0;pointer-events:none;}
-.load-orb{
-  width:100px;height:100px;border-radius:50%;
-  background:linear-gradient(135deg,#ec4899,#8b5cf6,#10b981);
-  display:flex;align-items:center;justify-content:center;
-  font-size:40px;margin-bottom:28px;
-  animation:orbPulse 2s ease-in-out infinite;
-  box-shadow:0 0 60px rgba(139,92,246,0.4);
-}
-@keyframes orbPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);box-shadow:0 0 80px rgba(139,92,246,0.6);}}
-.load-title{font-family:var(--font-display);font-weight:700;font-size:clamp(22px,4vw,32px);color:#1a0a2e;margin-bottom:8px;text-align:center;}
-.load-sub{font-size:14px;color:rgba(74,32,112,0.6);margin-bottom:36px;text-align:center;}
-.load-steps{width:340px;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
-.load-step{display:flex;align-items:center;gap:12px;opacity:0;transform:translateX(-12px);transition:all 0.4s ease;padding:10px 14px;border-radius:12px;}
-.load-step.active{opacity:1;transform:none;background:rgba(139,92,246,0.08);}
-.load-step.done{opacity:0.7;transform:none;}
-.step-dot{width:10px;height:10px;border-radius:50%;background:rgba(196,181,253,0.4);flex-shrink:0;transition:all 0.3s;}
-.load-step.active .step-dot{background:#8b5cf6;animation:dotBlink 0.8s ease-in-out infinite;}
-.load-step.done .step-dot{background:#10b981;animation:none;}
-@keyframes dotBlink{0%,100%{opacity:1;}50%{opacity:0.3;}}
-.step-text{font-size:13px;font-weight:500;color:rgba(74,32,112,0.75);}
-.load-step.active .step-text{color:#8b5cf6;font-weight:600;}
-.load-step.done .step-text{color:#10b981;}
-.load-bar-wrap{width:340px;height:5px;background:rgba(196,181,253,0.25);border-radius:5px;overflow:hidden;}
-.load-bar{height:100%;background:linear-gradient(90deg,#ec4899,#8b5cf6,#10b981);border-radius:5px;width:0%;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);}
+    /* ── MAIN CONTENT ── */
+    main {
+      position: relative;
+      z-index: 1;
+      padding-top: 90px;
+    }
 
-/* ===== MAIN PAGE ===== */
-.page-wrap{position:relative;z-index:1;padding-top:80px;opacity:0;transition:opacity 0.6s ease;}
-.page-wrap.visible{opacity:1;}
+    /* ── HERO SECTION ── */
+    .hero {
+      min-height: 45vh;
+      display: flex;
+      align-items: center;
+      padding: 60px 60px 40px;
+      gap: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-text { flex: 1; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      color: var(--text-soft);
+      font-weight: 500;
+      margin-bottom: 20px;
+      transition: color 0.2s, gap 0.2s;
+      cursor: pointer;
+      background: none; border: none;
+    }
+    .back-btn:hover { color: #7c3aed; gap: 10px; }
+    .back-btn svg { width:16px; height:16px; }
 
-/* HERO RESULT BANNER */
-.result-hero{
-  max-width:1200px;margin:0 auto 32px;padding:0 24px;
-  display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;
-}
-@media(max-width:768px){.result-hero{grid-template-columns:1fr;}}
-.result-hero-left .tag{display:inline-block;padding:5px 14px;border-radius:50px;background:rgba(139,92,246,0.1);color:#8b5cf6;font-size:12px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;}
-.result-hero-left h1{font-family:var(--font-display);font-weight:900;font-size:clamp(28px,4vw,48px);line-height:1.15;margin-bottom:10px;}
-.result-hero-left p{font-size:15px;color:rgba(74,32,112,0.65);line-height:1.7;max-width:540px;}
+    .topic-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.7);
+      backdrop-filter: blur(10px);
+    }
+    .topic-icon-lg {
+      width: 28px; height: 28px; font-size: 22px;
+      display: flex; align-items: center; justify-content: center;
+    }
 
-/* OVERALL SCORE CARD */
-.score-card{padding:28px 32px;text-align:center;min-width:220px;}
-.score-label{font-size:12px;font-weight:600;color:rgba(74,32,112,0.55);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
-.score-ring{position:relative;display:inline-block;margin-bottom:12px;}
-.score-ring svg{transform:rotate(-90deg);}
-.ring-bg{fill:none;stroke:rgba(196,181,253,0.2);stroke-width:12;}
-.ring-fill{fill:none;stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset 1.8s cubic-bezier(0.4,0,0.2,1);}
-.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
-.ring-num{font-family:var(--font-display);font-weight:900;font-size:36px;line-height:1;}
-.ring-sub{font-size:11px;color:rgba(74,32,112,0.5);margin-top:2px;}
-.score-status{display:inline-block;padding:6px 18px;border-radius:50px;font-size:13px;font-weight:600;}
-.status-low{background:rgba(16,185,129,0.12);color:#10b981;}
-.status-mod{background:rgba(245,158,11,0.12);color:#f59e0b;}
-.status-high{background:rgba(239,68,68,0.12);color:#ef4444;}
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, #9d174d 0%, #6d28d9 50%, #065f46 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-desc {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-mid);
+      max-width: 520px;
+      margin-bottom: 30px;
+    }
+    .hero-stats {
+      display: flex; gap: 20px; flex-wrap: wrap;
+    }
+    .stat-chip {
+      padding: 10px 20px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.55);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px var(--glass-shadow);
+      text-align: center;
+    }
+    .stat-chip .val {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .stat-chip .lbl {
+      font-size: 11px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
 
-/* USER SUMMARY BAR */
-.summary-bar{max-width:1200px;margin:0 auto 28px;padding:0 24px;}
-.summary-inner{padding:16px 24px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
-.sum-chip{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.8);border-radius:50px;padding:6px 14px;font-size:13px;color:#4a2070;}
-.sum-chip .sc-icon{font-size:14px;}
-.sum-chip strong{font-weight:600;}
+    /* 3D Canvas for organ */
+    .hero-3d {
+      flex: 0 0 340px;
+      height: 340px;
+      position: relative;
+    }
+    #organCanvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+    }
 
-/* MAIN LAYOUT */
-.main-layout{
-  max-width:1200px;margin:0 auto;padding:0 24px 60px;
-  display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start;
-}
-@media(max-width:1100px){.main-layout{grid-template-columns:1fr 320px;}}
-@media(max-width:900px){.main-layout{grid-template-columns:1fr;}}
+    /* ── CONTENT SECTIONS ── */
+    .sections {
+      padding: 0 60px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
 
-/* SECTION CARDS */
-.sec-card{padding:28px;margin-bottom:22px;position:relative;overflow:hidden;}
-.sec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:3px 3px 0 0;}
-.sc-pink::before{background:linear-gradient(90deg,#ec4899,#f9a8d4);}
-.sc-lav::before{background:linear-gradient(90deg,#8b5cf6,#c4b5fd);}
-.sc-mint::before{background:linear-gradient(90deg,#10b981,#6ee7b7);}
-.sc-amber::before{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
-.sc-blue::before{background:linear-gradient(90deg,#3b82f6,#93c5fd);}
-.sec-title{font-family:var(--font-display);font-weight:700;font-size:20px;margin-bottom:18px;color:#1a0a2e;display:flex;align-items:center;gap:10px;}
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(196,181,253,0.5), transparent);
+      margin-left: 8px;
+    }
+    .section-emoji { font-size: 28px; }
 
-/* AI CONTENT AREAS */
-.ai-content{font-size:14px;color:rgba(74,32,112,0.75);line-height:1.8;}
-.ai-content p{margin-bottom:12px;}
-.ai-content strong{color:#1a0a2e;font-weight:600;}
+    /* ── CARDS GRID ── */
+    .cards-grid {
+      display: grid;
+      gap: 20px;
+    }
+    .cards-grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .cards-grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 
-/* SKELETON LOADERS */
-.skel{background:linear-gradient(90deg,rgba(196,181,253,0.2) 0%,rgba(249,168,212,0.2) 50%,rgba(196,181,253,0.2) 100%);background-size:200% 100%;animation:skelAnim 1.5s ease-in-out infinite;border-radius:8px;}
-@keyframes skelAnim{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-.skel-line{height:14px;margin-bottom:10px;border-radius:6px;}
-.skel-line.w90{width:90%;}
-.skel-line.w75{width:75%;}
-.skel-line.w60{width:60%;}
-.skel-line.w50{width:50%;}
-.skel-line.w40{width:40%;}
-.skel-h{height:20px;margin-bottom:14px;border-radius:6px;width:55%;}
+    .glass-card {
+      background: rgba(255,255,255,0.45);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: 0 8px 32px var(--glass-shadow);
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    .glass-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s, border-color 0.3s;
+    }
+    .glass-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 16px 48px rgba(196,181,253,0.28);
+      border-color: rgba(196,181,253,0.7);
+    }
 
-/* RISK CATEGORY CARDS */
-.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:0;}
-@media(max-width:600px){.risk-grid{grid-template-columns:1fr;}}
-.risk-item{background:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.75);border-radius:16px;padding:16px;}
-.risk-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.risk-item-name{font-size:13px;font-weight:600;color:#1a0a2e;}
-.risk-item-pct{font-family:var(--font-display);font-weight:700;font-size:18px;}
-.risk-bar-bg{height:6px;background:rgba(196,181,253,0.2);border-radius:6px;overflow:hidden;}
-.risk-bar-fill{height:100%;border-radius:6px;transition:width 1.4s cubic-bezier(0.4,0,0.2,1);width:0%;}
-.risk-badge-sm{font-size:10px;font-weight:600;padding:2px 8px;border-radius:50px;margin-top:6px;display:inline-block;}
+    .card-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      margin-bottom: 14px;
+    }
+    .card-icon.pink    { background: rgba(249,168,212,0.25); }
+    .card-icon.lavender{ background: rgba(196,181,253,0.25); }
+    .card-icon.mint    { background: rgba(110,231,183,0.25); }
+    .card-icon.peach   { background: rgba(253,186,116,0.25); }
 
-/* HABIT ITEMS */
-.habit-item{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start;}
-.habit-num{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#8b5cf6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px;}
-.habit-text strong{display:block;font-size:14px;font-weight:600;color:#1a0a2e;margin-bottom:3px;}
-.habit-text span{font-size:13px;color:rgba(74,32,112,0.65);line-height:1.6;}
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+    .card-text {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text-mid);
+    }
+    .card-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 14px;
+    }
+    .tag {
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .tag.pink    { background: rgba(249,168,212,0.3); color:#9d174d; }
+    .tag.lavender{ background: rgba(196,181,253,0.3); color:#5b21b6; }
+    .tag.mint    { background: rgba(110,231,183,0.3); color:#065f46; }
+    .tag.peach   { background: rgba(253,186,116,0.3); color:#92400e; }
 
-/* FOOD GRID */
-.food-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-@media(max-width:600px){.food-grid{grid-template-columns:repeat(2,1fr);}}
-.food-card{background:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.8);border-radius:14px;padding:12px;text-align:center;transition:transform 0.2s;}
-.food-card:hover{transform:translateY(-3px);}
-.food-emoji{font-size:26px;margin-bottom:5px;}
-.food-name{font-weight:600;font-size:12px;color:#1a0a2e;margin-bottom:2px;}
-.food-why{font-size:11px;color:rgba(74,32,112,0.6);line-height:1.4;}
+    /* ── OVERVIEW WIDE CARD ── */
+    .overview-card {
+      background: rgba(255,255,255,0.45);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(18px);
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: 0 8px 40px var(--glass-shadow);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .overview-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .overview-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--text-dark);
+    }
+    .overview-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .overview-card ul li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-mid);
+    }
+    .overview-card ul li::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
 
-/* EXERCISE CARDS */
-.ex-card{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;background:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px;}
-.ex-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:linear-gradient(135deg,rgba(196,181,253,0.4),rgba(249,168,212,0.3));}
-.ex-info strong{display:block;font-size:14px;font-weight:600;color:#1a0a2e;margin-bottom:3px;}
-.ex-info p{font-size:12px;color:rgba(74,32,112,0.65);line-height:1.5;margin-bottom:5px;}
-.ex-badges{display:flex;gap:6px;flex-wrap:wrap;}
-.ex-badge{font-size:10px;font-weight:600;padding:3px 9px;border-radius:50px;}
-.eb-mint{background:rgba(16,185,129,0.12);color:#10b981;}
-.eb-lav{background:rgba(139,92,246,0.12);color:#8b5cf6;}
+    /* ── SEVERITY METER ── */
+    .severity-card {
+      background: rgba(255,255,255,0.45);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(18px);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 8px 32px var(--glass-shadow);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .severity-card.visible { opacity:1; transform:translateY(0); }
+    .severity-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-dark);
+    }
+    .meter-row {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 12px;
+    }
+    .meter-label { font-size: 13px; color: var(--text-mid); min-width: 90px; }
+    .meter-bar {
+      flex:1; height:8px; border-radius:99px;
+      background: rgba(196,181,253,0.2);
+      overflow: hidden;
+    }
+    .meter-fill {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, var(--mint), var(--lavender), var(--pink));
+      width: 0%;
+      transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    }
+    .meter-val { font-size: 13px; font-weight: 600; color: var(--text-dark); min-width:32px; text-align:right; }
 
-/* MEAL PLAN */
-.meal-day{margin-bottom:20px;}
-.meal-day-title{font-family:var(--font-display);font-weight:700;font-size:16px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-.meal-slot{background:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.75);border-radius:12px;padding:12px 14px;margin-bottom:8px;}
-.meal-slot-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:rgba(74,32,112,0.5);margin-bottom:4px;}
-.meal-slot-content{font-size:13px;color:#1a0a2e;font-weight:500;}
-.meal-slot-cal{font-size:11px;color:rgba(139,92,246,0.7);margin-top:2px;}
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(249,168,212,0.35), rgba(196,181,253,0.35), rgba(110,231,183,0.25));
+      border: 1px solid rgba(255,255,255,0.6);
+      backdrop-filter: blur(18px);
+      border-radius: 28px;
+      padding: 48px 60px;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(196,181,253,0.2);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .cta-banner.visible { opacity:1; transform:translateY(0); }
+    .cta-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #9d174d, #6d28d9, #065f46);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cta-banner p {
+      font-size: 15px;
+      color: var(--text-mid);
+      margin-bottom: 28px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, #c026d3, #7c3aed, #059669);
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 24px rgba(124,58,237,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 10px 32px rgba(124,58,237,0.45);
+    }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.6);
+      color: var(--text-mid);
+      font-size: 15px;
+      font-weight: 600;
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+      text-decoration: none;
+      margin-left: 12px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.8);
+    }
 
-/* RIGHT COLUMN */
-.right-col{position:sticky;top:80px;display:flex;flex-direction:column;gap:20px;}
-@media(max-width:900px){.right-col{position:static;}}
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      padding: 40px 60px;
+      background: rgba(255,255,255,0.35);
+      backdrop-filter: blur(18px);
+      border-top: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #c026d3, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .footer-text {
+      font-size: 13px;
+      color: var(--text-soft);
+    }
 
-/* WELLNESS PILLARS */
-.pillar-item{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
-.pillar-bar-wrap{flex:1;height:8px;background:rgba(196,181,253,0.2);border-radius:8px;overflow:hidden;}
-.pillar-bar{height:100%;border-radius:8px;transition:width 1.4s cubic-bezier(0.4,0,0.2,1);width:0%;}
-.pillar-label{font-size:12px;font-weight:600;color:#1a0a2e;min-width:80px;}
-.pillar-pct{font-size:12px;font-weight:600;min-width:36px;text-align:right;}
+    /* ── SCROLL ANIMATIONS ── */
+    [data-animate] {
+      opacity: 0;
+      transform: translateY(40px);
+    }
 
-/* CHECKLIST */
-.cl-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;cursor:pointer;padding:8px;border-radius:10px;transition:background 0.2s;}
-.cl-item:hover{background:rgba(255,255,255,0.5);}
-.cl-box{width:20px;height:20px;border-radius:6px;border:2px solid rgba(200,190,220,0.5);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.25s;}
-.cl-item.checked .cl-box{background:linear-gradient(135deg,#10b981,#6ee7b7);border-color:transparent;}
-.cl-item.checked .cl-box::after{content:'✓';color:#fff;font-size:11px;font-weight:700;}
-.cl-item.checked .cl-text{text-decoration:line-through;color:rgba(74,32,112,0.45);}
-.cl-text{font-size:13px;color:rgba(74,32,112,0.75);line-height:1.5;}
-
-/* PRIORITY ALERTS */
-.alert-item{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;margin-bottom:10px;}
-.alert-high{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);}
-.alert-mod{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);}
-.alert-low{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);}
-.alert-icon{font-size:18px;flex-shrink:0;}
-.alert-text{font-size:12px;line-height:1.6;color:rgba(74,32,112,0.8);}
-.alert-text strong{display:block;font-size:13px;color:#1a0a2e;margin-bottom:2px;}
-
-/* ACTIONS */
-.actions-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
-
-/* PROFILE CARD */
-.profile-mini{padding:20px;}
-.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.profile-field{background:rgba(255,255,255,0.5);border-radius:10px;padding:10px;}
-.profile-field .pf-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:rgba(74,32,112,0.5);margin-bottom:3px;}
-.profile-field .pf-val{font-size:14px;font-weight:600;color:#1a0a2e;}
-
-/* FOOTER */
-footer{position:relative;z-index:1;text-align:center;padding:32px 24px;border-top:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);}
-footer p{font-size:13px;color:rgba(74,32,112,0.55);margin-bottom:6px;}
-footer a{color:rgba(139,92,246,0.7);text-decoration:none;}
-.disclaimer{font-size:11px;color:rgba(74,32,112,0.4);max-width:600px;margin:8px auto 0;line-height:1.6;}
-
-/* TAGS */
-.mtag{display:inline-block;padding:4px 12px;background:rgba(139,92,246,0.1);color:#8b5cf6;border-radius:50px;font-size:12px;font-weight:500;margin:3px;}
-.mtag-mint{background:rgba(16,185,129,0.1);color:#10b981;}
-.mtag-pink{background:rgba(236,72,153,0.1);color:#ec4899;}
-
-/* SEPARATOR */
-.sep{height:1px;background:linear-gradient(90deg,transparent,rgba(196,181,253,0.3),transparent);margin:20px 0;}
-</style>
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { flex-direction: column; padding: 40px 24px 30px; }
+      .hero-3d { flex: none; width: 100%; height: 260px; }
+      .sections { padding: 0 24px 60px; }
+      .overview-card { grid-template-columns: 1fr; }
+      nav { padding: 12px 20px; }
+      footer { padding: 30px 24px; }
+      .cta-banner { padding: 36px 24px; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="mesh-bg"></div>
+  <!-- Background -->
+  <div class="bg-mesh"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
 
-<!-- LOADING SCREEN -->
-<div id="loadingScreen">
-  <div class="load-orb">🔮</div>
-  <div class="load-title">Analyzing Your Health Data</div>
-  <div class="load-sub">Our AI is building your personalized health report…</div>
-  <div class="load-steps" id="loadSteps">
-    <div class="load-step" data-i="0"><div class="step-dot"></div><span class="step-text">Reading your health parameters</span></div>
-    <div class="load-step" data-i="1"><div class="step-dot"></div><span class="step-text">Running risk prediction models</span></div>
-    <div class="load-step" data-i="2"><div class="step-dot"></div><span class="step-text">Generating AI health insights</span></div>
-    <div class="load-step" data-i="3"><div class="step-dot"></div><span class="step-text">Building personalized recommendations</span></div>
-    <div class="load-step" data-i="4"><div class="step-dot"></div><span class="step-text">Finalizing your wellness report</span></div>
-  </div>
-  <div class="load-bar-wrap"><div class="load-bar" id="loadBar"></div></div>
-</div>
-
-<!-- TOAST -->
-<div id="toast"></div>
-
-<!-- NAVBAR -->
-<nav id="navbar">
-  <a href="home.html" class="nav-logo">
-    <div class="nav-dot"></div>
-    <span class="nav-name">AroMi</span>
-  </a>
-  <div class="nav-links">
-    <a href="home.html">Home</a>
-    <a href="history.html">History</a>
-    <a href="profile.html">Profile</a>
-    <a href="prediction-results.html" class="active" style="background:rgba(139,92,246,0.1);color:#8b5cf6;">Results</a>
-  </div>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-</nav>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="home.html">🏠 Home</a>
-  <a href="history.html">📊 History</a>
-  <a href="profile.html">👤 Profile</a>
-</div>
-
-<!-- MAIN PAGE -->
-<div class="page-wrap" id="pageWrap">
-
-  <!-- RESULT HERO -->
-  <div class="result-hero">
-    <div class="result-hero-left reveal">
-      <div class="tag">🔮 AI Health Analysis Complete</div>
-      <h1>Your Personal <span class="grad">Health Report</span></h1>
-      <p id="heroSubtitle">Based on your health data, here is your comprehensive AI-powered wellness assessment with personalized recommendations.</p>
-      <div class="actions-row" style="margin-top:18px;">
-        <button class="btn-primary" onclick="window.print()">🖨️ Print Report</button>
-        <button class="btn-secondary" onclick="sharePage()">🔗 Share</button>
-        <a href="home.html" class="btn-secondary">🔄 New Prediction</a>
-      </div>
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <a href="home.html" class="nav-brand">
+      <div class="nav-logo"></div>
+      <span class="nav-name">AroMi</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="history.html">History</a></li>
+    </ul>
+    <div class="nav-profile" title="Profile">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
     </div>
-    <div class="glass-card score-card reveal" id="overallScoreCard">
-      <div class="score-label">Wellness Score</div>
-      <div class="score-ring">
-        <svg width="140" height="140" viewBox="0 0 140 140">
-          <circle class="ring-bg" cx="70" cy="70" r="56"/>
-          <circle class="ring-fill" id="ringFill" cx="70" cy="70" r="56" stroke-dasharray="352" stroke-dashoffset="352"/>
-        </svg>
-        <div class="ring-center">
-          <div class="ring-num grad" id="scoreNum">—</div>
-          <div class="ring-sub">/ 100</div>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-text">
+        <button class="back-btn" onclick="history.back()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+          Back
+        </button>
+
+        <div class="topic-badge" id="topicBadge">
+          <span class="topic-icon-lg" id="topicIconLg">🧠</span>
+          <span id="topicCategory">Health Guide</span>
         </div>
-      </div>
-      <div><span class="score-status" id="scoreStatus">Calculating…</span></div>
-    </div>
-  </div>
 
-  <!-- SUMMARY BAR -->
-  <div class="summary-bar reveal">
-    <div class="glass summary-inner" id="summaryBar"></div>
-  </div>
+        <h1 id="heroTitle">Brain Health</h1>
+        <p class="hero-desc" id="heroDesc">
+          Your brain controls everything — from breathing to complex thought. 
+          Learn how to protect it, nourish it, and keep it sharp across every stage of life.
+        </p>
 
-  <!-- MAIN LAYOUT -->
-  <div class="main-layout">
-
-    <!-- LEFT -->
-    <div id="leftCol">
-
-      <!-- AI INSIGHTS -->
-      <div class="sec-card glass-card sc-pink reveal" id="insightCard">
-        <h2 class="sec-title">🧠 AI Health Insights</h2>
-        <div class="ai-content" id="insightContent">
-          <div class="skel skel-h"></div>
-          <div class="skel skel-line w90"></div>
-          <div class="skel skel-line w75"></div>
-          <div class="skel skel-line w60"></div>
-          <div class="skel skel-line w90"></div>
-          <div class="skel skel-line w50"></div>
+        <div class="hero-stats" id="heroStats">
+          <!-- Dynamically populated -->
         </div>
       </div>
 
-      <!-- RISK CATEGORIES -->
-      <div class="sec-card glass-card sc-lav reveal" id="riskCard">
-        <h2 class="sec-title">📊 Risk Category Analysis</h2>
-        <div class="risk-grid" id="riskGrid">
-          <div class="skel" style="height:90px;border-radius:16px;"></div>
-          <div class="skel" style="height:90px;border-radius:16px;"></div>
-          <div class="skel" style="height:90px;border-radius:16px;"></div>
-          <div class="skel" style="height:90px;border-radius:16px;"></div>
-        </div>
+      <div class="hero-3d">
+        <canvas id="organCanvas"></canvas>
       </div>
+    </section>
 
-      <!-- HABIT IMPROVEMENTS -->
-      <div class="sec-card glass-card sc-amber reveal" id="habitCard">
-        <h2 class="sec-title">🌱 Habit Improvements</h2>
-        <div id="habitContent">
-          <div class="skel skel-h"></div>
-          <div class="skel skel-line w90"></div>
-          <div class="skel skel-line w75"></div>
-          <div class="skel skel-h" style="margin-top:16px;"></div>
-          <div class="skel skel-line w90"></div>
-          <div class="skel skel-line w60"></div>
-        </div>
-      </div>
+    <!-- SECTIONS -->
+    <div class="sections">
 
-      <!-- DIET PLAN -->
-      <div class="sec-card glass-card sc-mint reveal" id="dietCard">
-        <h2 class="sec-title">🥗 Personalized Diet Plan</h2>
-        <div id="dietContent">
-          <div class="skel skel-h"></div>
-          <div class="food-grid" style="margin-bottom:16px;">
-            <div class="skel" style="height:80px;border-radius:14px;"></div>
-            <div class="skel" style="height:80px;border-radius:14px;"></div>
-            <div class="skel" style="height:80px;border-radius:14px;"></div>
-            <div class="skel" style="height:80px;border-radius:14px;"></div>
-            <div class="skel" style="height:80px;border-radius:14px;"></div>
-            <div class="skel" style="height:80px;border-radius:14px;"></div>
+      <!-- OVERVIEW -->
+      <div>
+        <h2 class="section-title"><span class="section-emoji">📋</span> Overview</h2>
+        <div class="overview-card" id="overviewCard">
+          <div>
+            <h3>Common Conditions</h3>
+            <ul id="conditionsList"></ul>
+          </div>
+          <div>
+            <h3>Warning Signs</h3>
+            <ul id="warningsList"></ul>
           </div>
         </div>
       </div>
 
-      <!-- EXERCISE PLAN -->
-      <div class="sec-card glass-card sc-blue reveal" id="exCard">
-        <h2 class="sec-title">🏃 Exercise & Movement Plan</h2>
-        <div id="exContent">
-          <div class="skel skel-h"></div>
-          <div class="skel" style="height:80px;border-radius:14px;margin-bottom:12px;"></div>
-          <div class="skel" style="height:80px;border-radius:14px;margin-bottom:12px;"></div>
-          <div class="skel" style="height:80px;border-radius:14px;"></div>
-        </div>
-      </div>
-
-      <!-- WEEKLY MEAL PLAN -->
-      <div class="sec-card glass-card sc-pink reveal" id="mealCard">
-        <h2 class="sec-title">📅 7-Day Meal Plan Sample</h2>
-        <div id="mealContent">
-          <div class="skel skel-h"></div>
-          <div class="skel skel-line w90"></div>
-          <div class="skel skel-line w75"></div>
-        </div>
-      </div>
-
-    </div><!-- /leftCol -->
-
-    <!-- RIGHT -->
-    <div class="right-col" id="rightCol">
-
-      <!-- USER PROFILE CARD -->
-      <div class="glass-card profile-mini reveal">
-        <h3 style="font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:14px;color:#1a0a2e;">👤 Your Profile</h3>
-        <div class="profile-grid" id="profileGrid"></div>
-      </div>
-
-      <!-- WELLNESS PILLARS -->
-      <div class="glass-card reveal" style="padding:24px;">
-        <h3 style="font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:16px;color:#1a0a2e;">⚖️ Wellness Pillars</h3>
-        <div id="pillarsContent">
-          <div class="skel skel-line w90" style="height:8px;margin-bottom:14px;"></div>
-          <div class="skel skel-line w75" style="height:8px;margin-bottom:14px;"></div>
-          <div class="skel skel-line w60" style="height:8px;margin-bottom:14px;"></div>
-          <div class="skel skel-line w80" style="height:8px;margin-bottom:14px;"></div>
-          <div class="skel skel-line w50" style="height:8px;"></div>
-        </div>
-      </div>
-
-      <!-- PRIORITY ACTIONS -->
-      <div class="glass-card reveal" style="padding:24px;">
-        <h3 style="font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:16px;color:#1a0a2e;">🚨 Priority Actions</h3>
-        <div id="alertsContent">
-          <div class="skel" style="height:60px;border-radius:12px;margin-bottom:10px;"></div>
-          <div class="skel" style="height:60px;border-radius:12px;margin-bottom:10px;"></div>
-          <div class="skel" style="height:60px;border-radius:12px;"></div>
-        </div>
-      </div>
-
-      <!-- DAILY CHECKLIST -->
-      <div class="glass-card reveal" style="padding:24px;">
-        <h3 style="font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:16px;color:#1a0a2e;">✅ Today's Action Checklist</h3>
-        <div id="checklistContent">
-          <div class="skel skel-line w90"></div>
-          <div class="skel skel-line w80"></div>
-          <div class="skel skel-line w70"></div>
-        </div>
-      </div>
-
-      <!-- SUPPLEMENTS -->
-      <div class="glass-card reveal" style="padding:24px;">
-        <h3 style="font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:16px;color:#1a0a2e;">💊 Supplement Suggestions</h3>
-        <div id="suppContent">
-          <div class="skel skel-line w80"></div>
-          <div class="skel skel-line w70"></div>
-          <div class="skel skel-line w90"></div>
-        </div>
-      </div>
-
-    </div><!-- /rightCol -->
-  </div>
-
-</div><!-- /pageWrap -->
-
-<footer>
-  <p>© 2025 <strong>AroMi</strong> — Your AI Health Companion &nbsp;·&nbsp;
-    <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a>
-  </p>
-  <p class="disclaimer">⚕️ This report is AI-generated for informational purposes only. It does not constitute medical advice. Always consult a qualified healthcare professional before making changes to your health routine.</p>
-</footer>
-
-<script>
-// ===== READ URL PARAMS =====
-const p = new URLSearchParams(window.location.search);
-const userData = {
-  age: p.get('age') || '28',
-  gender: p.get('gender') || 'Female',
-  symptoms: p.get('symptoms') || 'None',
-  body_area: p.get('body_area') || 'General',
-  conditions: p.get('conditions') || 'None',
-  sleep: p.get('sleep') || '7-8 hours',
-  exercise: p.get('exercise') || '3-4x/week',
-  height: p.get('height') || '168',
-  weight: p.get('weight') || '62',
-  diet: p.get('diet') || 'Balanced / Mixed',
-  stress: p.get('stress') || 'Low'
-};
-
-// BMI
-const bmi = userData.height && userData.weight
-  ? (parseFloat(userData.weight) / Math.pow(parseFloat(userData.height)/100, 2)).toFixed(1)
-  : '—';
-const bmiLabel = bmi === '—' ? '—'
-  : bmi < 18.5 ? 'Underweight'
-  : bmi < 25 ? 'Normal'
-  : bmi < 30 ? 'Overweight' : 'Obese';
-
-// ===== COMPUTE WELLNESS SCORE =====
-function computeScore() {
-  let s = 72;
-  if (userData.sleep === '7-8 hours' || userData.sleep === '7–8 hours') s += 4;
-  else if (userData.sleep.includes('5') || userData.sleep.includes('Less')) s -= 10;
-  else if (userData.sleep.includes('More than 8')) s += 1;
-  if (userData.exercise === 'Daily') s += 5;
-  else if (userData.exercise.includes('3') || userData.exercise.includes('4')) s += 3;
-  else if (userData.exercise === 'Never') s -= 8;
-  if (userData.stress === 'Low') s += 3;
-  else if (userData.stress === 'High') s -= 6;
-  else if (userData.stress === 'Severe') s -= 12;
-  if (bmi !== '—') {
-    const b = parseFloat(bmi);
-    if (b >= 18.5 && b < 25) s += 5;
-    else if (b >= 30) s -= 8;
-    else if (b < 18.5) s -= 4;
-  }
-  const d = userData.diet.toLowerCase();
-  if (d.includes('balanced') || d.includes('vegetarian') || d.includes('vegan')) s += 3;
-  else if (d.includes('junk') || d.includes('irregular')) s -= 7;
-  if (parseInt(userData.age) > 50) s -= 5;
-  if (userData.conditions && userData.conditions !== 'None' && userData.conditions !== '') s -= 6;
-  return Math.max(28, Math.min(96, s));
-}
-const overallScore = computeScore();
-
-// Risk categories
-function riskCategories() {
-  const stress = userData.stress.toLowerCase();
-  const sleep = userData.sleep.toLowerCase();
-  const exercise = userData.exercise.toLowerCase();
-  const b = parseFloat(bmi) || 22;
-  const hasConditions = userData.conditions && userData.conditions !== 'None';
-  const age = parseInt(userData.age);
-
-  const cardio = Math.min(90, Math.max(10,
-    35 + (stress === 'high' ? 18 : stress === 'severe' ? 28 : stress === 'moderate' ? 8 : 0)
-    + (exercise === 'never' ? 14 : exercise.includes('1') || exercise.includes('2') ? 6 : -5)
-    + (b >= 30 ? 14 : b >= 25 ? 6 : -4)
-    + (hasConditions ? 10 : 0) + (age > 50 ? 10 : 0)
-  ));
-  const metabolic = Math.min(90, Math.max(10,
-    30 + (b >= 30 ? 20 : b >= 25 ? 10 : -5)
-    + (userData.diet.toLowerCase().includes('junk') ? 18 : userData.diet.toLowerCase().includes('balanced') ? -8 : 0)
-    + (exercise === 'never' ? 10 : 0) + (hasConditions ? 8 : 0)
-  ));
-  const mentalRisk = Math.min(90, Math.max(10,
-    25 + (stress === 'severe' ? 32 : stress === 'high' ? 20 : stress === 'moderate' ? 10 : 0)
-    + (sleep.includes('less') || sleep.includes('5') ? 15 : 0)
-    + (exercise === 'never' ? 8 : -5)
-  ));
-  const sleepRisk = Math.min(90, Math.max(10,
-    20 + (sleep.includes('less') || sleep.includes('5') ? 35 : sleep.includes('7') || sleep.includes('8') ? -8 : 10)
-    + (stress === 'severe' ? 12 : stress === 'high' ? 6 : 0)
-  ));
-  const immune = Math.min(90, Math.max(10,
-    28 + (sleep.includes('less') ? 12 : 0)
-    + (exercise === 'never' ? 10 : exercise.includes('daily') ? -8 : 0)
-    + (userData.diet.toLowerCase().includes('junk') ? 14 : -5)
-    + (stress === 'severe' ? 10 : 0)
-  ));
-  const musculo = Math.min(90, Math.max(10,
-    22 + (exercise === 'never' ? 16 : exercise.includes('daily') ? -6 : 0)
-    + (b >= 30 ? 10 : 0) + (age > 50 ? 12 : 0)
-  ));
-  return { cardio, metabolic, mentalRisk, sleepRisk, immune, musculo };
-}
-const risks = riskCategories();
-
-// Pillar scores
-function pillarScores() {
-  return {
-    Nutrition: Math.min(95, Math.max(20,
-      userData.diet.toLowerCase().includes('balanced') ? 75 :
-      userData.diet.toLowerCase().includes('vegan') || userData.diet.toLowerCase().includes('vegetarian') ? 70 :
-      userData.diet.toLowerCase().includes('junk') ? 30 : 55
-    )),
-    Sleep: Math.min(95, Math.max(15,
-      userData.sleep.includes('7') || userData.sleep.includes('8') ? 80 :
-      userData.sleep.toLowerCase().includes('less') || userData.sleep.includes('5') ? 25 : 55
-    )),
-    Exercise: Math.min(95, Math.max(10,
-      userData.exercise === 'Daily' ? 90 :
-      userData.exercise.includes('3') || userData.exercise.includes('4') ? 70 :
-      userData.exercise.includes('1') || userData.exercise.includes('2') ? 45 : 15
-    )),
-    'Stress Mgmt': Math.min(95, Math.max(10,
-      userData.stress === 'Low' ? 85 :
-      userData.stress === 'Moderate' ? 60 :
-      userData.stress === 'High' ? 35 : 15
-    )),
-    'Body Weight': Math.min(95, Math.max(20,
-      bmi === '—' ? 65 :
-      (parseFloat(bmi) >= 18.5 && parseFloat(bmi) < 25) ? 88 :
-      (parseFloat(bmi) >= 25 && parseFloat(bmi) < 30) ? 60 :
-      parseFloat(bmi) < 18.5 ? 55 : 35
-    ))
-  };
-}
-const pillars = pillarScores();
-
-// ===== LOADING ANIMATION =====
-const steps = document.querySelectorAll('.load-step');
-const loadBar = document.getElementById('loadBar');
-const barPcts = [20, 40, 62, 82, 100];
-let si = 0;
-function nextStep() {
-  if (si > 0) steps[si-1].classList.remove('active'), steps[si-1].classList.add('done');
-  if (si < steps.length) {
-    steps[si].classList.add('active');
-    loadBar.style.width = barPcts[si] + '%';
-    si++;
-    if (si < steps.length) setTimeout(nextStep, 700);
-    else setTimeout(showPage, 900);
-  }
-}
-setTimeout(nextStep, 400);
-
-function showPage() {
-  steps[steps.length-1].classList.remove('active');
-  steps[steps.length-1].classList.add('done');
-  setTimeout(() => {
-    document.getElementById('loadingScreen').classList.add('fade-out');
-    const pw = document.getElementById('pageWrap');
-    pw.classList.add('visible');
-    setTimeout(() => {
-      document.getElementById('loadingScreen').style.display = 'none';
-      renderStaticContent();
-      callClaudeAPI();
-      initReveal();
-    }, 300);
-  }, 400);
-}
-
-// ===== RENDER STATIC CONTENT =====
-function renderStaticContent() {
-  // Score
-  const sn = document.getElementById('scoreNum');
-  sn.textContent = overallScore;
-  const fill = document.getElementById('ringFill');
-  const color = overallScore >= 75 ? '#10b981' : overallScore >= 55 ? '#f59e0b' : '#ef4444';
-  fill.setAttribute('stroke', color);
-  setTimeout(() => { fill.style.strokeDashoffset = 352 - (352 * overallScore / 100); }, 300);
-  const st = document.getElementById('scoreStatus');
-  if (overallScore >= 75) { st.textContent = '✨ Good Health'; st.className = 'score-status status-low'; }
-  else if (overallScore >= 55) { st.textContent = '⚠️ Moderate Risk'; st.className = 'score-status status-mod'; }
-  else { st.textContent = '🚨 Needs Attention'; st.className = 'score-status status-high'; }
-
-  // Summary bar
-  const sb = document.getElementById('summaryBar');
-  const chips = [
-    {i:'👤', l: userData.age + ' yrs, ' + userData.gender},
-    {i:'📍', l: userData.body_area},
-    {i:'😴', l: userData.sleep},
-    {i:'🏃', l: userData.exercise},
-    {i:'📊', l: 'BMI ' + bmi + ' (' + bmiLabel + ')'},
-    {i:'🧘', l: userData.stress + ' Stress'},
-    {i:'🥗', l: userData.diet}
-  ];
-  sb.innerHTML = chips.map(c => `<div class="sum-chip"><span class="sc-icon">${c.i}</span><strong>${c.l}</strong></div>`).join('');
-
-  // Profile grid
-  const pg = document.getElementById('profileGrid');
-  const fields = [
-    {l:'Age', v: userData.age + ' years'},
-    {l:'Gender', v: userData.gender},
-    {l:'Height', v: userData.height + ' cm'},
-    {l:'Weight', v: userData.weight + ' kg'},
-    {l:'BMI', v: bmi + ' — ' + bmiLabel},
-    {l:'Conditions', v: userData.conditions || 'None'},
-    {l:'Symptoms', v: userData.symptoms || 'None'},
-    {l:'Focus Area', v: userData.body_area}
-  ];
-  pg.innerHTML = fields.map(f => `<div class="profile-field"><div class="pf-label">${f.l}</div><div class="pf-val">${f.v}</div></div>`).join('');
-
-  // Risk grid
-  const rg = document.getElementById('riskGrid');
-  const riskItems = [
-    {n:'Cardiovascular', v: risks.cardio, e:'❤️'},
-    {n:'Metabolic', v: risks.metabolic, e:'⚡'},
-    {n:'Mental Wellness', v: risks.mentalRisk, e:'🧘'},
-    {n:'Sleep Quality', v: risks.sleepRisk, e:'😴'},
-    {n:'Immunity', v: risks.immune, e:'🛡️'},
-    {n:'Musculoskeletal', v: risks.musculo, e:'🦴'}
-  ];
-  rg.innerHTML = riskItems.map(r => {
-    const clr = r.v < 35 ? '#10b981' : r.v < 60 ? '#f59e0b' : '#ef4444';
-    const lbl = r.v < 35 ? 'Low' : r.v < 60 ? 'Moderate' : 'High';
-    const bg = r.v < 35 ? 'rgba(16,185,129,0.12)' : r.v < 60 ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)';
-    return `<div class="risk-item">
-      <div class="risk-item-top">
-        <span class="risk-item-name">${r.e} ${r.n}</span>
-        <span class="risk-item-pct" style="color:${clr}">${r.v}%</span>
-      </div>
-      <div class="risk-bar-bg"><div class="risk-bar-fill" data-w="${r.v}" style="background:${clr}"></div></div>
-      <span class="risk-badge-sm" style="background:${bg};color:${clr}">${lbl} Risk</span>
-    </div>`;
-  }).join('');
-  setTimeout(() => {
-    document.querySelectorAll('.risk-bar-fill').forEach(b => {
-      b.style.width = b.dataset.w + '%';
-    });
-  }, 400);
-
-  // Pillars
-  const pc = document.getElementById('pillarsContent');
-  const pillarColors = ['linear-gradient(90deg,#ec4899,#f9a8d4)', 'linear-gradient(90deg,#8b5cf6,#c4b5fd)', 'linear-gradient(90deg,#10b981,#6ee7b7)', 'linear-gradient(90deg,#f59e0b,#fbbf24)', 'linear-gradient(90deg,#3b82f6,#93c5fd)'];
-  pc.innerHTML = Object.entries(pillars).map(([k,v],i) => `
-    <div class="pillar-item">
-      <div class="pillar-label" style="font-size:12px;font-weight:600;color:#1a0a2e;min-width:90px;">${k}</div>
-      <div class="pillar-bar-wrap">
-        <div class="pillar-bar" data-w="${v}" style="background:${pillarColors[i]}"></div>
-      </div>
-      <div class="pillar-pct" style="font-size:12px;font-weight:700;color:#1a0a2e;min-width:36px;text-align:right;">${v}%</div>
-    </div>`).join('');
-  setTimeout(() => {
-    document.querySelectorAll('.pillar-bar').forEach(b => { b.style.width = b.dataset.w + '%'; });
-  }, 500);
-}
-
-// ===== CALL CLAUDE AI =====
-async function callClaudeAPI() {
-  const systemPrompt = `You are AroMi, an expert AI health and wellness coach. Analyze user health data and generate a comprehensive, personalized health report. 
-Be warm, encouraging, and specific. Use emojis sparingly. Be evidence-based but accessible.
-Respond ONLY with valid JSON. No markdown, no backticks, no preamble. Structure exactly as specified.`;
-
-  const userPrompt = `Analyze this person's health data and generate a complete wellness report in JSON format.
-
-HEALTH DATA:
-- Age: ${userData.age} years, Gender: ${userData.gender}
-- Height: ${userData.height}cm, Weight: ${userData.weight}kg, BMI: ${bmi} (${bmiLabel})
-- Current Symptoms: ${userData.symptoms}
-- Focus Health Area: ${userData.body_area}
-- Existing Conditions: ${userData.conditions}
-- Average Sleep: ${userData.sleep}
-- Exercise Frequency: ${userData.exercise}
-- Diet Type: ${userData.diet}
-- Stress Level: ${userData.stress}
-
-Return ONLY this exact JSON structure (no markdown, no backticks):
-{
-  "heroSubtitle": "2 sentence personalized intro about their specific health situation",
-  "insights": [
-    {"title": "insight title", "text": "detailed 2-3 sentence insight"},
-    {"title": "insight title", "text": "detailed 2-3 sentence insight"},
-    {"title": "insight title", "text": "detailed 2-3 sentence insight"},
-    {"title": "insight title", "text": "detailed 2-3 sentence insight"}
-  ],
-  "habits": [
-    {"title": "habit to improve", "text": "specific actionable advice with why it matters for this person"},
-    {"title": "habit to improve", "text": "specific actionable advice"},
-    {"title": "habit to improve", "text": "specific actionable advice"},
-    {"title": "habit to improve", "text": "specific actionable advice"},
-    {"title": "habit to improve", "text": "specific actionable advice"}
-  ],
-  "foods": [
-    {"emoji": "🥦", "name": "Food Name", "why": "specific benefit for their health profile"},
-    {"emoji": "🐟", "name": "Food Name", "why": "specific benefit"},
-    {"emoji": "🫐", "name": "Food Name", "why": "specific benefit"},
-    {"emoji": "🥑", "name": "Food Name", "why": "specific benefit"},
-    {"emoji": "🥕", "name": "Food Name", "why": "specific benefit"},
-    {"emoji": "🌰", "name": "Food Name", "why": "specific benefit"},
-    {"emoji": "🧄", "name": "Food Name", "why": "specific benefit"},
-    {"emoji": "🍵", "name": "Food Name", "why": "specific benefit"},
-    {"emoji": "🫘", "name": "Food Name", "why": "specific benefit"}
-  ],
-  "exercises": [
-    {"emoji": "🏃", "name": "Exercise", "desc": "specific why for their profile and how to do it", "duration": "30 min", "freq": "5x/week", "intensity": "Moderate"},
-    {"emoji": "🧘", "name": "Exercise", "desc": "specific why and how", "duration": "20 min", "freq": "Daily", "intensity": "Low"},
-    {"emoji": "🏋️", "name": "Exercise", "desc": "specific why and how", "duration": "40 min", "freq": "3x/week", "intensity": "Moderate"},
-    {"emoji": "🚶", "name": "Exercise", "desc": "specific why and how", "duration": "15 min", "freq": "After meals", "intensity": "Light"},
-    {"emoji": "🤸", "name": "Exercise", "desc": "specific why and how", "duration": "15 min", "freq": "Daily", "intensity": "Light"}
-  ],
-  "mealPlan": [
-    {
-      "day": "Day 1 — Monday",
-      "breakfast": {"meal": "meal description", "cal": "~400 cal"},
-      "lunch": {"meal": "meal description", "cal": "~550 cal"},
-      "dinner": {"meal": "meal description", "cal": "~500 cal"},
-      "snack": {"meal": "snack description", "cal": "~200 cal"}
-    },
-    {
-      "day": "Day 2 — Tuesday",
-      "breakfast": {"meal": "meal description", "cal": "~380 cal"},
-      "lunch": {"meal": "meal description", "cal": "~520 cal"},
-      "dinner": {"meal": "meal description", "cal": "~480 cal"},
-      "snack": {"meal": "snack description", "cal": "~220 cal"}
-    },
-    {
-      "day": "Day 3 — Wednesday",
-      "breakfast": {"meal": "meal description", "cal": "~420 cal"},
-      "lunch": {"meal": "meal description", "cal": "~560 cal"},
-      "dinner": {"meal": "meal description", "cal": "~490 cal"},
-      "snack": {"meal": "snack description", "cal": "~190 cal"}
-    }
-  ],
-  "alerts": [
-    {"level": "high", "title": "Most urgent action", "text": "specific reason for urgency based on their data"},
-    {"level": "mod", "title": "Important improvement", "text": "specific reason"},
-    {"level": "low", "title": "Positive habit to build", "text": "specific encouragement"}
-  ],
-  "checklist": [
-    "specific action for today based on their data",
-    "specific action",
-    "specific action",
-    "specific action",
-    "specific action",
-    "specific action"
-  ],
-  "supplements": [
-    {"name": "Supplement", "reason": "specific reason based on their deficiency risk", "dose": "dosage"},
-    {"name": "Supplement", "reason": "specific reason", "dose": "dosage"},
-    {"name": "Supplement", "reason": "specific reason", "dose": "dosage"},
-    {"name": "Supplement", "reason": "specific reason", "dose": "dosage"}
-  ]
-}`;
-
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userPrompt }]
-      })
-    });
-
-    const data = await response.json();
-    let raw = data.content.map(c => c.text || '').join('');
-    // Strip any accidental markdown
-    raw = raw.replace(/```json\s*/gi, '').replace(/```\s*/gi, '').trim();
-    const result = JSON.parse(raw);
-    renderAIContent(result);
-  } catch (err) {
-    console.error('AI API error:', err);
-    renderFallback();
-  }
-}
-
-// ===== RENDER AI CONTENT =====
-function renderAIContent(r) {
-  // Hero subtitle
-  document.getElementById('heroSubtitle').textContent = r.heroSubtitle || '';
-
-  // Insights
-  document.getElementById('insightContent').innerHTML = r.insights.map(ins => `
-    <div style="margin-bottom:16px;">
-      <strong style="color:#1a0a2e;font-size:14px;font-weight:600;">${ins.title}</strong>
-      <p style="font-size:13px;color:rgba(74,32,112,0.72);margin-top:4px;line-height:1.7;">${ins.text}</p>
-    </div>
-    <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(196,181,253,0.3),transparent);margin:14px 0;"></div>
-  `).join('').replace(/<div style="height:1px[^>]+><\/div>\s*$/, '');
-
-  // Habits
-  document.getElementById('habitContent').innerHTML = r.habits.map((h,i) => `
-    <div class="habit-item">
-      <div class="habit-num">${i+1}</div>
-      <div class="habit-text">
-        <strong>${h.title}</strong>
-        <span>${h.text}</span>
-      </div>
-    </div>
-  `).join('');
-
-  // Foods
-  const dietHeader = `<p style="font-size:13px;color:rgba(74,32,112,0.65);margin-bottom:16px;line-height:1.7;">
-    Based on your <strong>${userData.diet}</strong> diet and focus on <strong>${userData.body_area}</strong>, here are the most beneficial foods for you:
-  </p>`;
-  document.getElementById('dietContent').innerHTML = dietHeader +
-    `<div class="food-grid">${r.foods.map(f => `
-      <div class="food-card">
-        <div class="food-emoji">${f.emoji}</div>
-        <div class="food-name">${f.name}</div>
-        <div class="food-why">${f.why}</div>
-      </div>`).join('')}</div>`;
-
-  // Exercises
-  document.getElementById('exContent').innerHTML = `
-    <p style="font-size:13px;color:rgba(74,32,112,0.65);margin-bottom:16px;line-height:1.7;">
-      Tailored for your current exercise level of <strong>${userData.exercise}</strong> and stress level of <strong>${userData.stress}</strong>:
-    </p>
-    ${r.exercises.map(ex => `
-    <div class="ex-card">
-      <div class="ex-icon">${ex.emoji}</div>
-      <div class="ex-info">
-        <strong>${ex.name}</strong>
-        <p>${ex.desc}</p>
-        <div class="ex-badges">
-          <span class="ex-badge eb-mint">⏱ ${ex.duration}</span>
-          <span class="ex-badge eb-lav">📅 ${ex.freq}</span>
-          <span class="ex-badge eb-mint">⚡ ${ex.intensity}</span>
-        </div>
-      </div>
-    </div>`).join('')}`;
-
-  // Meal plan
-  document.getElementById('mealContent').innerHTML = `
-    <p style="font-size:13px;color:rgba(74,32,112,0.65);margin-bottom:20px;line-height:1.7;">
-      A 3-day sample meal plan optimized for your <strong>${userData.diet}</strong> preference and <strong>${userData.body_area}</strong> health goals:
-    </p>
-    ${r.mealPlan.map(day => `
-    <div class="meal-day">
-      <div class="meal-day-title">📅 ${day.day}</div>
-      ${['breakfast','lunch','dinner','snack'].map(slot => `
-        <div class="meal-slot">
-          <div class="meal-slot-label">${slot.charAt(0).toUpperCase()+slot.slice(1)}</div>
-          <div class="meal-slot-content">${day[slot]?.meal || ''}</div>
-          <div class="meal-slot-cal">${day[slot]?.cal || ''}</div>
-        </div>`).join('')}
-    </div>`).join('')}`;
-
-  // Alerts
-  const alertIconMap = { high: '🚨', mod: '⚠️', low: '✅' };
-  const alertClassMap = { high: 'alert-high', mod: 'alert-mod', low: 'alert-low' };
-  document.getElementById('alertsContent').innerHTML = r.alerts.map(a => `
-    <div class="alert-item ${alertClassMap[a.level] || 'alert-low'}">
-      <div class="alert-icon">${alertIconMap[a.level] || '✅'}</div>
-      <div class="alert-text"><strong>${a.title}</strong>${a.text}</div>
-    </div>`).join('');
-
-  // Checklist
-  const cl = document.getElementById('checklistContent');
-  cl.innerHTML = '';
-  r.checklist.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'cl-item';
-    div.innerHTML = `<div class="cl-box"></div><div class="cl-text">${item}</div>`;
-    div.addEventListener('click', () => div.classList.toggle('checked'));
-    cl.appendChild(div);
-  });
-
-  // Supplements
-  document.getElementById('suppContent').innerHTML = r.supplements.map(s => `
-    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;padding:10px;background:rgba(255,255,255,0.5);border-radius:10px;">
-      <span style="font-size:18px;flex-shrink:0;">💊</span>
+      <!-- RISK METER -->
       <div>
-        <div style="font-size:13px;font-weight:600;color:#1a0a2e;">${s.name} <span style="font-size:11px;color:#8b5cf6;font-weight:500;">${s.dose}</span></div>
-        <div style="font-size:12px;color:rgba(74,32,112,0.65);margin-top:2px;">${s.reason}</div>
+        <h2 class="section-title"><span class="section-emoji">📊</span> Risk Factors</h2>
+        <div class="severity-card" id="severityCard">
+          <div class="severity-title">Prevalence & Risk Levels</div>
+          <div id="meterRows"></div>
+        </div>
       </div>
-    </div>`).join('');
-}
 
-// ===== FALLBACK (if API fails) =====
-function renderFallback() {
-  const stress = userData.stress.toLowerCase();
-  const sleep = userData.sleep.toLowerCase();
-  const exercise = userData.exercise.toLowerCase();
+      <!-- PRECAUTIONS -->
+      <div>
+        <h2 class="section-title"><span class="section-emoji">🛡️</span> Precautions</h2>
+        <div class="cards-grid cols-3" id="precautionsGrid"></div>
+      </div>
 
-  document.getElementById('insightContent').innerHTML = `
-    <div style="margin-bottom:16px;"><strong>Overall Wellness</strong>
-    <p style="font-size:13px;color:rgba(74,32,112,0.72);margin-top:4px;line-height:1.7;">
-      Your wellness score of ${overallScore}/100 reflects your current lifestyle patterns.
-      ${overallScore >= 75 ? 'You are in good shape overall — focus on maintaining consistency.' :
-        overallScore >= 55 ? 'There are moderate areas to improve, particularly stress and sleep patterns.' :
-        'Several key lifestyle factors need immediate attention to improve your health outcomes.'}
-    </p></div>
-    <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(196,181,253,0.3),transparent);margin:14px 0;"></div>
-    <div style="margin-bottom:16px;"><strong>Sleep Pattern</strong>
-    <p style="font-size:13px;color:rgba(74,32,112,0.72);margin-top:4px;line-height:1.7;">
-      ${sleep.includes('7') || sleep.includes('8') ? 'Your sleep duration is optimal. Maintain a consistent sleep schedule to maximize the restorative benefits.' :
-        sleep.includes('less') || sleep.includes('5') ? 'Sleeping less than 6 hours significantly impairs cognitive function, immune response, and metabolic health. This is your most urgent improvement area.' :
-        'Your sleep could be improved. Aim for 7-9 hours consistently.'}
-    </p></div>
-    <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(196,181,253,0.3),transparent);margin:14px 0;"></div>
-    <div><strong>Stress & Exercise</strong>
-    <p style="font-size:13px;color:rgba(74,32,112,0.72);margin-top:4px;line-height:1.7;">
-      ${stress === 'severe' || stress === 'high' ? 'High stress levels are significantly impacting your health. Prioritize stress management techniques like mindfulness, exercise, and social connection.' :
-        'Your stress levels appear manageable. Continue building resilience through regular physical activity.'}
-    </p></div>`;
+      <!-- NUTRITION -->
+      <div>
+        <h2 class="section-title"><span class="section-emoji">🍽️</span> Best Foods</h2>
+        <div class="cards-grid cols-3" id="foodGrid"></div>
+      </div>
 
-  document.getElementById('habitContent').innerHTML = [
-    {t:'Improve Sleep Consistency', b:'Go to bed and wake at the same time every day, including weekends, to regulate your circadian rhythm.'},
-    {t:'Increase Physical Activity', b:'Start with 20-30 minutes of brisk walking daily before progressing to more intense workouts.'},
-    {t:'Reduce Processed Foods', b:'Replace one processed meal per day with whole foods rich in fiber, protein, and micronutrients.'},
-    {t:'Hydration First', b:'Drink 2 glasses of water immediately upon waking to rehydrate after overnight fasting.'},
-    {t:'Mindful Stress Management', b:'Practice 10 minutes of deep breathing or meditation daily to lower cortisol and improve resilience.'}
-  ].map((h,i) => `<div class="habit-item"><div class="habit-num">${i+1}</div><div class="habit-text"><strong>${h.t}</strong><span>${h.b}</span></div></div>`).join('');
+      <!-- EXERCISE -->
+      <div>
+        <h2 class="section-title"><span class="section-emoji">🏃</span> Exercise & Lifestyle</h2>
+        <div class="cards-grid cols-2" id="exerciseGrid"></div>
+      </div>
 
-  document.getElementById('dietContent').innerHTML = `<div class="food-grid">
-    ${[['🥦','Broccoli','Rich in sulforaphane and vitamin C'],['🐟','Salmon','Omega-3 fatty acids reduce inflammation'],
-       ['🫐','Blueberries','Anthocyanins protect brain and heart'],['🥑','Avocado','Healthy fats improve nutrient absorption'],
-       ['🧄','Garlic','Allicin boosts immunity and cardiovascular health'],['🌿','Turmeric','Curcumin reduces systemic inflammation'],
-       ['🥚','Eggs','Complete protein with choline for brain health'],['🌰','Walnuts','DHA supports brain and heart function'],
-       ['🍵','Green Tea','EGCG reduces oxidative stress throughout body']
-    ].map(([e,n,w]) => `<div class="food-card"><div class="food-emoji">${e}</div><div class="food-name">${n}</div><div class="food-why">${w}</div></div>`).join('')}</div>`;
+      <!-- CTA -->
+      <div class="cta-banner" id="ctaBanner">
+        <h2>Get Your Personal Health Prediction</h2>
+        <p>Let AroMi's AI analyse your specific health profile and give you a personalised risk assessment and action plan.</p>
+        <a href="home.html#prediction" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Get Prediction
+        </a>
+        <a href="home.html" class="btn-secondary">← Back to Home</a>
+      </div>
 
-  document.getElementById('exContent').innerHTML = [
-    {e:'🏃',n:'Brisk Walking / Jogging',d:'The most accessible cardio that improves cardiovascular health, mood, and metabolic rate.',f:'Daily, 30 min'},
-    {e:'🧘',n:'Yoga / Stretching',d:'Reduces cortisol, improves flexibility, and activates the parasympathetic nervous system.',f:'3x/week, 20 min'},
-    {e:'🏋️',n:'Bodyweight Strength',d:'Push-ups, squats, and lunges to build muscle and improve insulin sensitivity.',f:'3x/week, 30 min'},
-    {e:'🚴',n:'Cycling',d:'Low-impact aerobic exercise that strengthens the heart and burns calories efficiently.',f:'4x/week, 30 min'}
-  ].map(ex => `<div class="ex-card"><div class="ex-icon">${ex.e}</div><div class="ex-info"><strong>${ex.n}</strong><p>${ex.d}</p><div class="ex-badges"><span class="ex-badge eb-mint">⏱ ${ex.f}</span></div></div></div>`).join('');
+    </div>
+  </main>
 
-  document.getElementById('mealContent').innerHTML = '<p style="font-size:13px;color:rgba(74,32,112,0.65);">Connect to the AroMi AI to get your personalized 7-day meal plan.</p>';
-  document.getElementById('alertsContent').innerHTML = `
-    <div class="alert-item alert-${overallScore < 55 ? 'high' : 'mod'}"><div class="alert-icon">${overallScore < 55 ? '🚨' : '⚠️'}</div><div class="alert-text"><strong>Priority Focus</strong>Your ${stress === 'high' || stress === 'severe' ? 'stress levels' : sleep.includes('less') || sleep.includes('5') ? 'sleep quality' : 'exercise routine'} needs immediate attention.</div></div>
-    <div class="alert-item alert-low"><div class="alert-icon">✅</div><div class="alert-text"><strong>Keep Going</strong>Your current ${userData.diet} diet is a solid foundation to build on.</div></div>`;
+  <footer>
+    <span class="footer-brand">AroMi</span>
+    <span class="footer-text">© 2025 AroMi AI Agent · Your Adaptive Health Coach</span>
+    <span class="footer-text">Not a substitute for medical advice.</span>
+  </footer>
 
-  const cl = document.getElementById('checklistContent');
-  cl.innerHTML = '';
-  ['Drink 8 glasses of water','Exercise for 30 minutes','Eat 5 servings of vegetables','Practice 10 min mindfulness','Sleep by 10:30 PM','Avoid processed food today'].forEach(item => {
-    const div = document.createElement('div'); div.className = 'cl-item';
-    div.innerHTML = `<div class="cl-box"></div><div class="cl-text">${item}</div>`;
-    div.addEventListener('click', () => div.classList.toggle('checked'));
-    cl.appendChild(div);
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- AroMi Supabase Config -->
+  <script src="supabase.js"></script>
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+  // ══════════════════════════════════════════════════
+  //   HEALTH TOPIC DATA
+  //   Each topic is keyed by URL param ?topic=brain
+  // ══════════════════════════════════════════════════
+  const TOPICS = {
+    brain: {
+      name: "Brain Health",
+      category: "Neurology",
+      icon: "🧠",
+      color: "#c084fc",
+      desc: "Your brain controls everything — from breathing to complex thought. Learn how to protect it, nourish it, and keep it sharp across every stage of life.",
+      stats: [
+        { val: "86B", lbl: "Neurons" },
+        { val: "20%", lbl: "Body's Energy" },
+        { val: "1.5kg", lbl: "Average Weight" }
+      ],
+      conditions: ["Alzheimer's Disease", "Parkinson's Disease", "Migraine", "Epilepsy", "Brain Stroke", "Depression & Anxiety"],
+      warnings: ["Persistent headaches", "Memory lapses", "Sudden confusion", "Vision disturbances", "Speech difficulty", "Numbness or weakness"],
+      risks: [
+        { label: "Stress", pct: 78 },
+        { label: "Poor Sleep", pct: 72 },
+        { label: "Smoking", pct: 65 },
+        { label: "Inactivity", pct: 58 },
+        { label: "Poor Diet", pct: 61 }
+      ],
+      precautions: [
+        { icon: "💤", color: "lavender", title: "Prioritise Sleep", text: "Aim for 7–9 hours of quality sleep. Deep sleep clears toxic proteins like amyloid beta linked to Alzheimer's.", tags: ["Sleep Hygiene", "Recovery"] },
+        { icon: "🧘", color: "mint", title: "Manage Stress", text: "Chronic stress shrinks the hippocampus. Daily meditation even for 10 minutes significantly reduces cortisol.", tags: ["Mindfulness", "Cortisol"] },
+        { icon: "🚭", color: "pink", title: "Avoid Smoking", text: "Smoking reduces blood flow to the brain and accelerates cognitive decline. Quitting reverses damage over time.", tags: ["Lifestyle", "Vascular"] },
+        { icon: "📖", color: "peach", title: "Stay Mentally Active", text: "Reading, puzzles, and learning new skills create new neural pathways — building 'cognitive reserve'.", tags: ["Neuroplasticity"] },
+        { icon: "🫀", color: "lavender", title: "Control Blood Pressure", text: "High BP damages blood vessels supplying the brain. Regular monitoring can prevent stroke risk.", tags: ["Cardiovascular"] },
+        { icon: "🤝", color: "mint", title: "Stay Socially Connected", text: "Social isolation is as damaging as smoking 15 cigarettes a day. Regular social interaction lowers dementia risk.", tags: ["Mental Health"] }
+      ],
+      foods: [
+        { icon: "🫐", color: "lavender", title: "Blueberries", text: "Rich in antioxidants and flavonoids that improve memory, delay brain aging, and enhance neuron communication.", tags: ["Antioxidants", "Memory"] },
+        { icon: "🐟", color: "mint", title: "Fatty Fish (Salmon)", text: "High in omega-3 DHA — the primary fat in brain cell membranes. Reduces inflammation and supports cognition.", tags: ["Omega-3", "DHA"] },
+        { icon: "🥜", color: "peach", title: "Walnuts", text: "Shaped like a brain for a reason — high in DHA, vitamin E, and polyphenols that protect neurons.", tags: ["Vitamin E", "Polyphenols"] },
+        { icon: "🫒", color: "mint", title: "Olive Oil", text: "Extra virgin olive oil contains oleocanthal which helps clear Alzheimer's proteins from the brain.", tags: ["Anti-inflammatory"] },
+        { icon: "🥦", color: "lavender", title: "Broccoli", text: "Packed with vitamin K and glucosinolates that support cognitive function and slow neural degeneration.", tags: ["Vitamin K"] },
+        { icon: "☕", color: "pink", title: "Dark Chocolate", text: "Flavanols in dark chocolate increase blood flow to the brain, improving focus and short-term memory.", tags: ["Flavanols", "Focus"] }
+      ],
+      exercises: [
+        { icon: "🏊", color: "mint", title: "Aerobic Exercise", text: "Swimming, jogging, or cycling for 30 minutes daily increases BDNF (brain-derived neurotrophic factor) — a protein that grows new brain cells and strengthens existing neural connections. Studies show aerobic exercise can increase hippocampal volume by 2%.", tags: ["BDNF", "Neurogenesis", "Daily"] },
+        { icon: "🧘", color: "lavender", title: "Yoga & Breathwork", text: "Yoga combines physical movement, controlled breathing, and meditation — all shown to reduce inflammation markers and improve cortical thickness. Pranayama breathing increases oxygen delivery to the brain by up to 20%.", tags: ["Meditation", "Oxygen", "Inflammation"] },
+        { icon: "🏋️", color: "peach", title: "Resistance Training", text: "Lifting weights 2–3x per week increases IGF-1, a hormone that supports memory and learning. Studies link strength training to reduced risk of mild cognitive impairment.", tags: ["IGF-1", "Memory", "2–3x/week"] },
+        { icon: "💃", color: "pink", title: "Dancing", text: "Combines physical movement with learning and social interaction — activating multiple brain regions simultaneously. Regular dancing is linked to a 76% reduced risk of dementia.", tags: ["Neuroplasticity", "Social", "Dementia Prevention"] }
+      ]
+    },
+
+    heart: {
+      name: "Heart Health",
+      category: "Cardiology",
+      icon: "❤️",
+      color: "#f87171",
+      desc: "Your heart beats 100,000 times a day. Protect it with the right habits, nutrition, and early warning awareness to live a longer, stronger life.",
+      stats: [
+        { val: "100K", lbl: "Beats / Day" },
+        { val: "5L", lbl: "Blood Pumped/min" },
+        { val: "#1", lbl: "Cause of Death" }
+      ],
+      conditions: ["Coronary Artery Disease", "Heart Failure", "Arrhythmia", "Hypertension", "Heart Attack", "Cardiomyopathy"],
+      warnings: ["Chest pain or pressure", "Shortness of breath", "Irregular heartbeat", "Fatigue & weakness", "Swollen ankles", "Dizziness or fainting"],
+      risks: [
+        { label: "High BP", pct: 82 },
+        { label: "High Cholesterol", pct: 74 },
+        { label: "Obesity", pct: 68 },
+        { label: "Smoking", pct: 77 },
+        { label: "Diabetes", pct: 64 }
+      ],
+      precautions: [
+        { icon: "🚶", color: "mint", title: "Stay Active Daily", text: "Even 30 minutes of walking reduces heart disease risk by 35%. Movement keeps arteries elastic and blood pressure low.", tags: ["Exercise", "Prevention"] },
+        { icon: "🧂", color: "pink", title: "Reduce Sodium", text: "High sodium raises blood pressure — the #1 risk factor for heart disease. Aim under 2300mg sodium per day.", tags: ["Diet", "Blood Pressure"] },
+        { icon: "🍷", color: "lavender", title: "Limit Alcohol", text: "Heavy drinking weakens the heart muscle (cardiomyopathy) and raises triglycerides. Stick to moderate limits.", tags: ["Lifestyle"] },
+        { icon: "😴", color: "mint", title: "Sleep Well", text: "Less than 6 hours sleep raises heart attack risk by 20%. Sleep is when your heart rate dips and repairs occur.", tags: ["Sleep", "Recovery"] },
+        { icon: "📏", color: "peach", title: "Manage Weight", text: "Every 5-unit increase in BMI increases heart failure risk by 41%. Waist circumference is a key cardiovascular predictor.", tags: ["BMI", "Prevention"] },
+        { icon: "🩺", color: "lavender", title: "Regular Checkups", text: "Blood pressure, cholesterol, and blood sugar checks every 6–12 months catch silent killers early.", tags: ["Screening", "Monitoring"] }
+      ],
+      foods: [
+        { icon: "🫐", color: "pink", title: "Berries", text: "Anthocyanins in berries reduce blood pressure and LDL oxidation — a key step in artery plaque formation.", tags: ["Antioxidants", "LDL"] },
+        { icon: "🥑", color: "mint", title: "Avocado", text: "Rich in heart-healthy monounsaturated fats and potassium which lower blood pressure and bad cholesterol.", tags: ["Monounsaturated", "Potassium"] },
+        { icon: "🫘", color: "lavender", title: "Legumes", text: "Beans and lentils lower LDL cholesterol and blood pressure, reducing coronary artery disease risk by 22%.", tags: ["Fibre", "LDL"] },
+        { icon: "🌰", color: "peach", title: "Almonds & Walnuts", text: "Reduce LDL, raise HDL, and lower inflammation. A handful daily reduces heart disease mortality by 20%.", tags: ["HDL", "Nuts"] },
+        { icon: "🧄", color: "mint", title: "Garlic", text: "Allicin in garlic relaxes blood vessels, lowers blood pressure, and has been used as natural cardiac medicine for centuries.", tags: ["Allicin", "BP"] },
+        { icon: "🐟", color: "lavender", title: "Salmon & Mackerel", text: "Omega-3 fatty acids reduce triglycerides by up to 30% and prevent dangerous heart rhythm abnormalities.", tags: ["Omega-3", "Triglycerides"] }
+      ],
+      exercises: [
+        { icon: "🚴", color: "mint", title: "Cardio Training", text: "Cycling, swimming, or brisk walking for 150 minutes weekly reduces cardiovascular mortality by 35%. It strengthens the heart muscle, lowers resting heart rate, and improves oxygen efficiency.", tags: ["150min/week", "Cardio", "Endurance"] },
+        { icon: "🧘", color: "lavender", title: "Stress Reduction", text: "Chronic stress releases cortisol which inflames arteries and raises blood pressure. Daily meditation, deep breathing, or yoga directly lowers systolic BP by 5–10 mmHg.", tags: ["Cortisol", "BP", "Mindfulness"] },
+        { icon: "🏋️", color: "peach", title: "Strength Training", text: "Resistance training 2x weekly improves insulin sensitivity and reduces visceral fat — both major cardiac risk factors.", tags: ["Insulin", "2x/week"] },
+        { icon: "🚶", color: "pink", title: "Walk After Meals", text: "A 10-minute walk after meals significantly lowers postprandial blood sugar — reducing the glycation damage that harms heart blood vessels over time.", tags: ["Blood Sugar", "Glycation"] }
+      ]
+    },
+
+    eye: {
+      name: "Eye Health",
+      category: "Ophthalmology",
+      icon: "👁️",
+      color: "#38bdf8",
+      desc: "Vision is your primary sense. Understanding how to protect your eyes from modern threats like screen time, UV exposure, and nutritional deficiencies can preserve your sight for life.",
+      stats: [
+        { val: "576MP", lbl: "Effective Resolution" },
+        { val: "2.5M", lbl: "Colours Detected" },
+        { val: "80%", lbl: "Info via Vision" }
+      ],
+      conditions: ["Glaucoma", "Macular Degeneration", "Cataracts", "Diabetic Retinopathy", "Dry Eye Syndrome", "Myopia"],
+      warnings: ["Blurred or cloudy vision", "Floaters or flashes", "Eye pain or redness", "Loss of peripheral vision", "Halos around lights", "Difficulty seeing at night"],
+      risks: [
+        { label: "Screen Time", pct: 85 },
+        { label: "UV Exposure", pct: 70 },
+        { label: "Diabetes", pct: 68 },
+        { label: "Smoking", pct: 60 },
+        { label: "Poor Nutrition", pct: 55 }
+      ],
+      precautions: [
+        { icon: "🕶️", color: "mint", title: "UV Protection", text: "Wear sunglasses blocking 99–100% UVA & UVB. UV damage accumulates silently and causes cataracts and macular degeneration.", tags: ["UV", "Outdoors"] },
+        { icon: "💻", color: "lavender", title: "20-20-20 Rule", text: "Every 20 minutes, look at something 20 feet away for 20 seconds. This relaxes the ciliary muscle and reduces digital eye strain.", tags: ["Screen Time", "Strain"] },
+        { icon: "💡", color: "pink", title: "Proper Lighting", text: "Avoid working in dim light or facing bright windows. Poor contrast forces eyes to strain continuously.", tags: ["Ergonomics"] },
+        { icon: "🩺", color: "peach", title: "Annual Eye Exams", text: "Many serious eye conditions show no early symptoms. Routine exams catch glaucoma, retinal changes, and early diabetic damage.", tags: ["Screening"] },
+        { icon: "💧", color: "mint", title: "Stay Hydrated", text: "Dehydration reduces tear production causing dry eye syndrome. Drink 8+ glasses of water daily for healthy tear film.", tags: ["Dry Eye", "Hydration"] },
+        { icon: "🛌", color: "lavender", title: "Adequate Sleep", text: "Eyes replenish and repair during sleep. Chronic sleep deprivation causes red eyes, twitching, and worsens dry eye disease.", tags: ["Recovery", "Sleep"] }
+      ],
+      foods: [
+        { icon: "🥕", color: "peach", title: "Carrots & Sweet Potato", text: "Rich in beta-carotene which converts to vitamin A — essential for rhodopsin production enabling night vision.", tags: ["Vitamin A", "Night Vision"] },
+        { icon: "🥬", color: "mint", title: "Leafy Greens", text: "Lutein and zeaxanthin in spinach and kale filter harmful blue light and reduce macular degeneration risk by 43%.", tags: ["Lutein", "Zeaxanthin"] },
+        { icon: "🥚", color: "peach", title: "Eggs", text: "Egg yolks contain concentrated lutein, zeaxanthin, and zinc — highly bioavailable compared to plant sources.", tags: ["Bioavailable", "Zinc"] },
+        { icon: "🍊", color: "pink", title: "Citrus Fruits", text: "Vitamin C is found in high concentration in the lens of the eye. Regular intake reduces cataract risk by 33%.", tags: ["Vitamin C", "Cataracts"] },
+        { icon: "🐟", color: "lavender", title: "Fatty Fish", text: "DHA omega-3 is a structural component of retinal cells. Low DHA is directly linked to dry eye syndrome and retinal degeneration.", tags: ["DHA", "Retina"] },
+        { icon: "🌻", color: "peach", title: "Sunflower Seeds", text: "Exceptional source of vitamin E, an antioxidant that protects eye cells from oxidative stress linked to cataracts.", tags: ["Vitamin E", "Antioxidants"] }
+      ],
+      exercises: [
+        { icon: "🔄", color: "mint", title: "Eye Rotation Exercise", text: "Slowly rotate your eyes clockwise and counter-clockwise 10 times each direction. Strengthens extraocular muscles and improves blood circulation around the eyes. Do twice daily for best results.", tags: ["Muscle Strength", "Daily"] },
+        { icon: "👁️", color: "lavender", title: "Focus Shifting", text: "Hold a finger close to your nose, focus on it, then shift focus to a distant object. Repeat 10 times. This exercises the ciliary muscle responsible for lens accommodation — preventing premature presbyopia.", tags: ["Accommodation", "Presbyopia"] },
+        { icon: "😌", color: "pink", title: "Palming Relaxation", text: "Rub palms together until warm, then cup them over closed eyes for 2 minutes. The warmth relaxes eye muscles and the darkness rests photoreceptors — reducing fatigue remarkably.", tags: ["Relaxation", "Fatigue"] },
+        { icon: "🌿", color: "peach", title: "Outdoor Time", text: "2 hours of outdoor time daily is clinically proven to reduce myopia progression in children and adults by 50%. Natural light exposure regulates eye growth through dopamine release in the retina.", tags: ["Myopia Prevention", "Dopamine"] }
+      ]
+    },
+
+    // ══════════════════════════════════════════════════
+    ear: {
+      name: "Ear Health",
+      category: "Otolaryngology",
+      icon: "👂",
+      color: "#fb923c",
+      desc: "Your ears do more than hear — they control balance and spatial awareness. Protecting them from noise, infections, and pressure changes preserves lifelong hearing and equilibrium.",
+      stats: [
+        { val: "20Hz", lbl: "Lowest Freq." },
+        { val: "20kHz", lbl: "Highest Freq." },
+        { val: "3", lbl: "Tiny Ear Bones" }
+      ],
+      conditions: ["Tinnitus", "Otitis Media", "Hearing Loss", "Meniere's Disease", "Earwax Blockage", "Eustachian Tube Dysfunction"],
+      warnings: ["Ringing or buzzing sounds", "Muffled hearing", "Ear pain or pressure", "Fluid draining from ear", "Dizziness or vertigo", "Sudden hearing loss"],
+      risks: [
+        { label: "Loud Noise", pct: 80 },
+        { label: "Earphone Use", pct: 74 },
+        { label: "Infections", pct: 60 },
+        { label: "Aging", pct: 68 },
+        { label: "Smoking", pct: 45 }
+      ],
+      precautions: [
+        { icon: "🎧", color: "peach", title: "60/60 Rule for Headphones", text: "Never exceed 60% volume for more than 60 minutes. Noise-induced hearing loss is permanent and cumulative.", tags: ["Volume", "Prevention"] },
+        { icon: "🔇", color: "lavender", title: "Ear Protection in Noise", text: "Use earplugs at concerts, construction sites, or anywhere above 85 dB. Exposure beyond 15 minutes causes damage.", tags: ["85dB", "Earplugs"] },
+        { icon: "🚿", color: "mint", title: "Keep Ears Dry", text: "Moisture in the ear canal promotes bacterial growth. Tilt head after swimming and use a towel to gently dry outer ears.", tags: ["Infection", "Hygiene"] },
+        { icon: "🚫", color: "pink", title: "Never Use Cotton Swabs", text: "Cotton swabs push wax deeper, risking impaction and eardrum damage. Ears are self-cleaning — let them be.", tags: ["Wax", "Safety"] },
+        { icon: "✈️", color: "peach", title: "Pressure Equalisation", text: "During flights or diving, yawn, swallow, or chew gum to equalise pressure and prevent barotrauma.", tags: ["Travel", "Pressure"] },
+        { icon: "🩺", color: "lavender", title: "Regular Hearing Tests", text: "Annual hearing checks after age 50 or after significant noise exposure catch deterioration early.", tags: ["Screening", "Aging"] }
+      ],
+      foods: [
+        { icon: "🐟", color: "peach", title: "Fatty Fish", text: "Omega-3 fatty acids improve blood flow to the cochlea's delicate hair cells, reducing age-related hearing loss risk by 42%.", tags: ["Omega-3", "Cochlea"] },
+        { icon: "🥦", color: "mint", title: "Broccoli & Greens", text: "Folate in leafy greens supports inner ear circulation and reduces homocysteine — linked to hearing deterioration.", tags: ["Folate", "Circulation"] },
+        { icon: "🍌", color: "peach", title: "Bananas & Potassium", text: "Potassium regulates inner ear fluid levels. Low potassium is directly associated with age-related hearing loss.", tags: ["Potassium", "Inner Ear"] },
+        { icon: "🌻", color: "lavender", title: "Sunflower Seeds", text: "High in magnesium which protects against noise-induced hearing damage by reducing free radical damage to cochlear cells.", tags: ["Magnesium", "Protection"] },
+        { icon: "🥚", color: "pink", title: "Eggs & Zinc", text: "Zinc boosts immunity against ear infections and supports the nervous system pathways that process sound signals.", tags: ["Zinc", "Immunity"] },
+        { icon: "🍊", color: "peach", title: "Citrus & Vitamin C", text: "Antioxidants in citrus protect the delicate hair cells in the cochlea from oxidative stress and noise damage.", tags: ["Vitamin C", "Antioxidants"] }
+      ],
+      exercises: [
+        { icon: "🧘", color: "lavender", title: "Jaw & Neck Stretches", text: "Tight jaw muscles (TMJ) and neck tension directly affect ear pressure and Eustachian tube function. Daily gentle jaw circles and neck rolls relieve referred ear pain and improve drainage.", tags: ["TMJ", "Eustachian", "Daily"] },
+        { icon: "🏃", color: "mint", title: "Aerobic Exercise", text: "Cardio improves cochlear blood flow — the inner ear is highly sensitive to circulation. 30 minutes of walking or swimming 5x weekly significantly reduces age-related hearing decline.", tags: ["Blood Flow", "Cochlea", "5x/week"] },
+        { icon: "🎵", color: "peach", title: "Auditory Training", text: "Listening exercises — like identifying sounds in nature or practising music — strengthen auditory processing pathways in the brain, improving sound discrimination and speech clarity.", tags: ["Auditory Processing", "Brain"] },
+        { icon: "⚖️", color: "pink", title: "Balance Training", text: "Since ears control balance, exercises like standing on one leg, tai chi, or yoga poses directly train the vestibular system — reducing fall risk and vertigo episodes.", tags: ["Vestibular", "Balance", "Vertigo"] }
+      ]
+    },
+
+    // ══════════════════════════════════════════════════
+    lung: {
+      name: "Lung Health",
+      category: "Pulmonology",
+      icon: "🫁",
+      color: "#34d399",
+      desc: "Your lungs process 11,000 litres of air daily. Clean air, strong breathing muscles, and avoiding toxins are the foundations of lifelong respiratory health.",
+      stats: [
+        { val: "11K L", lbl: "Air/Day" },
+        { val: "70m²", lbl: "Surface Area" },
+        { val: "500M", lbl: "Alveoli" }
+      ],
+      conditions: ["Asthma", "COPD", "Pneumonia", "Pulmonary Fibrosis", "Lung Cancer", "Bronchitis"],
+      warnings: ["Persistent cough", "Shortness of breath", "Wheezing", "Coughing up blood", "Chest tightness", "Chronic mucus production"],
+      risks: [
+        { label: "Smoking", pct: 90 },
+        { label: "Air Pollution", pct: 72 },
+        { label: "Dust/Chemicals", pct: 65 },
+        { label: "Infections", pct: 55 },
+        { label: "Genetics", pct: 40 }
+      ],
+      precautions: [
+        { icon: "🚭", color: "pink", title: "Never Smoke", text: "Smoking destroys alveoli permanently and causes 85% of lung cancers. Even second-hand smoke causes 7,000 lung cancer deaths annually.", tags: ["Smoking", "Cancer Prevention"] },
+        { icon: "😷", color: "lavender", title: "Wear Masks in Pollution", text: "PM2.5 particles penetrate deep into alveoli. N95 masks filter 95% of particles. Use during high AQI days.", tags: ["AQI", "PM2.5"] },
+        { icon: "🏠", color: "mint", title: "Indoor Air Quality", text: "Open windows daily. Use air purifiers in cities. Avoid synthetic fragrances, mould, and dust mites — all trigger inflammation.", tags: ["Indoor", "Air Quality"] },
+        { icon: "💉", color: "peach", title: "Vaccinations", text: "Annual flu and pneumonia vaccines prevent infections that cause lasting lung damage, especially in older adults.", tags: ["Flu", "Pneumonia"] },
+        { icon: "🧹", color: "pink", title: "Reduce Household Chemicals", text: "Cleaning sprays, paints, and pesticides emit VOCs that irritate airways. Use natural alternatives or ventilate well.", tags: ["VOCs", "Indoor Safety"] },
+        { icon: "🩺", color: "lavender", title: "Spirometry Screening", text: "Lung function tests detect early COPD and asthma before symptoms become severe. Especially important for ex-smokers.", tags: ["COPD", "Screening"] }
+      ],
+      foods: [
+        { icon: "🍎", color: "mint", title: "Apples", text: "Quercetin in apples reduces lung inflammation and oxidative stress. Eating 5+ apples per week is linked to better lung function.", tags: ["Quercetin", "Inflammation"] },
+        { icon: "🫚", color: "peach", title: "Olive Oil", text: "Anti-inflammatory oleocanthal reduces airway inflammation in asthma and COPD. Use extra virgin daily.", tags: ["Anti-inflammatory", "Asthma"] },
+        { icon: "🧄", color: "lavender", title: "Garlic & Onions", text: "Allicin and quercetin in garlic and onions have powerful anti-inflammatory effects on bronchial tissue.", tags: ["Allicin", "Bronchi"] },
+        { icon: "🫐", color: "pink", title: "Berries", text: "Anthocyanins in berries reduce lung cancer risk and protect against air pollution-induced oxidative damage.", tags: ["Anthocyanins", "Cancer Prevention"] },
+        { icon: "🥕", color: "peach", title: "Carrots & Beta-Carotene", text: "Beta-carotene reduces risk of developing asthma and protects lung tissue from toxic particle damage.", tags: ["Beta-Carotene", "Asthma"] },
+        { icon: "🍵", color: "mint", title: "Green Tea", text: "EGCG in green tea protects lung cells from cigarette smoke damage and reduces risk of lung cancer by 22%.", tags: ["EGCG", "Protection"] }
+      ],
+      exercises: [
+        { icon: "🌬️", color: "mint", title: "Diaphragmatic Breathing", text: "Belly breathing strengthens the diaphragm — your primary breathing muscle. Lie flat, place hand on abdomen, breathe in deeply through the nose expanding your belly, exhale slowly. 10 minutes daily increases lung capacity.", tags: ["Diaphragm", "Capacity", "Daily"] },
+        { icon: "🏊", color: "lavender", title: "Swimming", text: "Swimming is the best exercise for lung health — the humid air reduces airway irritation while the resistance of water strengthens all breathing muscles. Ideal for asthma sufferers.", tags: ["Asthma Friendly", "Resistance"] },
+        { icon: "🚶", color: "peach", title: "Pursed Lip Breathing Walk", text: "Inhale for 2 steps, exhale slowly through pursed lips for 4 steps. This slows breathing, keeps airways open longer, and dramatically improves oxygen exchange efficiency in COPD.", tags: ["COPD", "Efficiency"] },
+        { icon: "🎺", color: "pink", title: "Wind Instruments / Singing", text: "Playing trumpet, flute, or regular singing strengthens intercostal and diaphragmatic muscles, increases lung volume, and improves breath control measurably within weeks.", tags: ["Strength", "Lung Volume"] }
+      ]
+    },
+
+    // ══════════════════════════════════════════════════
+    liver: {
+      name: "Liver Health",
+      category: "Hepatology",
+      icon: "🫀",
+      color: "#a78bfa",
+      desc: "Your liver performs over 500 functions — filtering toxins, producing proteins, and regulating metabolism. It's the only organ that can regenerate, but only if you take care of it.",
+      stats: [
+        { val: "500+", lbl: "Functions" },
+        { val: "1.5kg", lbl: "Average Weight" },
+        { val: "1.4L", lbl: "Blood/Min" }
+      ],
+      conditions: ["Fatty Liver Disease", "Hepatitis B & C", "Cirrhosis", "Liver Cancer", "Gallstones", "Autoimmune Hepatitis"],
+      warnings: ["Yellowing skin/eyes (jaundice)", "Dark urine", "Abdominal swelling", "Chronic fatigue", "Pale stools", "Easy bruising"],
+      risks: [
+        { label: "Alcohol", pct: 82 },
+        { label: "Obesity", pct: 74 },
+        { label: "Diabetes", pct: 65 },
+        { label: "Hepatitis", pct: 70 },
+        { label: "Medications", pct: 45 }
+      ],
+      precautions: [
+        { icon: "🍺", color: "lavender", title: "Limit Alcohol", text: "Alcohol is the #1 cause of liver disease. Men: max 2 drinks/day. Women: max 1. Even moderate drinking causes fat accumulation.", tags: ["Alcohol", "Fatty Liver"] },
+        { icon: "💊", color: "pink", title: "Careful with Medications", text: "Paracetamol (acetaminophen) overdose is the #1 cause of acute liver failure. Never exceed recommended doses.", tags: ["Paracetamol", "Safety"] },
+        { icon: "💉", color: "mint", title: "Hepatitis Vaccination", text: "Vaccinate against Hepatitis A and B. Use protection during high-risk activities. Get tested if at risk for Hep C.", tags: ["Hepatitis", "Vaccination"] },
+        { icon: "⚖️", color: "peach", title: "Maintain Healthy Weight", text: "Obesity causes Non-Alcoholic Fatty Liver Disease (NAFLD) — now the most common liver condition globally. Even 5–10% weight loss reverses early NAFLD.", tags: ["NAFLD", "Weight"] },
+        { icon: "🧴", color: "lavender", title: "Avoid Toxins", text: "Limit exposure to pesticides, industrial chemicals, and aerosol sprays. These are processed by the liver and cause cumulative cell damage.", tags: ["Toxins", "Prevention"] },
+        { icon: "🩺", color: "mint", title: "Regular Blood Tests", text: "ALT, AST, and bilirubin blood tests detect liver inflammation early. Annual checks are recommended for anyone with risk factors.", tags: ["ALT", "AST", "Screening"] }
+      ],
+      foods: [
+        { icon: "☕", color: "lavender", title: "Coffee", text: "2–3 cups daily reduces cirrhosis risk by 44% and liver cancer by 40%. Chlorogenic acid and cafestol protect liver cells from inflammation.", tags: ["Cirrhosis", "Cancer Prevention"] },
+        { icon: "🥦", color: "mint", title: "Cruciferous Vegetables", text: "Broccoli, Brussels sprouts, and cauliflower boost glutathione — the liver's master antioxidant — and activate detox enzymes.", tags: ["Glutathione", "Detox"] },
+        { icon: "🫐", color: "pink", title: "Blueberries", text: "Regular blueberry consumption increases antioxidant enzymes in the liver by 20% and reduces fibrosis risk significantly.", tags: ["Antioxidants", "Fibrosis"] },
+        { icon: "🌰", color: "peach", title: "Walnuts", text: "High in arginine and glutathione which support the liver's natural detoxification of ammonia from the bloodstream.", tags: ["Arginine", "Detox"] },
+        { icon: "🫒", color: "lavender", title: "Olive Oil", text: "Reduces fat accumulation in liver cells and improves insulin sensitivity, directly addressing the root cause of NAFLD.", tags: ["NAFLD", "Insulin"] },
+        { icon: "🍵", color: "mint", title: "Green Tea", text: "EGCG catechins reduce liver fat, lower liver enzymes in blood tests, and protect against hepatitis-related damage.", tags: ["EGCG", "Enzymes"] }
+      ],
+      exercises: [
+        { icon: "🏃", color: "mint", title: "Aerobic Cardio", text: "150 minutes of moderate cardio weekly reduces liver fat by up to 48% in NAFLD patients — more effectively than most medications. Jogging, cycling, and swimming are ideal.", tags: ["NAFLD", "150min/week", "Fat Reduction"] },
+        { icon: "🏋️", color: "lavender", title: "Resistance Training", text: "Weightlifting 3x weekly improves insulin sensitivity and reduces visceral fat that drives fatty liver progression. Even bodyweight exercises show significant liver enzyme improvement.", tags: ["Insulin", "3x/week", "Enzymes"] },
+        { icon: "🧘", color: "peach", title: "Yoga & Twists", text: "Specific yoga twists (like seated spinal twist) compress and release abdominal organs, stimulating blood flow through the liver and promoting bile flow for better digestion.", tags: ["Bile Flow", "Stimulation"] },
+        { icon: "🚶", color: "pink", title: "Post-Meal Walking", text: "A 15-minute walk after meals reduces postprandial blood sugar spikes — cutting the insulin surges that drive fat storage in liver cells over time.", tags: ["Blood Sugar", "Insulin", "Prevention"] }
+      ]
+    },
+
+    // ══════════════════════════════════════════════════
+    kidney: {
+      name: "Kidney Health",
+      category: "Nephrology",
+      icon: "🫘",
+      color: "#f472b6",
+      desc: "Your kidneys filter 200 litres of blood daily, removing waste and balancing fluids. Silent damage accumulates for years — prevention is far easier than treatment.",
+      stats: [
+        { val: "200L", lbl: "Blood Filtered/Day" },
+        { val: "1M+", lbl: "Nephrons Each" },
+        { val: "99%", lbl: "Water Reabsorbed" }
+      ],
+      conditions: ["Chronic Kidney Disease", "Kidney Stones", "UTI", "Polycystic Kidney Disease", "Glomerulonephritis", "Diabetic Nephropathy"],
+      warnings: ["Swollen ankles and feet", "Foamy urine", "Blood in urine", "Frequent urination at night", "Persistent fatigue", "Decreased appetite"],
+      risks: [
+        { label: "Diabetes", pct: 78 },
+        { label: "High BP", pct: 75 },
+        { label: "Dehydration", pct: 60 },
+        { label: "NSAIDs Overuse", pct: 55 },
+        { label: "Smoking", pct: 50 }
+      ],
+      precautions: [
+        { icon: "💧", color: "mint", title: "Stay Well Hydrated", text: "Drink 2–3 litres of water daily. Adequate hydration prevents kidney stones and helps kidneys efficiently flush toxins.", tags: ["Hydration", "Stones"] },
+        { icon: "🧂", color: "pink", title: "Reduce Salt Intake", text: "High sodium raises blood pressure damaging kidney blood vessels. Keep under 2300mg daily. Avoid processed foods.", tags: ["Sodium", "BP"] },
+        { icon: "💊", color: "lavender", title: "Avoid NSAID Overuse", text: "Regular ibuprofen and naproxen use constricts kidney blood vessels. Use paracetamol instead for chronic pain.", tags: ["NSAIDs", "Safety"] },
+        { icon: "🩺", color: "peach", title: "Monitor Blood Pressure", text: "High BP is the second leading cause of kidney failure. Keep below 130/80 mmHg with diet, exercise, and medication if needed.", tags: ["BP", "Prevention"] },
+        { icon: "🩸", color: "mint", title: "Control Blood Sugar", text: "Diabetic nephropathy accounts for 40% of kidney failure cases. Tight glucose control dramatically slows kidney damage progression.", tags: ["Diabetes", "Glucose"] },
+        { icon: "🚭", color: "lavender", title: "Stop Smoking", text: "Smoking reduces blood flow to kidneys, worsens proteinuria, and doubles the rate of kidney function decline in CKD patients.", tags: ["Smoking", "CKD"] }
+      ],
+      foods: [
+        { icon: "🫐", color: "lavender", title: "Blueberries", text: "Low in potassium and phosphorus — safe for kidney patients — while providing antioxidants that reduce kidney inflammation.", tags: ["Low Potassium", "Antioxidants"] },
+        { icon: "🥬", color: "mint", title: "Cabbage", text: "High in phytochemicals that break down free radicals. Low in potassium makes it ideal for kidney patients on restricted diets.", tags: ["Phytochemicals", "Kidney Diet"] },
+        { icon: "🧄", color: "peach", title: "Garlic", text: "Natural anti-inflammatory that reduces kidney inflammation. A healthy flavourful salt substitute for those restricting sodium.", tags: ["Anti-inflammatory", "Salt Alternative"] },
+        { icon: "🫒", color: "lavender", title: "Olive Oil", text: "Low in phosphorus and a healthy fat source. Oleic acid reduces inflammation in kidney tubules and supports cardiovascular health.", tags: ["Low Phosphorus", "Oleic Acid"] },
+        { icon: "🍓", color: "pink", title: "Strawberries", text: "Rich in antioxidants and anti-inflammatory compounds with low potassium and phosphorus — perfect for kidney health.", tags: ["Low Potassium", "Anti-inflammatory"] },
+        { icon: "🥚", color: "peach", title: "Egg Whites", text: "Pure high-quality protein with less phosphorus than egg yolks — ideal protein source for kidney patients needing to limit phosphorus.", tags: ["Protein", "Low Phosphorus"] }
+      ],
+      exercises: [
+        { icon: "🚶", color: "mint", title: "Regular Walking", text: "30 minutes of brisk walking daily reduces kidney disease progression by 21% and lowers blood pressure naturally. Walking is the safest exercise even in advanced kidney disease stages.", tags: ["Daily", "BP", "CKD Safe"] },
+        { icon: "🏊", color: "lavender", title: "Water Aerobics", text: "Low-impact and joint-friendly — ideal for kidney patients who often have joint pain. Water exercise reduces blood pressure and improves cardiovascular health without stressing weakened kidneys.", tags: ["Low Impact", "Joint Friendly"] },
+        { icon: "🧘", color: "peach", title: "Gentle Yoga", text: "Reduces stress hormones that constrict kidney blood vessels. Forward bends and supine twists gently massage kidney tissue and improve renal circulation.", tags: ["Stress", "Circulation"] },
+        { icon: "🚴", color: "pink", title: "Stationary Cycling", text: "Improves insulin sensitivity and lowers blood pressure — two major drivers of kidney damage. Safe for all stages of CKD with zero impact on joints.", tags: ["Insulin", "CKD", "Zero Impact"] }
+      ]
+    },
+
+    // ══════════════════════════════════════════════════
+    skin: {
+      name: "Skin Health",
+      category: "Dermatology",
+      icon: "🧴",
+      color: "#fb7185",
+      desc: "Your skin is your body's largest organ — a dynamic barrier, temperature regulator, and immune defender. What you eat, how you sleep, and your sun habits shape your skin for life.",
+      stats: [
+        { val: "2m²", lbl: "Total Area" },
+        { val: "3.6kg", lbl: "Average Weight" },
+        { val: "28d", lbl: "Cell Renewal Cycle" }
+      ],
+      conditions: ["Acne", "Eczema", "Psoriasis", "Rosacea", "Skin Cancer", "Vitiligo"],
+      warnings: ["New or changing moles", "Persistent rash", "Excessive dryness or oiliness", "Skin thickening", "Non-healing wounds", "Unusual pigmentation"],
+      risks: [
+        { label: "UV Exposure", pct: 85 },
+        { label: "Poor Diet", pct: 65 },
+        { label: "Stress", pct: 70 },
+        { label: "Dehydration", pct: 60 },
+        { label: "Smoking", pct: 55 }
+      ],
+      precautions: [
+        { icon: "☀️", color: "peach", title: "Daily SPF 30+", text: "UV radiation causes 90% of visible skin aging and is the #1 cause of skin cancer. Apply sunscreen every morning — even on cloudy days.", tags: ["SPF", "UV", "Cancer Prevention"] },
+        { icon: "💧", color: "mint", title: "Moisturise Daily", text: "Intact skin barrier prevents allergen penetration and water loss. Apply moisturiser within 3 minutes of showering on damp skin for maximum absorption.", tags: ["Barrier", "Hydration"] },
+        { icon: "🚿", color: "lavender", title: "Gentle Cleansing", text: "Hot water and harsh soaps strip natural oils. Use lukewarm water and pH-balanced cleansers to maintain the skin's protective acid mantle.", tags: ["pH Balance", "Cleansing"] },
+        { icon: "😴", color: "pink", title: "Sleep & Skin Repair", text: "Skin cell regeneration peaks between 11pm–2am. Chronic sleep deprivation increases cortisol, worsening acne, eczema, and psoriasis.", tags: ["Sleep", "Repair", "Cortisol"] },
+        { icon: "🧪", color: "peach", title: "Patch Test New Products", text: "Always patch test on inner arm 48 hours before full use. Contact dermatitis and allergic reactions are preventable with this simple step.", tags: ["Allergies", "Safety"] },
+        { icon: "🩺", color: "lavender", title: "Annual Skin Check", text: "A dermatologist's full-body scan detects melanoma and basal cell carcinoma early when survival rates are near 100%.", tags: ["Melanoma", "Screening"] }
+      ],
+      foods: [
+        { icon: "🫐", color: "lavender", title: "Berries", text: "Vitamin C in berries is essential for collagen synthesis. Without it, skin loses elasticity. Antioxidants also protect against UV-induced DNA damage.", tags: ["Vitamin C", "Collagen"] },
+        { icon: "🥑", color: "mint", title: "Avocado", text: "Healthy monounsaturated fats keep cell membranes supple and maintain moisture levels. Vitamin E prevents oxidative skin damage.", tags: ["Vitamin E", "Moisture"] },
+        { icon: "🍅", color: "pink", title: "Tomatoes", text: "Lycopene provides natural sun protection from within — raising skin's SPF by up to 33%. Cook tomatoes to maximise lycopene absorption.", tags: ["Lycopene", "Sun Protection"] },
+        { icon: "🐟", color: "peach", title: "Salmon", text: "Omega-3 reduces skin inflammation, manages acne, and strengthens the lipid barrier that keeps skin hydrated and protected.", tags: ["Omega-3", "Acne", "Barrier"] },
+        { icon: "🥜", color: "lavender", title: "Walnuts", text: "Contain both omega-3 and omega-6 in ideal ratio for skin — plus zinc which regulates sebum production and reduces inflammatory acne.", tags: ["Zinc", "Sebum", "Acne"] },
+        { icon: "🍵", color: "mint", title: "Green Tea", text: "EGCG reduces sebum production, fights acne bacteria, and has measurable UV-protective effects when consumed regularly.", tags: ["EGCG", "Acne", "UV"] }
+      ],
+      exercises: [
+        { icon: "🏃", color: "pink", title: "Cardio for Glow", text: "Aerobic exercise increases blood flow delivering oxygen and nutrients to skin cells while flushing out waste products. This 'exercise glow' becomes permanent with consistency — skin thickens and collagen increases by up to 25% over 3 months.", tags: ["Blood Flow", "Collagen", "Glow"] },
+        { icon: "🧘", color: "lavender", title: "Stress Reduction Yoga", text: "Cortisol from stress triggers acne, eczema flares, and psoriasis. Yoga and meditation lower cortisol by 20% — visibly improving inflammatory skin conditions within weeks.", tags: ["Cortisol", "Acne", "Eczema"] },
+        { icon: "🏋️", color: "peach", title: "Resistance Training", text: "Strength training boosts growth hormone and IGF-1 which stimulate collagen and elastin production — the proteins responsible for firm, youthful skin structure.", tags: ["Collagen", "Elastin", "Anti-aging"] },
+        { icon: "😴", color: "mint", title: "Sleep Hygiene Routine", text: "Establish a consistent sleep schedule. Use silk pillowcases to reduce friction. Sleep on your back when possible to prevent sleep lines from becoming permanent wrinkles.", tags: ["Sleep Lines", "Repair", "Anti-aging"] }
+      ]
+    },
+
+    // ══════════════════════════════════════════════════
+    bone: {
+      name: "Bone & Joint Health",
+      category: "Orthopaedics",
+      icon: "🦴",
+      color: "#94a3b8",
+      desc: "Bones are living tissue that peak in density at age 30 and decline thereafter. The habits you build now determine whether you walk tall and pain-free for life.",
+      stats: [
+        { val: "206", lbl: "Bones in Body" },
+        { val: "30yrs", lbl: "Peak Bone Mass" },
+        { val: "10%", lbl: "Replaced Yearly" }
+      ],
+      conditions: ["Osteoporosis", "Osteoarthritis", "Rheumatoid Arthritis", "Gout", "Scoliosis", "Stress Fractures"],
+      warnings: ["Back or joint pain", "Height loss over time", "Bone fracture from minor injury", "Joint stiffness in morning", "Swollen or hot joints", "Muscle weakness"],
+      risks: [
+        { label: "Low Calcium", pct: 75 },
+        { label: "Vitamin D Deficiency", pct: 78 },
+        { label: "Inactivity", pct: 70 },
+        { label: "Smoking", pct: 55 },
+        { label: "Aging", pct: 68 }
+      ],
+      precautions: [
+        { icon: "☀️", color: "peach", title: "Get Vitamin D Daily", text: "20 minutes of midday sun exposure produces 10,000 IU of Vitamin D — essential for calcium absorption. Deficiency affects 70% of urban populations.", tags: ["Vitamin D", "Calcium Absorption"] },
+        { icon: "🚭", color: "pink", title: "Stop Smoking", text: "Smoking reduces blood supply to bones, impairs calcium absorption, and accelerates bone density loss by up to 2% per year.", tags: ["Smoking", "Density"] },
+        { icon: "⚖️", color: "lavender", title: "Healthy Body Weight", text: "Both underweight and obesity harm bones differently. Underweight causes loss; excess weight strains joints. Maintain a BMI of 18.5–24.9.", tags: ["BMI", "Joints"] },
+        { icon: "🧘", color: "mint", title: "Fall Prevention", text: "Most osteoporosis fractures happen from falls. Practice balance exercises and remove home hazards — rugs, poor lighting — to prevent the falls that break brittle bones.", tags: ["Falls", "Osteoporosis"] },
+        { icon: "💊", color: "peach", title: "Calcium Supplementation", text: "If diet falls short (under 1000mg/day), supplement with calcium citrate — better absorbed than carbonate, especially with lower stomach acid.", tags: ["Calcium", "Supplement"] },
+        { icon: "🩺", color: "lavender", title: "DEXA Bone Scan", text: "Women over 65 and men over 70 should have DEXA scans to detect osteoporosis before the first fracture occurs.", tags: ["DEXA", "Screening"] }
+      ],
+      foods: [
+        { icon: "🥛", color: "lavender", title: "Dairy & Fortified Milk", text: "Calcium and phosphorus in dairy are the building blocks of hydroxyapatite — the mineral crystal that makes bone hard and strong.", tags: ["Calcium", "Phosphorus"] },
+        { icon: "🥬", color: "mint", title: "Kale & Bok Choy", text: "Excellent non-dairy calcium sources with high bioavailability. Also contain Vitamin K2 which directs calcium into bones rather than arteries.", tags: ["Vitamin K2", "Calcium"] },
+        { icon: "🐟", color: "peach", title: "Canned Salmon with Bones", text: "Eating the soft bones provides highly bioavailable calcium plus omega-3 which reduces bone-destroying inflammatory markers.", tags: ["Calcium", "Omega-3"] },
+        { icon: "🌰", color: "lavender", title: "Almonds", text: "High in calcium, magnesium, and phosphorus. Magnesium is critical for converting Vitamin D to its active bone-building form.", tags: ["Magnesium", "Vitamin D Activation"] },
+        { icon: "🫘", color: "pink", title: "Beans & Legumes", text: "Rich in calcium, magnesium, and zinc — all essential bone minerals. Also contain phytate which mildly reduces absorption, so soak beans before cooking.", tags: ["Zinc", "Magnesium"] },
+        { icon: "🥚", color: "peach", title: "Egg Yolks", text: "One of the few food sources of Vitamin D3. Also contain Vitamin K2 which activates osteocalcin protein to bind calcium into bone matrix.", tags: ["Vitamin D3", "K2", "Osteocalcin"] }
+      ],
+      exercises: [
+        { icon: "🏋️", color: "peach", title: "Weight-Bearing Strength Training", text: "Resistance exercises create mechanical stress on bones, signalling osteoblasts to build new bone tissue. Studies show 3x weekly strength training increases bone density by 1–3% per year — reversing age-related loss.", tags: ["Osteoblasts", "3x/week", "Density"] },
+        { icon: "🎾", color: "lavender", title: "High-Impact Sports", text: "Tennis, basketball, volleyball, and skipping create impact forces that stimulate bone remodelling far more than walking. Peak bone-building effect happens before age 30 but remains beneficial at any age.", tags: ["Impact", "Remodelling"] },
+        { icon: "⚖️", color: "mint", title: "Balance & Stability", text: "Single-leg stands, balance boards, and tai chi improve proprioception and coordination — directly reducing fall risk. Practice 10 minutes daily: stand on one leg while brushing teeth.", tags: ["Proprioception", "Falls", "Daily"] },
+        { icon: "🧘", color: "pink", title: "Yoga for Bones", text: "Weight-bearing yoga poses — Warrior, Tree, Triangle — build bone density in hips and spine while improving the flexibility needed to catch yourself if you stumble.", tags: ["Hip Density", "Spine", "Flexibility"] }
+      ]
+    },
+
+    // ══════════════════════════════════════════════════
+    mental: {
+      name: "Mental Health",
+      category: "Psychiatry & Psychology",
+      icon: "🧠",
+      color: "#818cf8",
+      desc: "Mental health is the foundation everything else is built on. Addressing it proactively — not just in crisis — transforms every area of life including physical health, relationships, and purpose.",
+      stats: [
+        { val: "1 in 4", lbl: "Affected Globally" },
+        { val: "75%", lbl: "Cases Start by 24" },
+        { val: "40%", lbl: "Undertreated" }
+      ],
+      conditions: ["Depression", "Anxiety Disorders", "Bipolar Disorder", "PTSD", "OCD", "Burnout Syndrome"],
+      warnings: ["Persistent sadness or emptiness", "Excessive worry", "Sleep disturbances", "Social withdrawal", "Loss of interest in activities", "Difficulty concentrating"],
+      risks: [
+        { label: "Chronic Stress", pct: 82 },
+        { label: "Social Isolation", pct: 75 },
+        { label: "Poor Sleep", pct: 78 },
+        { label: "Trauma History", pct: 65 },
+        { label: "Sedentary Lifestyle", pct: 60 }
+      ],
+      precautions: [
+        { icon: "💬", color: "lavender", title: "Talk About It", text: "Sharing struggles with a trusted person reduces the amygdala's stress response measurably. Therapy is not a last resort — it is a powerful first-line tool.", tags: ["Therapy", "Connection"] },
+        { icon: "📵", color: "pink", title: "Limit Social Media", text: "More than 2 hours daily of social media is linked to 66% increased risk of depression in young adults. Set screen time limits and take weekly breaks.", tags: ["Screen Time", "Depression"] },
+        { icon: "📅", color: "mint", title: "Create Structure & Routine", text: "Predictable daily routines reduce the mental load of decision-making and give the brain a sense of safety — particularly powerful for anxiety and depression.", tags: ["Routine", "Anxiety"] },
+        { icon: "🌿", color: "peach", title: "Spend Time in Nature", text: "Just 20 minutes in a natural setting measurably lowers cortisol. Forest environments reduce rumination — the repetitive negative thinking that drives depression.", tags: ["Cortisol", "Rumination"] },
+        { icon: "🙏", color: "lavender", title: "Gratitude Practice", text: "Writing 3 specific things you're grateful for daily for 3 weeks creates lasting positive changes in neural pathways, increasing happiness scores by 25%.", tags: ["Gratitude", "Neuroplasticity"] },
+        { icon: "🆘", color: "pink", title: "Know When to Seek Help", text: "If symptoms persist over 2 weeks or affect daily functioning, see a professional. Mental health conditions respond well to early treatment — waiting makes them harder to treat.", tags: ["Professional Help", "Early Treatment"] }
+      ],
+      foods: [
+        { icon: "🐟", color: "lavender", title: "Fatty Fish", text: "Omega-3 EPA and DHA are building blocks of brain cell membranes. Low omega-3 is strongly linked to depression — supplementation reduces symptoms by 50% in clinical trials.", tags: ["Omega-3", "EPA", "Depression"] },
+        { icon: "🍫", color: "pink", title: "Dark Chocolate", text: "Triggers endorphin and serotonin release. Flavanols improve cerebral blood flow. Even 40g daily measurably improves mood and reduces stress hormones.", tags: ["Serotonin", "Endorphins", "Mood"] },
+        { icon: "🫐", color: "mint", title: "Berries", text: "Flavonoids cross the blood-brain barrier and accumulate in areas associated with memory and learning, improving mood and cognitive function.", tags: ["Flavonoids", "Mood", "Cognition"] },
+        { icon: "🥜", color: "peach", title: "Nuts & Seeds", text: "Tryptophan in nuts is the amino acid precursor to serotonin. Magnesium deficiency is found in 60% of depression cases — nuts are an excellent source.", tags: ["Tryptophan", "Serotonin", "Magnesium"] },
+        { icon: "🥬", color: "lavender", title: "Leafy Greens", text: "Folate in spinach and kale is essential for producing serotonin and dopamine. Low folate is found in 30–40% of depressed patients.", tags: ["Folate", "Serotonin", "Dopamine"] },
+        { icon: "🍵", color: "mint", title: "Green Tea L-Theanine", text: "L-theanine promotes alpha brain waves — a calm, focused mental state. Reduces anxiety without drowsiness. Synergistic with caffeine for sustained focus.", tags: ["L-Theanine", "Alpha Waves", "Anxiety"] }
+      ],
+      exercises: [
+        { icon: "🏃", color: "lavender", title: "Running / Cardio", text: "Aerobic exercise is as effective as antidepressants for mild-moderate depression in multiple clinical trials. 30 minutes releases BDNF, endorphins, serotonin, and dopamine simultaneously — a natural antidepressant cocktail.", tags: ["BDNF", "Endorphins", "Depression"] },
+        { icon: "🧘", color: "mint", title: "Mindfulness Meditation", text: "8 weeks of daily 20-minute meditation measurably increases grey matter in the prefrontal cortex (decision-making) and shrinks the amygdala (fear response). Changes persist years after the practice.", tags: ["Grey Matter", "Amygdala", "Anxiety"] },
+        { icon: "📓", color: "pink", title: "Expressive Journaling", text: "Writing about thoughts and feelings for 20 minutes 3x weekly reduces intrusive thoughts, improves working memory, and has lasting positive effects on depression and PTSD symptoms.", tags: ["PTSD", "Intrusive Thoughts", "3x/week"] },
+        { icon: "🤝", color: "peach", title: "Group Activities", text: "Social exercise — team sports, group fitness, dance classes — combines physical activity with social connection, doubling the mental health benefits of solo exercise. Loneliness is as harmful to health as smoking 15 cigarettes daily.", tags: ["Social Connection", "Loneliness", "Community"] }
+      ]
+    },
+
+    // ══════════════════════════════════════════════════
+    digestive: {
+      name: "Digestive Health",
+      category: "Gastroenterology",
+      icon: "🫃",
+      color: "#fbbf24",
+      desc: "Your gut is your second brain — home to 70% of your immune system and trillions of bacteria that influence mood, energy, and disease risk far beyond digestion alone.",
+      stats: [
+        { val: "9m", lbl: "GI Tract Length" },
+        { val: "38T", lbl: "Gut Bacteria" },
+        { val: "70%", lbl: "Immune System Here" }
+      ],
+      conditions: ["IBS", "GERD / Acid Reflux", "Crohn's Disease", "Ulcerative Colitis", "Celiac Disease", "Colorectal Cancer"],
+      warnings: ["Persistent bloating", "Chronic diarrhoea or constipation", "Blood in stool", "Unexplained weight loss", "Heartburn regularly", "Abdominal pain after eating"],
+      risks: [
+        { label: "Poor Diet", pct: 82 },
+        { label: "Stress", pct: 74 },
+        { label: "Antibiotics Overuse", pct: 60 },
+        { label: "Sedentary Life", pct: 65 },
+        { label: "Smoking", pct: 50 }
+      ],
+      precautions: [
+        { icon: "🌾", color: "peach", title: "High Fibre Diet", text: "Fibre feeds beneficial gut bacteria and reduces colorectal cancer risk by 40%. Aim for 30g daily from whole grains, legumes, fruits, and vegetables.", tags: ["Fibre", "Microbiome", "Cancer Prevention"] },
+        { icon: "💧", color: "mint", title: "Hydrate for Motility", text: "Water is essential for fibre to work properly. Inadequate fluid causes constipation and toxin build-up. Drink water between meals rather than with food for optimal digestion.", tags: ["Constipation", "Hydration"] },
+        { icon: "🍽️", color: "lavender", title: "Eat Mindfully & Slowly", text: "Digestion begins in the mouth. Chewing thoroughly activates digestive enzymes and reduces the volume eaten before fullness signals reach the brain (20-minute delay).", tags: ["Mindful Eating", "Enzymes"] },
+        { icon: "⏰", color: "pink", title: "Consistent Meal Times", text: "The digestive system has its own circadian rhythm. Irregular eating disrupts gut motility, increases bloating, and alters microbiome composition.", tags: ["Circadian", "Microbiome"] },
+        { icon: "💊", color: "peach", title: "Careful Antibiotic Use", text: "A single course of antibiotics can disrupt gut microbiome diversity for up to 12 months. Only use when prescribed. Always follow with probiotics.", tags: ["Antibiotics", "Probiotics"] },
+        { icon: "🩺", color: "lavender", title: "Colonoscopy After 45", text: "Colorectal cancer is the 2nd leading cancer killer but 90% preventable with early detection. Colonoscopy every 10 years from age 45.", tags: ["Colonoscopy", "Colorectal Cancer"] }
+      ],
+      foods: [
+        { icon: "🥛", color: "lavender", title: "Yoghurt & Kefir", text: "Live cultures including Lactobacillus and Bifidobacterium restore gut microbiome diversity, improve IBS symptoms, and reduce intestinal inflammation.", tags: ["Probiotics", "IBS", "Lactobacillus"] },
+        { icon: "🧅", color: "peach", title: "Garlic, Onion & Leeks", text: "Inulin — a prebiotic fibre in these vegetables — selectively feeds beneficial Bifidobacterium, which produces short-chain fatty acids that repair intestinal lining.", tags: ["Inulin", "Prebiotics", "Bifidobacterium"] },
+        { icon: "🍌", color: "mint", title: "Bananas", text: "Contain resistant starch (especially when slightly unripe) which acts as a prebiotic — feeding good bacteria while improving bowel regularity.", tags: ["Resistant Starch", "Prebiotics", "Regularity"] },
+        { icon: "🥣", color: "pink", title: "Oats", text: "Beta-glucan in oats feeds Lactobacillus and Bifidobacterium. Reduces intestinal permeability (leaky gut) and lowers cholesterol simultaneously.", tags: ["Beta-glucan", "Leaky Gut"] },
+        { icon: "🫚", color: "peach", title: "Olive Oil", text: "Polyphenols in olive oil act as prebiotics — increasing Bifidobacterium by 300% in studies. Also lubricates intestinal walls reducing constipation.", tags: ["Polyphenols", "Constipation"] },
+        { icon: "🥦", color: "lavender", title: "Cruciferous Vegetables", text: "Glucosinolates in broccoli and cabbage reduce colorectal cancer risk and feed sulphur-metabolising gut bacteria essential for intestinal health.", tags: ["Glucosinolates", "Cancer Prevention"] }
+      ],
+      exercises: [
+        { icon: "🚶", color: "peach", title: "Walking After Meals", text: "A 15–20 minute gentle walk after eating reduces gastric emptying time by 30%, relieves bloating, and prevents blood sugar spikes that cause insulin resistance over time. One of the highest-impact low-effort health habits.", tags: ["Gastric Emptying", "Blood Sugar", "Bloating"] },
+        { icon: "🧘", color: "lavender", title: "Yoga Twists & Forward Bends", text: "Specific poses compress and massage abdominal organs, stimulating peristalsis and bile flow. Wind-relieving pose, seated twist, and child's pose are clinically shown to reduce IBS symptoms.", tags: ["IBS", "Peristalsis", "Bile"] },
+        { icon: "🏃", color: "mint", title: "Aerobic Exercise", text: "Regular cardio increases gut microbiome diversity independent of diet. Athletes have significantly more diverse microbiomes than sedentary people — linked to lower inflammation and better immunity.", tags: ["Microbiome Diversity", "Immunity"] },
+        { icon: "😮‍💨", color: "pink", title: "Diaphragmatic Breathing", text: "Deep belly breathing activates the vagus nerve — the direct communication highway between brain and gut. Stimulating the vagus nerve reduces gut inflammation, improves motility, and calms IBS flares.", tags: ["Vagus Nerve", "IBS", "Brain-Gut Axis"] }
+      ]
+    },
+
+    // ══════════════════════════════════════════════════
+    immunity: {
+      name: "Immune Health",
+      category: "Immunology",
+      icon: "🛡️",
+      color: "#4ade80",
+      desc: "Your immune system is a complex network of cells, tissues, and organs fighting constantly on your behalf. Strengthen it through sleep, nutrition, and lifestyle — not just supplements.",
+      stats: [
+        { val: "37T", lbl: "Immune Cells" },
+        { val: "70%", lbl: "In the Gut" },
+        { val: "7s", lbl: "NK Cell Kill Time" }
+      ],
+      conditions: ["Autoimmune Diseases", "Allergies", "Recurrent Infections", "Immunodeficiency", "Chronic Inflammation", "HIV/AIDS"],
+      warnings: ["Frequent colds and infections", "Slow wound healing", "Persistent fatigue", "Recurring skin infections", "Digestive problems", "Delayed recovery from illness"],
+      risks: [
+        { label: "Poor Sleep", pct: 80 },
+        { label: "Chronic Stress", pct: 78 },
+        { label: "Poor Nutrition", pct: 75 },
+        { label: "Sedentary Life", pct: 65 },
+        { label: "Smoking", pct: 70 }
+      ],
+      precautions: [
+        { icon: "😴", color: "lavender", title: "Prioritise 8 Hours Sleep", text: "Sleep deprivation reduces natural killer cells by 70% in a single night. T-cell function and cytokine production — cornerstones of immune response — are both severely impaired by poor sleep.", tags: ["NK Cells", "T-Cells", "Recovery"] },
+        { icon: "🧼", color: "mint", title: "Hand Hygiene", text: "Handwashing with soap for 20 seconds is more effective than any supplement at preventing infection transmission. Do it before eating and after touching public surfaces.", tags: ["Infection Prevention", "Hygiene"] },
+        { icon: "💉", color: "peach", title: "Keep Vaccinations Current", text: "Vaccines train the immune system to recognise pathogens without the risks of actual infection. Annual flu vaccines alone prevent 40,000 deaths annually in the US.", tags: ["Vaccines", "Prevention"] },
+        { icon: "🌿", color: "pink", title: "Reduce Chronic Stress", text: "Prolonged cortisol exposure suppresses lymphocyte production and reduces IgA antibodies in mucosal surfaces — your first immune line of defence.", tags: ["Cortisol", "Lymphocytes", "IgA"] },
+        { icon: "🚭", color: "lavender", title: "No Smoking", text: "Smoking paralyses cilia in airways — the mechanical sweepers that remove pathogens before infection. Smokers take 3x longer to recover from respiratory infections.", tags: ["Cilia", "Respiratory"] },
+        { icon: "☀️", color: "peach", title: "Vitamin D Optimisation", text: "Vitamin D receptors exist on nearly every immune cell. Deficiency (below 30ng/mL) is found in 80% of patients hospitalised for severe respiratory infections.", tags: ["Vitamin D", "Respiratory"] }
+      ],
+      foods: [
+        { icon: "🧄", color: "mint", title: "Garlic", text: "Allicin activates macrophages and natural killer cells within hours of consumption. 2–3 raw cloves daily reduces cold frequency by 63% and duration by 70%.", tags: ["Allicin", "Macrophages", "NK Cells"] },
+        { icon: "🫚", color: "lavender", title: "Ginger", text: "Gingerols and shogaols have potent anti-inflammatory and antimicrobial properties. Fresh ginger reduces pro-inflammatory cytokines that drive chronic low-grade inflammation.", tags: ["Gingerols", "Anti-inflammatory"] },
+        { icon: "🍊", color: "peach", title: "Citrus Fruits", text: "Vitamin C stimulates production of white blood cells. The human body cannot produce or store it — daily consumption is essential for sustained immune function.", tags: ["Vitamin C", "White Blood Cells"] },
+        { icon: "🫐", color: "pink", title: "Elderberries", text: "Clinically shown to reduce cold duration by 2 days and flu duration by 4 days. Flavonoids prevent virus adhesion to cell walls, blocking infection entry.", tags: ["Antiviral", "Flavonoids"] },
+        { icon: "🥛", color: "lavender", title: "Probiotic Yoghurt", text: "Since 70% of immune cells reside in the gut, microbiome diversity directly determines immune responsiveness. Daily probiotics increase secretory IgA and reduce respiratory infection rates.", tags: ["Probiotics", "IgA", "Microbiome"] },
+        { icon: "🍵", color: "mint", title: "Green Tea", text: "EGCG enhances T-regulatory cell function, reducing autoimmune flares. L-theanine boosts gamma-delta T-cell production — frontline fighters against infection.", tags: ["EGCG", "T-Cells", "Autoimmune"] }
+      ],
+      exercises: [
+        { icon: "🚶", color: "mint", title: "Moderate Daily Movement", text: "30–60 minutes of moderate exercise daily increases circulating natural killer cells by 50% and improves vaccine response. Critically: over-exercise (elite training) suppresses immunity — moderation is the key.", tags: ["NK Cells", "Moderation", "Vaccine Response"] },
+        { icon: "🧘", color: "lavender", title: "Stress-Reducing Exercise", text: "Mind-body practices reduce cortisol and increase DHEA — the anti-stress hormone that supports immune cell proliferation. Even 10 minutes of deep breathing measurably boosts salivary IgA.", tags: ["Cortisol", "DHEA", "IgA"] },
+        { icon: "😴", color: "peach", title: "Recovery & Rest Days", text: "Scheduled rest is not weakness — it is when immune repair and cytokine regulation occur. Overtraining syndrome causes months of immune suppression and susceptibility to infections.", tags: ["Recovery", "Overtraining", "Cytokines"] },
+        { icon: "❄️", color: "pink", title: "Cold Exposure", text: "Brief cold showers (2–3 minutes at 15°C) increase norepinephrine by 300% and double NK cell count within an hour. Wim Hof Method breathing combined with cold exposure shows measurable immune upregulation.", tags: ["Cold Shower", "NK Cells", "Norepinephrine"] }
+      ]
+    }
+
+  };
+
+  // ══════════════════════════════════════════════════
+  //   PARSE URL PARAM & POPULATE PAGE
+  // ══════════════════════════════════════════════════
+  function getTopicFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('topic') || 'brain';
+  }
+
+  function populatePage(topicKey) {
+    const data = TOPICS[topicKey] || TOPICS['brain'];
+
+    // Page title
+    document.title = `AroMi — ${data.name}`;
+
+    // Hero
+    document.getElementById('topicBadge').style.background =
+      `linear-gradient(135deg, ${data.color}22, ${data.color}11)`;
+    document.getElementById('topicBadge').style.borderColor = `${data.color}44`;
+    document.getElementById('topicIconLg').textContent = data.icon;
+    document.getElementById('topicCategory').textContent = data.category;
+    document.getElementById('heroTitle').textContent = data.name;
+    document.getElementById('heroDesc').textContent = data.desc;
+
+    // Stats
+    const statsEl = document.getElementById('heroStats');
+    statsEl.innerHTML = data.stats.map(s => `
+      <div class="stat-chip">
+        <div class="val">${s.val}</div>
+        <div class="lbl">${s.lbl}</div>
+      </div>
+    `).join('');
+
+    // Conditions & Warnings
+    document.getElementById('conditionsList').innerHTML =
+      data.conditions.map(c => `<li>${c}</li>`).join('');
+    document.getElementById('warningsList').innerHTML =
+      data.warnings.map(w => `<li>${w}</li>`).join('');
+
+    // Risk meters
+    document.getElementById('meterRows').innerHTML = data.risks.map(r => `
+      <div class="meter-row">
+        <span class="meter-label">${r.label}</span>
+        <div class="meter-bar">
+          <div class="meter-fill" data-pct="${r.pct}" style="width:0%"></div>
+        </div>
+        <span class="meter-val">${r.pct}%</span>
+      </div>
+    `).join('');
+
+    // Precautions
+    document.getElementById('precautionsGrid').innerHTML =
+      data.precautions.map((p, i) => `
+        <div class="glass-card" style="transition-delay:${i * 0.08}s">
+          <div class="card-icon ${p.color}">${p.icon}</div>
+          <div class="card-title">${p.title}</div>
+          <div class="card-text">${p.text}</div>
+          <div class="card-tags">
+            ${p.tags.map((t,ti) => `<span class="tag ${['pink','lavender','mint','peach'][ti%4]}">${t}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+
+    // Foods
+    document.getElementById('foodGrid').innerHTML =
+      data.foods.map((f, i) => `
+        <div class="glass-card" style="transition-delay:${i * 0.08}s">
+          <div class="card-icon ${f.color}">${f.icon}</div>
+          <div class="card-title">${f.title}</div>
+          <div class="card-text">${f.text}</div>
+          <div class="card-tags">
+            ${f.tags.map((t,ti) => `<span class="tag ${['mint','lavender','pink','peach'][ti%4]}">${t}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+
+    // Exercises
+    document.getElementById('exerciseGrid').innerHTML =
+      data.exercises.map((e, i) => `
+        <div class="glass-card" style="transition-delay:${i * 0.1}s">
+          <div class="card-icon ${e.color}">${e.icon}</div>
+          <div class="card-title">${e.title}</div>
+          <div class="card-text">${e.text}</div>
+          <div class="card-tags">
+            ${e.tags.map((t,ti) => `<span class="tag ${['peach','mint','lavender','pink'][ti%4]}">${t}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+  }
+
+  // ══════════════════════════════════════════════════
+  //   THREE.JS ORGAN CANVAS
+  // ══════════════════════════════════════════════════
+  function initOrganCanvas(topicKey) {
+    const data  = TOPICS[topicKey] || TOPICS['brain'];
+    const canvas = document.getElementById('organCanvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, canvas.offsetWidth / canvas.offsetHeight, 0.1, 100);
+    camera.position.set(0, 0, 5);
+
+    // Parse topic color
+    const hex = parseInt(data.color.replace('#',''), 16);
+    const r = ((hex >> 16) & 255) / 255;
+    const g = ((hex >> 8) & 255) / 255;
+    const b = (hex & 255) / 255;
+    const topicColorThree = new THREE.Color(r, g, b);
+
+    // Main organ sphere (stylised)
+    const geoMain  = new THREE.IcosahedronGeometry(1.2, 2);
+    const matMain  = new THREE.MeshPhongMaterial({
+      color: topicColorThree,
+      transparent: true,
+      opacity: 0.55,
+      shininess: 80,
+      wireframe: false
+    });
+    const mainMesh = new THREE.Mesh(geoMain, matMain);
+    scene.add(mainMesh);
+
+    // Wireframe overlay
+    const geoWire  = new THREE.IcosahedronGeometry(1.25, 2);
+    const matWire  = new THREE.MeshBasicMaterial({
+      color: topicColorThree,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.15
+    });
+    scene.add(new THREE.Mesh(geoWire, matWire));
+
+    // Floating orbs
+    const orbColors = [0xf9a8d4, 0xc4b5fd, 0x6ee7b7];
+    const orbs = [];
+    orbColors.forEach((col, i) => {
+      const g = new THREE.SphereGeometry(0.18 + i * 0.06, 16, 16);
+      const m = new THREE.MeshPhongMaterial({ color: col, transparent: true, opacity: 0.7, shininess: 100 });
+      const mesh = new THREE.Mesh(g, m);
+      const angle = (i / 3) * Math.PI * 2;
+      mesh.position.set(Math.cos(angle) * 2.2, Math.sin(angle) * 1.4, Math.sin(angle * 0.5));
+      scene.add(mesh);
+      orbs.push({ mesh, angle: angle, speed: 0.003 + i * 0.002, radius: 2.2, yAmp: 1.4 });
+    });
+
+    // Lights
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const dLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    dLight.position.set(3, 3, 3);
+    scene.add(dLight);
+    const pLight = new THREE.PointLight(topicColorThree, 1.2, 10);
+    pLight.position.set(-2, 2, 2);
+    scene.add(pLight);
+
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.012;
+      mainMesh.rotation.y += 0.006;
+      mainMesh.rotation.x = Math.sin(t * 0.4) * 0.15;
+      mainMesh.position.y = Math.sin(t * 0.5) * 0.12;
+
+      orbs.forEach(o => {
+        o.angle += o.speed;
+        o.mesh.position.x = Math.cos(o.angle) * o.radius;
+        o.mesh.position.y = Math.sin(o.angle * 0.7) * o.yAmp;
+        o.mesh.position.z = Math.sin(o.angle) * 0.8;
+      });
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize
+    window.addEventListener('resize', () => {
+      renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+      camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
+      camera.updateProjectionMatrix();
+    });
+  }
+
+  // ══════════════════════════════════════════════════
+  //   NAVBAR — HIDE ON SCROLL, SHOW ON CURSOR TO TOP
+  // ══════════════════════════════════════════════════
+  const navbar = document.getElementById('navbar');
+  let lastScroll = 0;
+
+  window.addEventListener('scroll', () => {
+    const current = window.scrollY;
+    if (current > 80 && current > lastScroll) {
+      navbar.classList.add('hidden');
+    }
+    lastScroll = current;
   });
-  document.getElementById('suppContent').innerHTML = [
-    {n:'Vitamin D3',r:'Most people are deficient; supports immunity and mood',d:'2000 IU/day'},
-    {n:'Omega-3 Fish Oil',r:'Reduces inflammation and supports brain and heart health',d:'1g EPA+DHA/day'},
-    {n:'Magnesium Glycinate',r:'Improves sleep quality and reduces stress and anxiety',d:'300mg before bed'}
-  ].map(s => `<div style="display:flex;gap:10px;margin-bottom:12px;padding:10px;background:rgba(255,255,255,0.5);border-radius:10px;"><span style="font-size:18px;">💊</span><div><div style="font-size:13px;font-weight:600;color:#1a0a2e;">${s.n} <span style="font-size:11px;color:#8b5cf6;">${s.d}</span></div><div style="font-size:12px;color:rgba(74,32,112,0.65);margin-top:2px;">${s.r}</div></div></div>`).join('');
-}
 
-// ===== UTILITIES =====
-function sharePage() {
-  if (navigator.clipboard) navigator.clipboard.writeText(window.location.href);
-  showToast('🔗 Report link copied!');
-}
-function showToast(msg) {
-  const t = document.getElementById('toast'); t.textContent = msg;
-  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
-}
+  document.addEventListener('mousemove', (e) => {
+    if (e.clientY < 70) navbar.classList.remove('hidden');
+  });
 
-// Navbar
-let lastScroll = 0;
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 80 && window.scrollY > lastScroll) navbar.classList.add('nav-hidden');
-  lastScroll = window.scrollY;
-});
-document.addEventListener('mousemove', e => { if (e.clientY < 80) navbar.classList.remove('nav-hidden'); });
-document.getElementById('hamburger').addEventListener('click', () => {
-  document.getElementById('mobileMenu').classList.toggle('open');
-});
+  // ══════════════════════════════════════════════════
+  //   SCROLL REVEAL ANIMATION (Intersection Observer)
+  // ══════════════════════════════════════════════════
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
 
-// Reveal
-function initReveal() {
-  const els = document.querySelectorAll('.reveal');
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('in'), i * 80);
-        obs.unobserve(e.target);
+        // Animate meter fills
+        entry.target.querySelectorAll('.meter-fill').forEach(fill => {
+          const pct = fill.getAttribute('data-pct');
+          setTimeout(() => fill.style.width = pct + '%', 100);
+        });
+
+        observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.07, rootMargin: '0px 0px -20px 0px' });
-  els.forEach(el => obs.observe(el));
-}
-</script>
+  }, { threshold: 0.12 });
+
+  // ══════════════════════════════════════════════════
+  //   INIT
+  // ══════════════════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', async () => {
+    const topic = getTopicFromURL();
+    populatePage(topic);
+    initOrganCanvas(topic);
+
+    // ── SUPABASE: Log topic view if user is logged in ──
+    // TODO: swap URL-param prediction data with API call once backend is ready
+    try {
+      const user = await aromi_getUser();
+      if (user) {
+        const topicData = TOPICS[topic] || TOPICS['brain'];
+        await aromi_logTopicView(user.id, topic, topicData.name);
+        console.log(`✅ Topic view logged: ${topicData.name}`);
+      }
+    } catch (err) {
+      console.warn("Supabase topic log skipped:", err.message);
+    }
+
+    // Observe all animatable elements after population
+    setTimeout(() => {
+      document.querySelectorAll('.glass-card, .overview-card, .severity-card, .cta-banner').forEach(el => {
+        observer.observe(el);
+      });
+    }, 100);
+  });
+  </script>
 </body>
 </html>

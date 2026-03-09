@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AroMi — Health Topic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;color:#1e1b2e;overflow-x:hidden;min-height:100vh;background:#fdf2f8;}
+
+.mesh-bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 70% 60% at 5% 10%,rgba(249,168,212,.70) 0%,transparent 55%),radial-gradient(ellipse 60% 60% at 90% 5%,rgba(196,181,253,.65) 0%,transparent 50%),radial-gradient(ellipse 55% 70% at 50% 95%,rgba(110,231,183,.55) 0%,transparent 55%),radial-gradient(ellipse 70% 50% at 95% 65%,rgba(249,168,212,.45) 0%,transparent 50%),radial-gradient(ellipse 50% 40% at 20% 70%,rgba(196,181,253,.40) 0%,transparent 50%),linear-gradient(150deg,#fdf2f8 0%,#f5f0ff 35%,#f0fdf9 70%,#fdf2f8 100%);animation:meshAnim 15s ease-in-out infinite alternate;}
+@keyframes meshAnim{0%{filter:hue-rotate(0deg) brightness(1);}50%{filter:hue-rotate(8deg) brightness(1.02);}100%{filter:hue-rotate(-5deg) brightness(.99);}}
+
+.glass{background:rgba(255,255,255,.30);border:1px solid rgba(255,255,255,.60);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:24px;box-shadow:0 8px 32px rgba(180,120,200,.15),inset 0 1px 0 rgba(255,255,255,.8);}
+.glass-card{background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.75);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-radius:20px;box-shadow:0 12px 40px rgba(180,120,200,.18),inset 0 1px 0 rgba(255,255,255,.9);}
+.grad{background:linear-gradient(135deg,#ec4899 0%,#8b5cf6 50%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* NAVBAR */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.25);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.5);box-shadow:0 2px 20px rgba(180,120,200,.1);transition:transform .45s cubic-bezier(.4,0,.2,1),opacity .4s ease;}
+#navbar.nav-hidden{transform:translateY(-100%);opacity:0;}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-dot{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#8b5cf6,#10b981);animation:pulse 3s ease-in-out infinite;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.nav-dot svg{width:16px;height:16px;fill:#fff;}
+@keyframes pulse{0%,100%{box-shadow:0 4px 14px rgba(139,92,246,.45);}50%{box-shadow:0 4px 26px rgba(139,92,246,.75);}}
+.nav-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,#ec4899,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.nav-links a{padding:7px 18px;border-radius:50px;text-decoration:none;color:#4b4563;font-size:14px;font-weight:500;transition:all .25s ease;}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.6);color:#8b5cf6;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-notif{width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;font-size:.9rem;position:relative;transition:all .2s;}
+.nav-notif:hover{background:#fff;transform:scale(1.08);}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:#ec4899;border:1.5px solid #fff;}
+.nav-profile{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.7);font-size:15px;text-decoration:none;cursor:pointer;transition:all .25s ease;}
+.nav-profile:hover{transform:scale(1.1);}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.nav-hamburger span{display:block;width:22px;height:2px;background:#4b4563;border-radius:2px;}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;z-index:999;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,190,220,.3);padding:16px 20px;flex-direction:column;gap:4px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{padding:12px 16px;border-radius:14px;text-decoration:none;color:#4b4563;font-size:15px;font-weight:500;transition:all .2s;}
+.mobile-menu a:hover{background:rgba(139,92,246,.08);color:#8b5cf6;}
+
+/* PAGE */
+.page{position:relative;z-index:1;padding-top:64px;max-width:1160px;margin:0 auto;padding-left:32px;padding-right:32px;padding-bottom:80px;}
+
+/* HERO BANNER */
+.topic-hero{padding:44px 48px;margin:32px 0 28px;position:relative;overflow:hidden;display:flex;align-items:center;gap:40px;}
+.topic-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),rgba(255,255,255,.05));pointer-events:none;}
+.hero-glow{position:absolute;width:300px;height:300px;border-radius:50%;filter:blur(80px);opacity:.35;right:-60px;top:-60px;pointer-events:none;transition:background .4s ease;}
+.hero-emoji{font-size:5rem;flex-shrink:0;animation:emojiFloat 4s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(180,120,200,.3));}
+@keyframes emojiFloat{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-12px) rotate(3deg);}}
+.hero-text{flex:1;}
+.hero-breadcrumb{display:flex;align-items:center;gap:6px;font-size:.75rem;color:#a0a0b8;margin-bottom:12px;font-weight:500;}
+.hero-breadcrumb a{color:#8b5cf6;text-decoration:none;transition:color .2s;}
+.hero-breadcrumb a:hover{color:#ec4899;}
+.hero-breadcrumb span{opacity:.5;}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:50px;font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.85);color:#7c6f9a;margin-bottom:12px;}
+.hero-title{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(28px,5vw,52px);color:#1e1b2e;line-height:1.08;letter-spacing:-1px;margin-bottom:10px;}
+.hero-desc{font-size:1rem;color:#7c6f9a;line-height:1.7;max-width:520px;font-weight:300;margin-bottom:20px;}
+.hero-stats{display:flex;gap:20px;flex-wrap:wrap;}
+.hstat{display:flex;flex-direction:column;gap:2px;}
+.hstat-val{font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;color:#1e1b2e;}
+.hstat-label{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:#a0a0b8;font-weight:500;}
+
+/* QUICK ACTIONS */
+.quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
+.qa-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .25s ease;border:none;text-decoration:none;}
+.qa-primary{background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;box-shadow:0 4px 18px rgba(139,92,246,.35);}
+.qa-primary:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(139,92,246,.5);}
+.qa-ghost{background:rgba(255,255,255,.55);border:1.5px solid rgba(255,255,255,.8);color:#4b4563;backdrop-filter:blur(10px);}
+.qa-ghost:hover{background:rgba(255,255,255,.85);transform:translateY(-2px);}
+
+/* MAIN LAYOUT */
+.topic-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:start;}
+.left-col{display:flex;flex-direction:column;gap:20px;}
+.right-col{display:flex;flex-direction:column;gap:18px;position:sticky;top:80px;}
+
+/* SECTION CARD */
+.sec-card{padding:28px;position:relative;overflow:hidden;}
+.sec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:3px 3px 0 0;}
+.sc-pink::before{background:linear-gradient(90deg,#ec4899,#f9a8d4);}
+.sc-lav::before{background:linear-gradient(90deg,#8b5cf6,#c4b5fd);}
+.sc-mint::before{background:linear-gradient(90deg,#10b981,#6ee7b7);}
+.sc-amber::before{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
+.sc-blue::before{background:linear-gradient(90deg,#3b82f6,#93c5fd);}
+.sec-label{font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.sl-pink{color:#ec4899;} .sl-lav{color:#8b5cf6;} .sl-mint{color:#10b981;} .sl-amber{color:#f59e0b;} .sl-blue{color:#3b82f6;}
+
+/* PRECAUTIONS */
+.prec-list{display:flex;flex-direction:column;gap:12px;}
+.prec-item{display:flex;align-items:flex-start;gap:13px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.9);transition:transform .2s ease;}
+.prec-item:hover{transform:translateX(4px);}
+.prec-num{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;flex-shrink:0;margin-top:1px;}
+.prec-text{font-size:.88rem;color:#4b4563;line-height:1.6;font-weight:400;}
+.prec-tip{font-size:.76rem;color:#a0a0b8;margin-top:3px;}
+
+/* FOODS */
+.foods-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.food-card{padding:16px 14px;border-radius:16px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.9);text-align:center;transition:transform .25s ease,box-shadow .25s ease;cursor:default;}
+.food-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(180,120,200,.2);}
+.food-emoji{font-size:1.8rem;margin-bottom:7px;}
+.food-name{font-size:.82rem;font-weight:600;color:#1e1b2e;margin-bottom:3px;}
+.food-benefit{font-size:.7rem;color:#7c6f9a;line-height:1.4;}
+
+/* EXERCISES */
+.ex-list{display:flex;flex-direction:column;gap:12px;}
+.ex-item{display:flex;align-items:flex-start;gap:14px;padding:16px;border-radius:14px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.9);transition:transform .2s ease;}
+.ex-item:hover{transform:translateX(4px);}
+.ex-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(16,185,129,.12));}
+.ex-body{}
+.ex-name{font-size:.9rem;font-weight:600;color:#1e1b2e;margin-bottom:3px;}
+.ex-desc{font-size:.78rem;color:#7c6f9a;line-height:1.5;}
+.ex-freq{display:inline-flex;align-items:center;margin-top:5px;font-size:.7rem;font-weight:600;padding:2px 9px;border-radius:50px;background:rgba(16,185,129,.1);color:#10b981;}
+
+/* DID YOU KNOW */
+.facts-list{display:flex;flex-direction:column;gap:14px;}
+.fact-item{display:flex;gap:13px;align-items:flex-start;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.9);}
+.fact-ico{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+.fact-text{font-size:.85rem;color:#4b4563;line-height:1.6;}
+.fact-text strong{color:#1e1b2e;}
+
+/* RISK METER */
+.risk-meter-card{padding:22px;}
+.rm-title{font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#ec4899;margin-bottom:14px;}
+.rm-gauge{position:relative;width:110px;height:110px;margin:0 auto 14px;}
+.rm-gauge svg{width:100%;height:100%;}
+.rm-track{fill:none;stroke:rgba(200,190,220,.2);stroke-width:9;}
+.rm-fill{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1);}
+.rm-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.rm-num{font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;line-height:1;}
+.rm-sub{font-size:.6rem;color:#a0a0b8;text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
+.rm-label{text-align:center;font-size:.85rem;font-weight:600;color:#1e1b2e;margin-bottom:4px;}
+.rm-desc{text-align:center;font-size:.75rem;color:#7c6f9a;line-height:1.5;}
+
+/* QUICK STATS */
+.qstats-card{padding:20px;}
+.qs-title{font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#8b5cf6;margin-bottom:14px;}
+.qs-items{display:flex;flex-direction:column;gap:10px;}
+.qs-item{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:12px;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.9);}
+.qs-icon{font-size:1.1rem;flex-shrink:0;width:30px;text-align:center;}
+.qs-body{flex:1;}
+.qs-val{font-size:.85rem;font-weight:600;color:#1e1b2e;}
+.qs-key{font-size:.7rem;color:#a0a0b8;}
+
+/* RELATED TOPICS */
+.related-card{padding:20px;}
+.rel-title{font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#10b981;margin-bottom:14px;}
+.rel-items{display:flex;flex-direction:column;gap:8px;}
+.rel-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.85);text-decoration:none;transition:all .2s ease;}
+.rel-item:hover{background:rgba(255,255,255,.8);transform:translateX(3px);}
+.rel-emoji{font-size:1.1rem;flex-shrink:0;}
+.rel-name{font-size:.83rem;font-weight:500;color:#4b4563;flex:1;}
+.rel-arrow{font-size:.75rem;color:#c0b8d0;}
+
+/* CHECKLIST */
+.checklist{display:flex;flex-direction:column;gap:10px;}
+.cl-item{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.cl-box{width:20px;height:20px;border-radius:6px;border:2px solid rgba(200,190,220,.5);background:rgba(255,255,255,.6);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;transition:all .2s;color:transparent;}
+.cl-item.checked .cl-box{background:linear-gradient(135deg,#10b981,#6ee7b7);border-color:transparent;color:#fff;}
+.cl-text{font-size:.85rem;color:#4b4563;transition:color .2s;}
+.cl-item.checked .cl-text{color:#a0a0b8;text-decoration:line-through;}
+
+/* NOT FOUND */
+.not-found{text-align:center;padding:80px 20px;}
+.nf-emoji{font-size:4rem;margin-bottom:16px;}
+.nf-title{font-family:'Playfair Display',serif;font-weight:700;font-size:1.6rem;color:#1e1b2e;margin-bottom:8px;}
+.nf-desc{font-size:.9rem;color:#7c6f9a;margin-bottom:24px;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s cubic-bezier(.4,0,.2,1);}
+.reveal.in{opacity:1;transform:none;}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);z-index:9999;background:rgba(30,27,46,.9);color:#fff;padding:12px 24px;border-radius:50px;font-size:.85rem;font-weight:500;backdrop-filter:blur(12px);opacity:0;transition:all .4s cubic-bezier(.34,1.3,.64,1);pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+footer{position:relative;z-index:1;text-align:center;padding:28px 24px;font-size:13px;color:#7c6f9a;border-top:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.2);backdrop-filter:blur(12px);}
+footer a{color:#8b5cf6;text-decoration:none;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(139,92,246,.3);border-radius:10px;}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+  .topic-layout{grid-template-columns:1fr;}
+  .right-col{position:static;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .related-card{grid-column:1/-1;}
+}
+@media(max-width:900px){
+  #navbar{padding:0 20px;}
+  .nav-links{display:none;}
+  .nav-hamburger{display:flex;}
+  .page{padding-left:18px;padding-right:18px;}
+  .topic-hero{padding:28px 24px;flex-direction:column;gap:16px;text-align:center;}
+  .hero-glow{display:none;}
+  .hero-emoji{font-size:3.5rem;}
+  .hero-stats{justify-content:center;}
+  .hero-desc{margin:0 auto;}
+  .foods-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:640px){
+  .page{padding-left:14px;padding-right:14px;}
+  .topic-hero{margin:20px 0 18px;padding:22px 18px;}
+  .hero-title{font-size:clamp(24px,7vw,36px);}
+  .quick-actions{gap:8px;}
+  .qa-btn{flex:1;justify-content:center;padding:10px 14px;}
+  .right-col{grid-template-columns:1fr;}
+  .foods-grid{grid-template-columns:repeat(2,1fr);}
+  .sec-card{padding:20px 16px;}
+}
+@media(max-width:420px){
+  .nav-name{font-size:18px;}
+  .foods-grid{grid-template-columns:repeat(2,1fr);}
+  .hero-emoji{font-size:2.8rem;}
+}
+</style>
+</head>
+<body>
+<div class="mesh-bg"></div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="home.html" class="nav-brand">
+    <div class="nav-dot">
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </div>
+    <span class="nav-name">AroMi</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="home.html">🏠 Home</a></li>
+    <li><a href="history.html">📊 History</a></li>
+    <li><a href="prediction.html">🔮 Predictions</a></li>
+    <li><a href="profile.html">👤 Profile</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-notif">🔔<span class="notif-dot"></span></button>
+    <a href="profile.html" class="nav-profile">👤</a>
+    <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="home.html" onclick="toggleMenu()">🏠 Home</a>
+  <a href="history.html" onclick="toggleMenu()">📊 History</a>
+  <a href="prediction.html" onclick="toggleMenu()">🔮 Predictions</a>
+  <a href="profile.html" onclick="toggleMenu()">👤 Profile</a>
+</div>
+
+<div class="page" id="mainPage">
+  <!-- Dynamic content injected by JS -->
+</div>
+
+<footer>
+  <p>© 2025 <strong>AroMi</strong> — Your AI Health Companion &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a></p>
+  <p style="margin-top:6px;font-size:12px;">AroMi is not a substitute for professional medical advice. Always consult a qualified healthcare provider.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══ NAV ══ */
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{navbar.classList.toggle('nav-hidden',window.scrollY>80);},{passive:true});
+document.addEventListener('mousemove',e=>{if(e.clientY<80)navbar.classList.remove('nav-hidden');});
+document.addEventListener('touchstart',e=>{if(e.touches[0].clientY<80)navbar.classList.remove('nav-hidden');},{passive:true});
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
+document.addEventListener('click',e=>{const m=document.getElementById('mobileMenu');if(m.classList.contains('open')&&!m.contains(e.target)&&!e.target.closest('.nav-hamburger'))m.classList.remove('open');});
+
+/* ══ TOAST ══ */
+let toastT;
+function showToast(msg,dur=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),dur);}
+
+/* ══ ALL TOPIC DATA ══ */
+const topics = {
+  brain:{
+    icon:'🧠', title:'Brain Health', tag:'Neurology', color:'lav', glow:'rgba(139,92,246,.5)',
+    desc:'Your brain is your most vital organ — governing thought, memory, emotion, and every bodily function. Protecting your cognitive health today prevents neurological decline tomorrow.',
+    stats:[{val:'100B',label:'Neurons'},{val:'20%',label:'Body Energy'},{val:'1.4kg',label:'Avg Weight'},{val:'60%',label:'Fat Content'}],
+    riskScore:22, riskLabel:'Low Risk', riskColor:'#10b981',
+    qstats:[{icon:'💧',val:'Hydrate 2L+/day',key:'Brain function'},{icon:'😴',val:'7–8 hours sleep',key:'Memory consolidation'},{icon:'📵',val:'2h screen breaks',key:'Eye & brain strain'},{icon:'🧘',val:'10 min meditation',key:'Stress reduction'}],
+    prec:[
+      {text:'Follow the 20-20-20 screen rule: every 20 min, look 20 feet away for 20 seconds',tip:'Reduces digital eye strain and cognitive fatigue'},
+      {text:'Sleep 7–9 hours every night — your brain flushes toxins only during deep sleep',tip:'Sleep deprivation accelerates cognitive decline'},
+      {text:'Avoid chronic stress — elevated cortisol physically shrinks the hippocampus',tip:'Practice breathwork, yoga, or journaling daily'},
+      {text:'Limit alcohol consumption to protect neuronal connectivity',tip:'Even moderate drinking affects memory and processing speed'},
+      {text:'Wear helmets and use seatbelts to prevent traumatic brain injury',tip:'TBI is a leading cause of early-onset cognitive decline'},
+      {text:'Stay socially connected — isolation is a proven dementia risk factor',tip:'Regular conversation stimulates multiple brain regions simultaneously'},
+    ],
+    foods:[
+      {emoji:'🫐',name:'Blueberries',benefit:'Rich in anthocyanins that protect neurons from oxidative stress'},
+      {emoji:'🥜',name:'Walnuts',benefit:'Omega-3 & DHA support neural membrane structure'},
+      {emoji:'🐟',name:'Salmon',benefit:'Fatty acids reduce brain inflammation and boost memory'},
+      {emoji:'🍫',name:'Dark Chocolate',benefit:'Flavonoids improve blood flow to the brain'},
+      {emoji:'🟡',name:'Turmeric',benefit:'Curcumin crosses the blood-brain barrier to reduce plaques'},
+      {emoji:'🥚',name:'Eggs',benefit:'Choline is essential for acetylcholine (memory neurotransmitter)'},
+      {emoji:'🫒',name:'Olive Oil',benefit:'Polyphenols protect against cognitive decline'},
+      {emoji:'🥦',name:'Broccoli',benefit:'Vitamin K and sulforaphane support brain cell regeneration'},
+      {emoji:'🎃',name:'Pumpkin Seeds',benefit:'Zinc, magnesium, and iron for nerve signaling'},
+    ],
+    exercises:[
+      {icon:'🧘',name:'Daily Meditation (10–15 min)',desc:'Increases grey matter density in the prefrontal cortex — the region responsible for decision-making and focus.',freq:'Daily'},
+      {icon:'🧩',name:'Puzzle & Memory Games',desc:'Chess, Sudoku, crosswords, and language learning create new neural pathways and slow cognitive aging.',freq:'5x / week'},
+      {icon:'🏃',name:'Aerobic Exercise (30 min)',desc:'Increases BDNF (brain-derived neurotrophic factor) — the protein that acts like fertilizer for brain cells.',freq:'4–5x / week'},
+      {icon:'📚',name:'Regular Reading',desc:'Activates more brain regions simultaneously than any other single activity — language, visualization, emotion, and logic.',freq:'Daily'},
+      {icon:'🎵',name:'Learning an Instrument',desc:'Music training strengthens the corpus callosum connecting both brain hemispheres and improves executive function.',freq:'3x / week'},
+    ],
+    facts:[
+      {ico:'⚡',text:'Your brain generates <strong>about 23 watts of electricity</strong> while awake — enough to power a small LED bulb.'},
+      {ico:'🔄',text:'<strong>Neuroplasticity</strong> means your brain physically rewires itself based on your habits — even after injury.'},
+      {ico:'💤',text:'During sleep, your brain shrinks by <strong>up to 60%</strong> to allow cerebrospinal fluid to flush out toxic waste products like beta-amyloid.'},
+      {ico:'🧠',text:'The brain has <strong>no pain receptors</strong> — headaches originate from surrounding tissues and blood vessels, not the brain itself.'},
+    ],
+    checklist:['Drink 2L+ of water today','Do 10 minutes of meditation','Take a 30-min walk or aerobic exercise','Limit screen time after 9pm','Get to bed by 10:30pm','Eat one brain-boosting food today'],
+    related:['heart','mental','eye','bone'],
+  },
+
+  eye:{
+    icon:'👁️', title:'Eye Health', tag:'Ophthalmology', color:'blue', glow:'rgba(59,130,246,.5)',
+    desc:'Your eyes are your window to the world and among the most complex organs in your body. Protecting them from strain, UV damage, and nutritional deficiency preserves lifelong vision.',
+    stats:[{val:'576MP',label:'Resolution'},{val:'10M',label:'Colors Seen'},{val:'0.003s',label:'React Speed'},{val:'80%',label:'Info Via Eyes'}],
+    riskScore:18, riskLabel:'Low Risk', riskColor:'#10b981',
+    qstats:[{icon:'🕶️',val:'UV-blocking sunglasses',key:'Outdoors protection'},{icon:'💻',val:'20-20-20 rule',key:'Screen fatigue'},{icon:'🥕',val:'Vitamin A daily',key:'Retinal health'},{icon:'👁️',val:'Annual eye exam',key:'Early detection'}],
+    prec:[
+      {text:'Follow the 20-20-20 rule: every 20 minutes, look at something 20 feet away for 20 seconds',tip:'Reduces eye muscle fatigue from sustained near focus'},
+      {text:'Wear UV-400 rated sunglasses whenever outdoors — UV exposure accelerates cataracts and macular degeneration',tip:'Polarized lenses reduce glare and protect corneal tissue'},
+      {text:'Schedule a comprehensive eye exam every 1–2 years even without symptoms',tip:'Glaucoma and macular degeneration are symptom-free until advanced'},
+      {text:'Never rub your eyes — it can distort the cornea and introduce bacteria',tip:'Use clean fingers or a warm compress if irritated'},
+      {text:'Reduce screen brightness and enable night mode after sunset',tip:'Blue light disrupts circadian rhythm and causes digital eye strain'},
+      {text:'Keep contact lenses clean and never sleep in them',tip:'Corneal infections from lenses can be sight-threatening'},
+    ],
+    foods:[
+      {emoji:'🥕',name:'Carrots',benefit:'Beta-carotene converts to Vitamin A — essential for rhodopsin in the retina'},
+      {emoji:'🌿',name:'Spinach',benefit:'Lutein and zeaxanthin filter harmful blue light from reaching the retina'},
+      {emoji:'🍠',name:'Sweet Potato',benefit:'Vitamin A and beta-carotene for night vision and retinal health'},
+      {emoji:'🍊',name:'Citrus Fruits',benefit:'Vitamin C protects lens proteins from oxidation'},
+      {emoji:'🌰',name:'Almonds',benefit:'Vitamin E slows age-related macular degeneration progression'},
+      {emoji:'🐟',name:'Fatty Fish',benefit:'Omega-3 DHA is a structural component of the retina'},
+      {emoji:'🥚',name:'Eggs',benefit:'Lutein and zeaxanthin in yolks — highly bioavailable form'},
+      {emoji:'🫐',name:'Blueberries',benefit:'Anthocyanins improve night vision and reduce eye inflammation'},
+    ],
+    exercises:[
+      {icon:'🔄',name:'Eye Rolling',desc:'Gently roll your eyes clockwise then counter-clockwise 10 times. Lubricates and stretches the ocular muscles.',freq:'3x / day'},
+      {icon:'🎯',name:'Focus Shifting',desc:'Hold a finger 10cm from your nose, focus on it, then shift focus to something far. Repeat 10 times.',freq:'5x / day'},
+      {icon:'🙌',name:'Palming',desc:'Rub hands together until warm, then cup them gently over closed eyes. Relieves tension and reduces eye strain.',freq:'After screen use'},
+      {icon:'😉',name:'Blinking Exercises',desc:'Consciously blink fully 20 times in a row. Screen users blink 3x less than normal, drying the eye surface.',freq:'Every hour'},
+    ],
+    facts:[
+      {ico:'📸',text:'The human eye can distinguish approximately <strong>10 million different colors</strong> — more than any camera ever built.'},
+      {ico:'⚡',text:'Your eye muscles are the <strong>fastest muscles</strong> in your body — capable of making up to 50 micro-movements per second.'},
+      {ico:'🔵',text:'Blue eyes don\'t actually have blue pigment — they result from <strong>light scattering in the iris stroma</strong>, similar to why the sky is blue.'},
+      {ico:'🧠',text:'The visual cortex takes up <strong>30% of your brain\'s cortex</strong> — more than any other sense.'},
+    ],
+    checklist:['Apply the 20-20-20 rule during screen time','Wear sunglasses outdoors today','Eat a Vitamin A rich food','Do 3 rounds of palming today','Check screen brightness and distance','Book an eye exam if overdue'],
+    related:['brain','mental','bone','immunity'],
+  },
+
+  ear:{
+    icon:'👂', title:'Ear Health', tag:'Audiology', color:'amber', glow:'rgba(245,158,11,.5)',
+    desc:'Hearing loss is the third most common chronic condition globally — yet 50% of cases are preventable. Your ears deserve the same care as every other organ.',
+    stats:[{val:'20Hz',label:'Lowest Freq'},{val:'20kHz',label:'Highest Freq'},{val:'25,000',label:'Hair Cells'},{val:'85dB',label:'Safe Limit'}],
+    riskScore:28, riskLabel:'Low Risk', riskColor:'#10b981',
+    qstats:[{icon:'🎧',val:'Max 60% volume',key:'Hearing protection'},{icon:'🌊',val:'Dry ears after swim',key:'Infection prevention'},{icon:'🛑',val:'No objects in ear',key:'Canal safety'},{icon:'🩺',val:'Annual hearing check',key:'Early detection'}],
+    prec:[
+      {text:'Limit headphone and earbud volume to 60% — follow the 60/60 rule: 60% volume for max 60 min/hour',tip:'Noise-induced hearing loss is permanent and cumulative'},
+      {text:'Never insert cotton swabs, keys, or any object into the ear canal',tip:'The ear is self-cleaning — wax migrates out naturally'},
+      {text:'Keep ears dry after swimming or showering — tilt head to drain water',tip:'Moisture trapped in the canal breeds bacteria causing otitis externa'},
+      {text:'Use ear protection (foam plugs or earmuffs) in environments above 85dB',tip:'Concerts, power tools, and traffic all exceed safe exposure levels'},
+      {text:'Get your hearing tested annually, especially after age 50',tip:'Age-related hearing loss begins gradually — early detection enables better management'},
+      {text:'Manage blood pressure — hypertension reduces blood flow to the cochlea',tip:'Vascular health and hearing health are closely linked'},
+    ],
+    foods:[
+      {emoji:'🥜',name:'Pumpkin Seeds',benefit:'Rich in Zinc which supports cochlear function and immune response'},
+      {emoji:'🐟',name:'Fatty Fish',benefit:'Omega-3s improve blood circulation to the inner ear hair cells'},
+      {emoji:'🌿',name:'Leafy Greens',benefit:'Folate (B9) protects against age-related hearing loss'},
+      {emoji:'🍌',name:'Bananas',benefit:'Potassium regulates inner ear fluid levels essential for sound processing'},
+      {emoji:'🥦',name:'Broccoli',benefit:'Vitamin C and K protect ear tissues from oxidative damage'},
+      {emoji:'🌰',name:'Almonds',benefit:'Vitamin E protects the delicate hair cells from noise damage'},
+      {emoji:'🫐',name:'Blueberries',benefit:'Antioxidants reduce inflammation in the auditory nerve'},
+      {emoji:'🧄',name:'Garlic',benefit:'Anti-microbial and anti-inflammatory — supports ear infection prevention'},
+    ],
+    exercises:[
+      {icon:'🤜',name:'Jaw Exercises',desc:'Open and close your mouth slowly 10 times — the jaw joint shares anatomy with the ear canal and relieves pressure.',freq:'Morning & evening'},
+      {icon:'🔄',name:'Neck Stretches',desc:'Gently tilt your head side to side, holding 10 seconds each. Relieves tension affecting the Eustachian tube.',freq:'3x / day'},
+      {icon:'😮',name:'Yawning Exercises',desc:'Simulate wide yawning 5 times to open and equalize the Eustachian tube — especially useful during altitude changes.',freq:'As needed'},
+      {icon:'😁',name:'Gentle Jaw Chewing',desc:'Chewing motions help drain the middle ear and keep the TMJ and ear canal in healthy alignment.',freq:'Natural meal chewing'},
+    ],
+    facts:[
+      {ico:'🔊',text:'Your ears never fully "turn off" — your auditory system processes sounds <strong>even during deep sleep</strong>.'},
+      {ico:'🌀',text:'The cochlea contains <strong>~25,000 hair cells</strong> — once damaged by noise or aging, they never regenerate.'},
+      {ico:'⚖️',text:'Your inner ear\'s vestibular system is responsible for your sense of <strong>balance and spatial orientation</strong>, not just hearing.'},
+      {ico:'🎵',text:'Exposure to a sound of 120dB (like a concert) for <strong>just 9 seconds</strong> can cause permanent hearing damage.'},
+    ],
+    checklist:['Check headphone volume today (max 60%)','Dry ears properly after shower','Avoid loud environments or use ear protection','Do neck stretches','Eat one zinc-rich food today','Schedule an annual hearing check'],
+    related:['brain','eye','mental','immunity'],
+  },
+
+  heart:{
+    icon:'❤️', title:'Heart Health', tag:'Cardiology', color:'pink', glow:'rgba(236,72,153,.5)',
+    desc:'Cardiovascular disease is the world\'s number one killer — yet 80% of early heart attacks and strokes are preventable with lifestyle changes. Your heart beats 100,000 times a day for you.',
+    stats:[{val:'100K',label:'Beats / Day'},{val:'5L',label:'Blood / Min'},{val:'2.5B',label:'Lifetime Beats'},{val:'1.2mm',label:'Vessel Thickness'}],
+    riskScore:35, riskLabel:'Moderate Risk', riskColor:'#f59e0b',
+    qstats:[{icon:'📊',val:'Monitor BP monthly',key:'Hypertension check'},{icon:'🚭',val:'No smoking',key:'Vascular protection'},{icon:'🧂',val:'Under 2300mg sodium',key:'Blood pressure'},{icon:'❤️',val:'Zone 2 cardio 150min',key:'Cardiac fitness'}],
+    prec:[
+      {text:'Monitor your blood pressure regularly — hypertension has no symptoms but damages arteries silently',tip:'Target: below 120/80 mmHg. Check monthly at minimum'},
+      {text:'Quit smoking immediately — cigarettes damage every blood vessel in your body within minutes of inhalation',tip:'Risk drops by 50% within 1 year of quitting'},
+      {text:'Limit saturated fats and eliminate trans fats — they directly raise LDL cholesterol',tip:'Replace with olive oil, avocado, and nuts'},
+      {text:'Manage stress actively — chronic cortisol elevates heart rate, blood pressure, and inflammation',tip:'Even 15 minutes of daily relaxation reduces cardiac risk measurably'},
+      {text:'Limit alcohol to 1 drink/day for women, 2 for men — excess raises blood pressure and risk of arrhythmia',tip:'Red wine in moderation has some cardiovascular benefit via resveratrol'},
+      {text:'Get lipid panel bloodwork annually — know your HDL, LDL, and triglycerides',tip:'Optimal total cholesterol: below 200 mg/dL'},
+    ],
+    foods:[
+      {emoji:'🌾',name:'Oats',benefit:'Beta-glucan fiber directly lowers LDL cholesterol — proven in clinical trials'},
+      {emoji:'🫐',name:'Berries',benefit:'Anthocyanins reduce arterial stiffness and blood pressure'},
+      {emoji:'🥬',name:'Leafy Greens',benefit:'Nitrates converted to nitric oxide — naturally dilates blood vessels'},
+      {emoji:'🥑',name:'Avocado',benefit:'Monounsaturated fats lower LDL while raising HDL cholesterol'},
+      {emoji:'🫒',name:'Olive Oil',benefit:'Oleocanthal has similar anti-inflammatory effect to ibuprofen'},
+      {emoji:'🫘',name:'Legumes',benefit:'Plant protein and fiber that reduce cardiac event risk by 10–22%'},
+      {emoji:'🧄',name:'Garlic',benefit:'Allicin lowers blood pressure and cholesterol naturally'},
+      {emoji:'🐟',name:'Fatty Fish',benefit:'EPA and DHA omega-3s reduce triglycerides and arrhythmia risk'},
+      {emoji:'🍫',name:'Dark Chocolate',benefit:'Flavanols improve endothelial function and lower blood pressure'},
+    ],
+    exercises:[
+      {icon:'🚶',name:'Brisk Walking (30 min)',desc:'The single most evidence-backed cardiac exercise. Zone 2 intensity (conversational pace) builds mitochondrial density in heart muscle.',freq:'Daily'},
+      {icon:'🏊',name:'Swimming',desc:'Full body low-impact cardio that strengthens heart without joint stress. 30 min of swimming equals 45 min of land cardio benefit.',freq:'3x / week'},
+      {icon:'🚴',name:'Cycling',desc:'Excellent for sustained Zone 2 heart rate training. Reduces cardiac event risk by up to 46% with consistent practice.',freq:'3–4x / week'},
+      {icon:'🧘',name:'Heart-Health Yoga',desc:'Specific yoga sequences reduce blood pressure, resting heart rate, and cortisol — complementing aerobic training perfectly.',freq:'2x / week'},
+      {icon:'🏋️',name:'Light Resistance Training',desc:'Builds muscle mass that improves insulin sensitivity and glucose metabolism — indirectly protecting the heart.',freq:'2x / week'},
+    ],
+    facts:[
+      {ico:'💓',text:'Your heart pumps approximately <strong>2,000 gallons of blood per day</strong> — enough to fill a small swimming pool every week.'},
+      {ico:'⚡',text:'The electrical signal that triggers each heartbeat travels at <strong>0.3 meters per second</strong> through specialized cardiac tissue.'},
+      {ico:'🩺',text:'<strong>Women\'s heart attack symptoms</strong> often differ from men\'s — nausea, jaw pain, and fatigue are common female presentations.'},
+      {ico:'😴',text:'People who sleep less than 6 hours per night have a <strong>48% higher risk</strong> of developing heart disease than those who sleep 7–8 hours.'},
+    ],
+    checklist:['Check blood pressure today','30 min of cardio exercise','Eat a heart-healthy meal','Drink 2L of water','Avoid salty processed foods','Take 5 deep breaths to lower HR'],
+    related:['brain','lung','kidney','mental'],
+  },
+
+  lung:{
+    icon:'🫁', title:'Lung Health', tag:'Pulmonology', color:'mint', glow:'rgba(16,185,129,.5)',
+    desc:'Your lungs process 11,000 liters of air every day, delivering life-sustaining oxygen to every cell. Healthy lungs are the foundation of energy, endurance, and immunity.',
+    stats:[{val:'11K L',label:'Air / Day'},{val:'300M',label:'Alveoli'},{val:'70m²',label:'Surface Area'},{val:'15x',label:'Breaths / Min'}],
+    riskScore:20, riskLabel:'Low Risk', riskColor:'#10b981',
+    qstats:[{icon:'🌿',val:'Air purifier indoors',key:'Pollution protection'},{icon:'🚭',val:'Zero smoking',key:'Lung tissue'},{icon:'🌬️',val:'Deep breathing daily',key:'Capacity building'},{icon:'😷',val:'Mask in poor AQI',key:'Particulate protection'}],
+    prec:[
+      {text:'Never smoke — cigarettes destroy alveoli, cause COPD, and are the leading cause of lung cancer',tip:'Second-hand smoke is nearly as damaging as direct inhalation'},
+      {text:'Check daily AQI (Air Quality Index) and limit outdoor activity when above 100',tip:'Exercise in poor air quality multiplies particulate exposure by 10x'},
+      {text:'Use HEPA air purifiers indoors — indoor air can be 5x more polluted than outdoor air',tip:'Replace filters every 3–6 months for effectiveness'},
+      {text:'Wear N95 or KN95 masks during high-pollution days or dusty environments',tip:'Surgical masks only filter large particles — not fine PM2.5'},
+      {text:'Test your home for radon gas — the second leading cause of lung cancer after smoking',tip:'Radon is odorless and colorless; testing kits are inexpensive'},
+      {text:'Get annual flu and pneumonia vaccinations to protect lung tissue from infectious damage',tip:'Respiratory infections leave lasting scar tissue even after recovery'},
+    ],
+    foods:[
+      {emoji:'🍎',name:'Apples',benefit:'Quercetin reduces airway inflammation and improves lung function'},
+      {emoji:'🎃',name:'Pumpkin',benefit:'Carotenoids protect lung tissue from oxidative damage by pollutants'},
+      {emoji:'🍅',name:'Tomatoes',benefit:'Lycopene reduces airway inflammation — cooked tomatoes are more bioavailable'},
+      {emoji:'🍵',name:'Green Tea',benefit:'Catechins protect lung tissue and reduce COPD progression risk'},
+      {emoji:'🫚',name:'Ginger',benefit:'Gingerols reduce airway inflammation and act as natural bronchodilators'},
+      {emoji:'🧄',name:'Garlic',benefit:'Allicin has proven anti-inflammatory and anti-microbial effects on the respiratory tract'},
+      {emoji:'🫐',name:'Blueberries',benefit:'Anthocyanins protect lung tissue from pollution-induced oxidative stress'},
+      {emoji:'🌰',name:'Brazil Nuts',benefit:'Selenium supports glutathione production — your lungs\' primary antioxidant defense'},
+    ],
+    exercises:[
+      {icon:'🌬️',name:'Diaphragmatic Breathing',desc:'Lie down, hand on belly. Inhale 4 sec through nose (belly rises), hold 2 sec, exhale 6 sec. Strengthens the primary breathing muscle.',freq:'2x daily, 10 min'},
+      {icon:'💋',name:'Pursed Lip Breathing',desc:'Inhale through nose 2 sec, exhale slowly through pursed lips 4–6 sec. Keeps airways open longer and improves gas exchange.',freq:'During activity'},
+      {icon:'🎶',name:'Singing or Playing Wind Instruments',desc:'Both strengthen the diaphragm and intercostal muscles, increase lung capacity, and improve breath control.',freq:'3x / week'},
+      {icon:'🏊',name:'Swimming',desc:'Exercising with warm humid air around the airway is ideal for lung conditioning — particularly for those with asthma.',freq:'3x / week'},
+      {icon:'🚶',name:'Aerobic Cardio',desc:'Any sustained aerobic exercise increases tidal volume (the air moved per breath) and improves oxygen extraction efficiency.',freq:'5x / week'},
+    ],
+    facts:[
+      {ico:'🌬️',text:'Your <strong>left lung is smaller</strong> than your right to accommodate the space your heart takes up in the chest cavity.'},
+      {ico:'🔬',text:'Your lung\'s total surface area — if unfolded — would cover <strong>a singles tennis court (70 square meters)</strong>.'},
+      {ico:'💨',text:'Healthy lungs can hold about <strong>6 liters of air</strong>, but we only use about 0.5L in normal breathing — 12% of capacity.'},
+      {ico:'🛡️',text:'Your lungs produce <strong>over a liter of mucus per day</strong> — constantly trapping and clearing particles before they reach the alveoli.'},
+    ],
+    checklist:['Do 10 minutes of deep breathing','Check today\'s AQI before going out','Avoid smoking and smoky environments','Drink water to keep airways moist','Eat one anti-inflammatory food','Do 30 min aerobic exercise'],
+    related:['heart','immunity','mental','brain'],
+  },
+
+  liver:{
+    icon:'🫀', title:'Liver Health', tag:'Hepatology', color:'amber', glow:'rgba(245,158,11,.5)',
+    desc:'Your liver performs over 500 vital functions — filtering toxins, producing bile, regulating blood sugar, and synthesizing proteins. It is also the only organ that can completely regenerate itself.',
+    stats:[{val:'500+',label:'Functions'},{val:'1.5kg',label:'Average Weight'},{val:'1.4L',label:'Blood / Min'},{val:'100%',label:'Can Regenerate'}],
+    riskScore:25, riskLabel:'Low Risk', riskColor:'#10b981',
+    qstats:[{icon:'🚫',val:'Limit alcohol',key:'Liver protection'},{icon:'💊',val:'Avoid excess meds',key:'Drug metabolism'},{icon:'⚖️',val:'Maintain BMI <25',key:'NAFLD prevention'},{icon:'💉',val:'Hepatitis vaccine',key:'Infection shield'}],
+    prec:[
+      {text:'Limit alcohol strictly — more than 14 units/week causes progressive liver cell death and fibrosis',tip:'The liver processes one unit of alcohol per hour; faster consumption causes accumulating damage'},
+      {text:'Avoid unnecessary medications including OTC painkillers — acetaminophen (paracetamol) overdose is the leading cause of liver failure',tip:'Never exceed the daily maximum dose of any painkiller'},
+      {text:'Maintain a healthy weight — non-alcoholic fatty liver disease (NAFLD) now affects 25% of the global population',tip:'Even 5–10% weight loss can reverse early-stage fatty liver'},
+      {text:'Get vaccinated against Hepatitis A and B — both can cause chronic liver damage',tip:'Hepatitis C (blood-borne) has no vaccine — use sterile needles and practice safe sex'},
+      {text:'Avoid sharing personal items like razors and toothbrushes — Hepatitis B spreads through bodily fluids',tip:'The Hepatitis B vaccine is 95% effective — one of medicine\'s greatest successes'},
+      {text:'Get regular liver function tests (LFTs) — liver disease is usually asymptomatic until advanced',tip:'Jaundice, dark urine, and abdominal swelling are late-stage warning signs'},
+    ],
+    foods:[
+      {emoji:'☕',name:'Coffee (Moderate)',benefit:'3 cups/day reduces liver fibrosis by 40% and lowers liver cancer risk significantly'},
+      {emoji:'🍊',name:'Grapefruit',benefit:'Naringenin and naringin reduce liver inflammation and protect liver cells'},
+      {emoji:'🫀',name:'Beetroot',benefit:'Betalains reduce oxidative stress and inflammation in liver tissue'},
+      {emoji:'🥦',name:'Cruciferous Veggies',benefit:'Glucosinolates boost liver detoxification enzyme production'},
+      {emoji:'🫐',name:'Berries',benefit:'Anthocyanins reduce liver inflammation and may prevent liver fibrosis'},
+      {emoji:'🥜',name:'Walnuts',benefit:'Arginine and glutathione support the liver\'s ammonia detoxification process'},
+      {emoji:'🫒',name:'Olive Oil',benefit:'Reduces liver fat accumulation and improves liver enzyme levels in NAFLD'},
+      {emoji:'🐟',name:'Fatty Fish',benefit:'Omega-3s reduce triglyceride buildup in liver cells'},
+    ],
+    exercises:[
+      {icon:'🏃',name:'Aerobic Exercise (150 min/week)',desc:'The most direct intervention for non-alcoholic fatty liver disease. Even 8 weeks of aerobic exercise measurably reduces liver fat.',freq:'5x 30-min sessions'},
+      {icon:'🏋️',name:'Resistance Training',desc:'Builds metabolically active muscle mass that improves insulin sensitivity — directly reducing liver glucose and fat burden.',freq:'2–3x / week'},
+      {icon:'🧘',name:'Yoga Twists',desc:'Poses that compress and release the abdominal region (like seated twist) improve hepatic blood circulation.',freq:'3x / week'},
+      {icon:'🚶',name:'Walking After Meals',desc:'A 20-minute post-meal walk reduces postprandial glucose spikes by 30% — lowering glycogen that would otherwise convert to liver fat.',freq:'After each meal'},
+    ],
+    facts:[
+      {ico:'🔄',text:'The liver is the <strong>only human organ that can fully regenerate</strong> — even from as little as 25% of its original tissue.'},
+      {ico:'🏭',text:'Your liver produces <strong>800–1000ml of bile per day</strong> to emulsify dietary fats in the small intestine.'},
+      {ico:'🩸',text:'The liver stores <strong>glycogen as emergency glucose</strong> — releasing it when blood sugar drops between meals.'},
+      {ico:'💊',text:'The liver metabolizes <strong>virtually every drug you take</strong> — which is why liver health directly affects medication effectiveness.'},
+    ],
+    checklist:['Drink water instead of juice or soda today','Avoid alcohol today','Eat one liver-supporting food','Take a 20-min walk after your main meal','Avoid unnecessary OTC medications','Check if Hepatitis vaccine is up to date'],
+    related:['kidney','digestive','immunity','heart'],
+  },
+
+  kidney:{
+    icon:'🩺', title:'Kidney Health', tag:'Nephrology', color:'blue', glow:'rgba(59,130,246,.5)',
+    desc:'Your kidneys filter 200 liters of blood daily, remove waste through urine, regulate blood pressure, balance minerals, and produce hormones that control red blood cell production.',
+    stats:[{val:'200L',label:'Blood Filtered/Day'},{val:'1-1.5L',label:'Urine / Day'},{val:'1M',label:'Nephrons Each'},{val:'25%',label:'Heart Output'}],
+    riskScore:22, riskLabel:'Low Risk', riskColor:'#10b981',
+    qstats:[{icon:'💧',val:'2L+ water daily',key:'Flush toxins'},{icon:'🧂',val:'Low sodium diet',key:'BP control'},{icon:'📊',val:'Monitor blood sugar',key:'Diabetes prevention'},{icon:'💊',val:'Limit NSAIDs',key:'Nephron protection'}],
+    prec:[
+      {text:'Stay well-hydrated — aim for 2–3 liters of water daily to help kidneys flush waste efficiently',tip:'Dark yellow urine is a sign of dehydration; pale yellow is optimal'},
+      {text:'Limit salt (sodium) to under 2,300mg per day — excess sodium raises blood pressure and strains filtration',tip:'Processed and packaged foods contain 70% of dietary sodium'},
+      {text:'Monitor blood sugar levels — diabetes is the leading cause of kidney failure worldwide',tip:'Chronically high glucose damages the tiny filtration vessels in nephrons'},
+      {text:'Avoid long-term overuse of NSAIDs (ibuprofen, naproxen) — they reduce blood flow to the kidneys',tip:'Use acetaminophen instead for chronic pain, or consult your doctor'},
+      {text:'Control blood pressure strictly — hypertension is the second leading cause of kidney disease',tip:'Target: below 130/80 for people with kidney risk factors'},
+      {text:'Get annual kidney function tests (creatinine, GFR, urine albumin) — especially if diabetic or hypertensive',tip:'Early CKD has no symptoms — detection before Stage 3 allows reversal'},
+    ],
+    foods:[
+      {emoji:'🥦',name:'Cauliflower',benefit:'Low potassium and phosphorus — perfect for kidney health without mineral overload'},
+      {emoji:'🫐',name:'Blueberries',benefit:'Antioxidants reduce oxidative stress that damages nephrons over time'},
+      {emoji:'🍇',name:'Red Grapes',benefit:'Resveratrol reduces kidney inflammation and has anti-fibrotic properties'},
+      {emoji:'🥚',name:'Egg Whites',benefit:'High-quality protein with low phosphorus — ideal for kidney-friendly protein intake'},
+      {emoji:'🧄',name:'Garlic',benefit:'Anti-inflammatory, reduces sodium retention, and protects kidneys from oxidative damage'},
+      {emoji:'🫒',name:'Olive Oil',benefit:'Phosphorus-free healthy fat that reduces inflammation without burdening the kidneys'},
+      {emoji:'🍎',name:'Apples',benefit:'High fiber and anti-inflammatory — helps manage cholesterol and protect renal vessels'},
+      {emoji:'🫐',name:'Cranberries',benefit:'Prevent UTIs from ascending to become kidney infections via PACs that prevent bacterial adhesion'},
+    ],
+    exercises:[
+      {icon:'🚶',name:'Regular Walking',desc:'Low-impact consistent activity that controls blood pressure, blood sugar, and weight — the three primary kidney disease risk factors.',freq:'30 min daily'},
+      {icon:'🏊',name:'Swimming',desc:'Excellent for kidney patients — reduces blood pressure, improves cardiovascular health without high-impact joint stress.',freq:'3x / week'},
+      {icon:'🚴',name:'Light Cycling',desc:'Stationary or outdoor cycling at moderate intensity reduces inflammatory markers that damage renal filtration membranes.',freq:'3–4x / week'},
+      {icon:'🧘',name:'Yoga & Stretching',desc:'Reduces cortisol-driven inflammation, improves kidney blood flow through abdominal organ massage in forward folds.',freq:'3x / week'},
+    ],
+    facts:[
+      {ico:'🫘',text:'Each kidney contains approximately <strong>one million nephrons</strong> — tiny filtration units. You can live normally with just one healthy kidney.'},
+      {ico:'💧',text:'Your kidneys produce urine at approximately <strong>1ml per minute</strong> at rest — ramping up dramatically with high fluid intake.'},
+      {ico:'🩸',text:'Kidneys produce <strong>erythropoietin (EPO)</strong> — the hormone that stimulates red blood cell production in bone marrow.'},
+      {ico:'⚖️',text:'Kidneys maintain blood pH within a <strong>narrow range of 7.35–7.45</strong> — even small deviations can be life-threatening.'},
+    ],
+    checklist:['Drink 8 glasses of water today','Avoid salty snacks','Check medication for NSAID content','Eat a kidney-friendly meal','Monitor blood pressure if possible','Book annual kidney function test'],
+    related:['heart','liver','digestive','immunity'],
+  },
+
+  skin:{
+    icon:'✨', title:'Skin Health', tag:'Dermatology', color:'pink', glow:'rgba(236,72,153,.5)',
+    desc:'Your skin is your largest organ — 1.8 square meters of it — and your first line of defense against the environment. It reflects your internal health as much as your external care routine.',
+    stats:[{val:'1.8m²',label:'Surface Area'},{val:'2mm',label:'Avg Thickness'},{val:'30K',label:'Dead Cells/Hour'},{val:'30yr',label:'Full Regeneration'}],
+    riskScore:20, riskLabel:'Low Risk', riskColor:'#10b981',
+    qstats:[{icon:'☀️',val:'SPF 30+ sunscreen',key:'UV protection'},{icon:'💧',val:'2L water daily',key:'Skin hydration'},{icon:'🌙',val:'Remove makeup nightly',key:'Pore health'},{icon:'😴',val:'7–8h beauty sleep',key:'Cell regeneration'}],
+    prec:[
+      {text:'Apply broad-spectrum SPF 30+ sunscreen every morning — UV is the #1 cause of premature aging and skin cancer',tip:'Reapply every 2 hours during outdoor exposure. UV rays penetrate clouds and windows.'},
+      {text:'Remove all makeup before sleeping — it clogs pores, breaks down collagen, and accelerates aging overnight',tip:'Even light cleansing with micellar water is sufficient on tired evenings'},
+      {text:'Moisturize within 3 minutes of bathing — this locks in residual moisture before it evaporates',tip:'Ceramide-containing moisturizers repair the skin barrier most effectively'},
+      {text:'Avoid harsh soaps and over-cleansing — your skin microbiome is as important as your gut microbiome',tip:'pH-balanced cleansers (pH 4.5–5.5) preserve the acid mantle that protects against pathogens'},
+      {text:'Never pop or pick at acne — it introduces bacteria, deepens inflammation, and causes permanent scarring',tip:'Use a warm compress and salicylic acid spot treatment instead'},
+      {text:'Change pillowcases at least twice a week — they accumulate sebum, bacteria, and hair products',tip:'Silk pillowcases reduce friction and moisture loss during sleep'},
+    ],
+    foods:[
+      {emoji:'🥑',name:'Avocado',benefit:'Vitamin E and healthy fats maintain skin membrane integrity and moisture'},
+      {emoji:'🍅',name:'Tomatoes',benefit:'Lycopene (highest in cooked tomatoes) protects skin from UV-induced damage'},
+      {emoji:'🍫',name:'Dark Chocolate',benefit:'Flavanols increase skin hydration, circulation, and UV resistance'},
+      {emoji:'🍵',name:'Green Tea',benefit:'EGCG reduces inflammation, sebum production, and UV-induced DNA damage'},
+      {emoji:'🐟',name:'Fatty Fish',benefit:'Omega-3s reduce inflammatory acne and keep skin membranes supple'},
+      {emoji:'🥦',name:'Broccoli',benefit:'Sulforaphane activates skin\'s antioxidant defense genes against UV damage'},
+      {emoji:'🌰',name:'Walnuts',benefit:'Zinc regulates sebum production and has proven anti-acne properties'},
+      {emoji:'🫐',name:'Berries',benefit:'Vitamin C (the co-factor for collagen synthesis) + antioxidants for skin aging'},
+    ],
+    exercises:[
+      {icon:'🏃',name:'Cardio Exercise',desc:'Increases circulation that delivers oxygen and nutrients to skin cells. Also promotes sweating that clears pore buildup.',freq:'4–5x / week'},
+      {icon:'😊',name:'Facial Yoga',desc:'Tones the 57 facial muscles, improves lymphatic drainage, and reduces puffiness without botox or fillers.',freq:'10 min daily'},
+      {icon:'💆',name:'Facial Massage',desc:'Gua sha or jade roller massage boosts collagen production, reduces cortisol, and improves product absorption by 80%.',freq:'Evening routine'},
+      {icon:'😴',name:'Quality Sleep Routine',desc:'During deep sleep, HGH (human growth hormone) is released — driving skin cell repair and collagen synthesis.',freq:'7–9h nightly'},
+    ],
+    facts:[
+      {ico:'🔄',text:'Your skin completely renews itself every <strong>27 days</strong> — making consistent skincare habits more impactful than expensive single treatments.'},
+      {ico:'🦠',text:'Your skin hosts over <strong>1,000 species of bacteria</strong> in its microbiome — most of which actively protect you from pathogens.'},
+      {ico:'☀️',text:'<strong>90% of skin aging</strong> (wrinkles, dark spots, sagging) is caused by UV exposure — not chronological aging.'},
+      {ico:'💧',text:'Skin is <strong>64% water</strong> — dehydration is visibly apparent in skin texture, elasticity, and glow within 24 hours.'},
+    ],
+    checklist:['Apply SPF 30+ sunscreen this morning','Remove makeup before sleeping','Drink 8 glasses of water','Eat one skin-boosting food','Change pillowcase if overdue','Do 5 min of facial massage'],
+    related:['immunity','mental','digestive','bone'],
+  },
+
+  bone:{
+    icon:'🦴', title:'Bone & Joint Health', tag:'Orthopedics', color:'lav', glow:'rgba(139,92,246,.5)',
+    desc:'Your skeleton is not static — it is a living tissue that constantly remodels itself. Peak bone density is reached at 30; after that, how you live determines how fast or slow it declines.',
+    stats:[{val:'206',label:'Bones in Body'},{val:'360',label:'Joints Total'},{val:'10yr',label:'Bone Renewal Cycle'},{val:'40%',label:'Body Weight'}],
+    riskScore:25, riskLabel:'Low Risk', riskColor:'#10b981',
+    qstats:[{icon:'☀️',val:'15 min sun / day',key:'Vitamin D synthesis'},{icon:'🥛',val:'1000mg calcium',key:'Daily requirement'},{icon:'🏋️',val:'Weight-bearing exercise',key:'Bone density'},{icon:'🚭',val:'No smoking',key:'Bone cell protection'}],
+    prec:[
+      {text:'Get 15–20 minutes of direct sunlight daily for Vitamin D synthesis — the critical co-factor for calcium absorption',tip:'Without Vitamin D, only 10–15% of dietary calcium is absorbed (vs 30–40% with adequate D)'},
+      {text:'Meet daily calcium needs: 1000mg for adults under 50, 1200mg for those over 50',tip:'Spread calcium intake across meals — the body can only absorb ~500mg at a time'},
+      {text:'Avoid smoking — nicotine directly inhibits osteoblasts (the cells that build new bone tissue)',tip:'Smokers have 25% lower bone density than non-smokers at the same age'},
+      {text:'Limit caffeine and alcohol — both increase urinary calcium excretion',tip:'More than 3 cups of coffee daily is associated with measurable bone density loss over time'},
+      {text:'Prevent falls at home — install grip bars, remove loose rugs, and ensure adequate lighting',tip:'For those over 65, hip fractures carry a 20–30% one-year mortality rate'},
+      {text:'Get a DEXA bone density scan at 65 (women) or 70 (men) — or earlier if risk factors present',tip:'Osteoporosis is silent until a fracture occurs — early detection allows effective treatment'},
+    ],
+    foods:[
+      {emoji:'🥛',name:'Dairy',benefit:'Calcium and Vitamin D in the most bioavailable form — 300mg per cup of milk'},
+      {emoji:'🥬',name:'Leafy Greens',benefit:'Kale and bok choy have calcium absorption rates higher than milk (50–60%)'},
+      {emoji:'🐟',name:'Sardines with Bones',benefit:'Per gram, sardines are the richest dietary source of bioavailable calcium'},
+      {emoji:'🫘',name:'Tofu (calcium-set)',benefit:'Excellent plant-based calcium source with isoflavones that reduce bone resorption'},
+      {emoji:'🌰',name:'Almonds',benefit:'Richest nut in calcium plus magnesium — a co-factor for calcium incorporation into bone'},
+      {emoji:'🥣',name:'Fortified Cereals',benefit:'Can deliver 100% daily Vitamin D needs with calcium in a single serving'},
+      {emoji:'🍳',name:'Eggs',benefit:'Vitamin D (in yolk) and protein for bone matrix scaffolding'},
+      {emoji:'🐟',name:'Salmon',benefit:'Vitamin D and omega-3s that reduce osteoclast (bone-destroying cell) activity'},
+    ],
+    exercises:[
+      {icon:'🏋️',name:'Weight-Bearing Exercise',desc:'Walking, running, dancing — any activity where your skeleton bears your body weight stimulates osteoblast activity and new bone formation.',freq:'Daily 30+ min'},
+      {icon:'💪',name:'Resistance Training',desc:'Lifting weights creates mechanical stress on bones that triggers density increases. Most effective when combined with adequate calcium and Vitamin D.',freq:'2–3x / week'},
+      {icon:'⚖️',name:'Balance & Stability Drills',desc:'Single-leg stands, balance boards — prevent falls which are the primary cause of osteoporotic fractures.',freq:'Daily 10 min'},
+      {icon:'🧘',name:'Yoga & Stretching',desc:'Improves joint mobility, proprioception, and flexibility — reducing injury risk and maintaining range of motion as cartilage thins with age.',freq:'3x / week'},
+    ],
+    facts:[
+      {ico:'💧',text:'Your bones are <strong>31% water</strong> — dehydration makes them more brittle. Collagen (the bone matrix) also requires water to maintain elasticity.'},
+      {ico:'⚡',text:'Bone is <strong>5 times stronger than steel</strong> by weight — a human femur can withstand 4 tons of force before fracturing.'},
+      {ico:'🔄',text:'Your skeleton completely replaces itself every <strong>10 years</strong> — meaning the bones you have today are entirely new compared to 10 years ago.'},
+      {ico:'👶',text:'Babies are born with <strong>270–300 bones</strong>. Many fuse during childhood and adolescence, leaving adults with exactly 206.'},
+    ],
+    checklist:['Get 15 min of sunlight today','Eat one calcium-rich food','Do weight-bearing exercise','Take Vitamin D supplement if prescribed','Practice 5 min balance exercises','Avoid alcohol and excessive caffeine'],
+    related:['heart','skin','mental','immunity'],
+  },
+
+  mental:{
+    icon:'🧘', title:'Mental Health', tag:'Psychology', color:'lav', glow:'rgba(139,92,246,.5)',
+    desc:'Mental health is not the absence of illness — it is the presence of resilience, connection, and wellbeing. One in four people will experience a mental health condition in their lifetime.',
+    stats:[{val:'1 in 4',label:'Affected Globally'},{val:'800K',label:'Lives / Year'},{val:'50%',label:'Onset Before 14'},{val:'75%',label:'No Treatment'}],
+    riskScore:30, riskLabel:'Moderate Risk', riskColor:'#f59e0b',
+    qstats:[{icon:'🤝',val:'Social connection',key:'Loneliness prevention'},{icon:'📵',val:'Limit social media',key:'Anxiety reduction'},{icon:'🌿',val:'Time in nature',key:'Cortisol reduction'},{icon:'🩺',val:'Seek help early',key:'Recovery outcomes'}],
+    prec:[
+      {text:'Set intentional social media limits — even 30 minutes/day reduction measurably improves anxiety and self-esteem',tip:'Use grayscale mode or app timers to reduce dopamine-driven scrolling'},
+      {text:'Maintain social connections actively — loneliness increases mortality risk more than smoking 15 cigarettes per day',tip:'Even brief quality interactions count — quality over quantity always'},
+      {text:'Practice gratitude daily — writing 3 specific things you\'re grateful for rewires the brain\'s negativity bias within weeks',tip:'Specificity matters: "good coffee this morning" works better than "my life"'},
+      {text:'Seek professional help early — depression and anxiety are medical conditions, not character flaws',tip:'Therapy produces lasting brain changes visible on fMRI — it physically restructures neural pathways'},
+      {text:'Establish a consistent daily routine — structure reduces decision fatigue and provides the brain with predictability it craves',tip:'Morning and evening anchors (same wake time, same sleep cue) are most impactful'},
+      {text:'Limit alcohol — while it feels relaxing, alcohol is a depressant that disrupts sleep, depletes serotonin, and worsens anxiety',tip:'The "hangover anxiety" (anxious hangover) is a real neurochemical phenomenon from serotonin depletion'},
+    ],
+    foods:[
+      {emoji:'🥬',name:'Leafy Greens',benefit:'Folate supports serotonin synthesis — deficiency linked to depression'},
+      {emoji:'🥜',name:'Walnuts',benefit:'Alpha-linolenic acid supports brain structure and reduces depressive symptoms'},
+      {emoji:'🥛',name:'Fermented Foods',benefit:'Gut microbiome directly influences mood via the gut-brain axis and vagus nerve'},
+      {emoji:'🐟',name:'Salmon',benefit:'Omega-3 EPA is as effective as antidepressants in mild-to-moderate depression in clinical trials'},
+      {emoji:'🍵',name:'Chamomile Tea',benefit:'Apigenin binds GABA receptors — producing genuine anxiolytic (anti-anxiety) effects'},
+      {emoji:'🍫',name:'Dark Chocolate',benefit:'Triggers endorphin release and contains PEA (phenylethylamine) — a natural mood elevator'},
+      {emoji:'🫐',name:'Blueberries',benefit:'Antioxidants reduce inflammation linked to depression and anxiety disorders'},
+      {emoji:'🌰',name:'Pumpkin Seeds',benefit:'Tryptophan (serotonin precursor) plus zinc and magnesium for GABA function'},
+    ],
+    exercises:[
+      {icon:'🧘',name:'Daily Meditation',desc:'As little as 8 weeks of daily 10-minute meditation measurably increases grey matter in the prefrontal cortex and shrinks the amygdala (fear center).',freq:'10–20 min daily'},
+      {icon:'✍️',name:'Journaling',desc:'Expressive writing processes emotional experiences, reduces rumination, and has been clinically shown to reduce symptoms of depression and PTSD.',freq:'10–15 min daily'},
+      {icon:'🌿',name:'Nature Walks',desc:'Even 20 minutes in green spaces reduces cortisol by 12.5% and activates the parasympathetic nervous system (rest-and-digest mode).',freq:'Daily'},
+      {icon:'🧘',name:'Yoga',desc:'Combines breathwork, movement, and mindfulness — reduces cortisol, increases GABA, and improves body image and self-compassion simultaneously.',freq:'3–4x / week'},
+      {icon:'🏃',name:'Any Aerobic Exercise',desc:'Exercise is the single most evidence-backed intervention for mild-to-moderate depression — equivalent to antidepressants in multiple clinical trials.',freq:'4–5x / week'},
+    ],
+    facts:[
+      {ico:'🧠',text:'Exercise increases <strong>BDNF (brain-derived neurotrophic factor)</strong> — often called "Miracle-Gro for the brain" — as effectively as antidepressants.'},
+      {ico:'🌙',text:'One night of poor sleep increases emotional reactivity by <strong>up to 60%</strong> by disrupting the prefrontal-amygdala regulatory circuit.'},
+      {ico:'🤝',text:'<strong>Social connection</strong> is consistently ranked as the #1 predictor of life satisfaction — above wealth, achievement, and status in every major longitudinal study.'},
+      {ico:'💪',text:'Mental health conditions are <strong>as treatable as diabetes or hypertension</strong> — with 50–80% improvement rates when appropriate treatment is accessed early.'},
+    ],
+    checklist:['Write 3 things you\'re grateful for','Connect with someone today','Limit social media to 30 min','Spend 20 min outdoors','Do a breathing or meditation exercise','Get to bed at a consistent time'],
+    related:['brain','heart','digestive','immunity'],
+  },
+
+  digestive:{
+    icon:'🌿', title:'Digestive Health', tag:'Gastroenterology', color:'mint', glow:'rgba(16,185,129,.5)',
+    desc:'Your gut is sometimes called your "second brain" — housing 70% of your immune system, producing 95% of your serotonin, and hosting 38 trillion microorganisms that influence every aspect of health.',
+    stats:[{val:'9m',label:'Digestive Tract'},{val:'38T',label:'Gut Microbes'},{val:'95%',label:'Serotonin Here'},{val:'70%',label:'Immune System'}],
+    riskScore:28, riskLabel:'Low Risk', riskColor:'#10b981',
+    qstats:[{icon:'🍽️',val:'Eat slowly, chew well',key:'Digestion efficiency'},{icon:'💧',val:'2L water daily',key:'Gut motility'},{icon:'🦠',val:'Probiotic foods',key:'Microbiome diversity'},{icon:'😌',val:'Stress management',key:'Gut-brain axis'}],
+    prec:[
+      {text:'Eat slowly and chew each bite 20–30 times — digestion begins in the mouth with salivary amylase',tip:'Rushed eating leads to swallowed air, indigestion, and poor nutrient absorption'},
+      {text:'Never skip breakfast — it stimulates the gastrocolic reflex and regulates bowel rhythm',tip:'A consistent breakfast time trains your gut\'s circadian rhythm for better motility'},
+      {text:'Avoid eating within 3 hours of bedtime — lying down immediately impairs digestion and causes acid reflux',tip:'If you must eat late, stay upright for at least 30 minutes afterward'},
+      {text:'Manage stress actively — the gut-brain axis means anxiety directly triggers IBS, cramping, and diarrhea',tip:'Deep breathing before meals activates the parasympathetic nervous system needed for digestion'},
+      {text:'Limit processed foods and artificial sweeteners — they disrupt gut microbiome diversity within 48 hours',tip:'Gut microbiome diversity correlates with metabolic health, immunity, and mood'},
+      {text:'Consider a food diary if you experience bloating, cramping, or irregular bowel habits',tip:'Common food sensitivities (gluten, lactose, FODMAPs) are easily identified with 2-week elimination testing'},
+    ],
+    foods:[
+      {emoji:'🍶',name:'Yogurt & Kefir',benefit:'Live cultures of Lactobacillus and Bifidobacterium restore and diversify the gut microbiome'},
+      {emoji:'🌾',name:'Whole Grains',benefit:'Insoluble fiber feeds beneficial gut bacteria and adds bulk that speeds gut transit'},
+      {emoji:'🫚',name:'Ginger',benefit:'Gingerols accelerate gastric emptying and reduce nausea, bloating, and gut inflammation'},
+      {emoji:'🍌',name:'Bananas',benefit:'Prebiotic fructooligosaccharides feed beneficial bacteria; potassium replenishes electrolytes'},
+      {emoji:'🫘',name:'Legumes',benefit:'Resistant starch that acts as prebiotic fuel for colon bacteria producing short-chain fatty acids'},
+      {emoji:'🫐',name:'Blueberries',benefit:'Polyphenols selectively increase Bifidobacterium — one of the most beneficial gut bacteria genera'},
+      {emoji:'🌿',name:'Fennel',benefit:'Antispasmodic that relieves bloating, gas, and intestinal cramping naturally'},
+      {emoji:'🍍',name:'Pineapple',benefit:'Bromelain enzyme aids protein digestion and reduces gut inflammation'},
+    ],
+    exercises:[
+      {icon:'🚶',name:'Walk After Meals',desc:'Even a 10–20 minute gentle walk after eating dramatically improves digestion, reduces bloating, and lowers postprandial blood glucose by 30%.',freq:'After each meal'},
+      {icon:'🔄',name:'Yoga Twists',desc:'Seated and supine twist poses compress and release the colon, stimulating peristalsis and improving transit time.',freq:'3–4x / week'},
+      {icon:'💪',name:'Core Strengthening',desc:'Strong abdominal muscles support gut organ positioning and improve bowel function. Pilates and planks are particularly effective.',freq:'3x / week'},
+      {icon:'🌬️',name:'Diaphragmatic Breathing',desc:'Belly breathing massages the intestinal organs with each breath and activates the vagus nerve — the primary gut-brain communication highway.',freq:'5 min before meals'},
+    ],
+    facts:[
+      {ico:'🦠',text:'Your gut microbiome weighs approximately <strong>2 kilograms</strong> — about the same as your brain — and contains more cells than your entire body.'},
+      {ico:'🧠',text:'The enteric nervous system in your gut has <strong>500 million neurons</strong> — more than your spinal cord — earning it the title "second brain."'},
+      {ico:'⏱️',text:'Food takes between <strong>24 to 72 hours</strong> to travel the full length of your digestive tract under normal conditions.'},
+      {ico:'😊',text:'<strong>95% of your body\'s serotonin</strong> (the happiness neurotransmitter) is produced in the gut — not the brain.'},
+    ],
+    checklist:['Eat breakfast within 1 hour of waking','Chew food slowly and thoroughly','Drink water between (not during) meals','Walk 15 min after your main meal','Eat one probiotic food today','Avoid eating within 3 hours of bed'],
+    related:['liver','immunity','mental','kidney'],
+  },
+
+  immunity:{
+    icon:'🛡️', title:'Immune Health', tag:'Immunology', color:'mint', glow:'rgba(16,185,129,.5)',
+    desc:'Your immune system is a 24/7 army of 37 billion specialized cells that identify and neutralize threats — from bacteria to cancer cells. It is also one of the most lifestyle-responsive systems in your body.',
+    stats:[{val:'37B',label:'Immune Cells'},{val:'1L',label:'Lymph / Hour'},{l:'10min',label:'Response Time'},{val:'70%',label:'In Gut Wall'}],
+    riskScore:24, riskLabel:'Low Risk', riskColor:'#10b981',
+    qstats:[{icon:'😴',val:'7–9h sleep nightly',key:'T-cell production'},{icon:'🏃',val:'Moderate exercise',key:'NK cell activity'},{icon:'😌',val:'Chronic stress control',key:'Cortisol suppression'},{icon:'💉',val:'Stay vaccinated',key:'Adaptive immunity'}],
+    prec:[
+      {text:'Prioritize 7–9 hours of quality sleep — your immune system produces and deploys T-cells and cytokines primarily during sleep',tip:'Even one night of 4-hour sleep reduces natural killer cell activity by 70%'},
+      {text:'Wash hands for 20+ seconds with soap — the most effective single intervention against infectious disease transmission',tip:'Antibacterial soaps provide no additional benefit over regular soap and contribute to resistance'},
+      {text:'Stay current on all recommended vaccinations — they train your adaptive immune system with zero risk of disease',tip:'Flu and pneumonia vaccines are particularly important for those over 60 or immunocompromised'},
+      {text:'Manage chronic stress — cortisol is directly immunosuppressive, reducing lymphocyte count and antibody production',tip:'Even brief daily mindfulness has been shown to increase secretory IgA (the gut\'s first-line antibody)'},
+      {text:'Avoid over-the-counter "immune boosters" without evidence — most are unregulated and none outperform lifestyle',tip:'Vitamin C, D, and Zinc have genuine evidence; most herbal supplements do not'},
+      {text:'Quit smoking — cigarettes paralyze the cilia lining your respiratory tract that sweep pathogens out',tip:'Within 2 weeks of quitting, cilia function begins recovering'},
+    ],
+    foods:[
+      {emoji:'🍊',name:'Citrus Fruits',benefit:'Vitamin C stimulates white blood cell production and acts as an antioxidant protecting immune cells'},
+      {emoji:'🧄',name:'Garlic',benefit:'Allicin has potent antimicrobial, antiviral, and immune-stimulating properties — most active when raw'},
+      {emoji:'🫚',name:'Ginger',benefit:'Gingerols reduce inflammatory cytokines and have direct antiviral properties against respiratory viruses'},
+      {emoji:'🥬',name:'Spinach',benefit:'Vitamin C, beta-carotene, and numerous antioxidants that support immune cell function'},
+      {emoji:'🌰',name:'Almonds',benefit:'Vitamin E — the fat-soluble antioxidant that maintains immune cell membrane integrity'},
+      {emoji:'🟡',name:'Turmeric',benefit:'Curcumin modulates immune response — reducing both excessive inflammation and immunosuppression'},
+      {emoji:'🍵',name:'Green Tea',benefit:'EGCG enhances T-cell function and has direct antiviral properties in upper respiratory infections'},
+      {emoji:'🫐',name:'Elderberries',benefit:'Anthocyanins directly block viral replication — clinical evidence for reduced flu duration'},
+    ],
+    exercises:[
+      {icon:'🏃',name:'Moderate Aerobic Exercise',desc:'30–60 minutes of moderate exercise increases natural killer cell circulation by 50–300% for up to 24 hours afterward.',freq:'5x / week'},
+      {icon:'🧘',name:'Yoga',desc:'Activates the parasympathetic nervous system and reduces cortisol — directly restoring immune function suppressed by chronic stress.',freq:'3–4x / week'},
+      {icon:'🥋',name:'Tai Chi',desc:'Particularly beneficial for older adults — has been shown to double the antibody response to influenza vaccination in clinical trials.',freq:'3x / week'},
+      {icon:'⚠️',name:'Avoid Overtraining',desc:'More than 90 minutes of intense daily exercise suppresses immunity (the "open window" phenomenon). Balance is critical.',freq:'Rest 1–2 days/week'},
+    ],
+    facts:[
+      {ico:'😴',text:'Sleep deprivation reduces immune function so profoundly that people who sleep less than 7 hours are <strong>3x more likely to catch a cold</strong> when exposed to rhinovirus.'},
+      {ico:'🦠',text:'Your immune system remembers <strong>every pathogen it has ever fought</strong> — creating antibodies that can neutralize the same threat decades later.'},
+      {ico:'🌡️',text:'Fever is not the enemy — it\'s your immune system\'s deliberate strategy. Pathogens replicate <strong>most efficiently at 37°C</strong>; fever makes survival harder for them.'},
+      {ico:'🍃',text:'The first known immune-like system evolved in bacteria <strong>over 2 billion years ago</strong> — you carry billions of years of evolved defense in every cell.'},
+    ],
+    checklist:['Get 7–9 hours sleep tonight','Wash hands regularly today','Eat one immune-boosting food','Do 30 min moderate exercise','Manage one stressor today','Check vaccine schedule is current'],
+    related:['digestive','lung','mental','heart'],
+  },
+};
+
+const allTopicIds=Object.keys(topics);
+const relatedNames={brain:'Brain',eye:'Eye',ear:'Ear',heart:'Heart',lung:'Lung',liver:'Liver',kidney:'Kidney',skin:'Skin',bone:'Bone & Joint',mental:'Mental',digestive:'Digestive',immunity:'Immune'};
+
+/* ══ REVEAL ══ */
+const ro=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*70);ro.unobserve(e.target);}});},{threshold:.07,rootMargin:'0px 0px -20px 0px'});
+
+/* ══ CHECKLIST ══ */
+function toggleCheck(el){el.classList.toggle('checked');}
+
+/* ══ RENDER ══ */
+function render(){
+  const topicId = new URLSearchParams(window.location.search).get('topic')||'brain';
+  const t = topics[topicId];
+  const page = document.getElementById('mainPage');
+
+  if(!t){
+    page.innerHTML=`<div class="not-found"><div class="nf-emoji">🔍</div><div class="nf-title">Topic not found</div><div class="nf-desc">We couldn't find that health topic. Try one from below.</div><a href="home.html" class="qa-btn qa-primary">← Back to Home</a></div>`;
+    return;
+  }
+
+  document.title = `AroMi — ${t.title}`;
+
+  // Related topics (exclude self)
+  const relItems = (t.related||allTopicIds.filter(id=>id!==topicId).slice(0,4))
+    .map(id=>`<a href="health-topic.html?topic=${id}" class="rel-item"><span class="rel-emoji">${topics[id]?.icon||'💊'}</span><span class="rel-name">${relatedNames[id]||id}</span><span class="rel-arrow">›</span></a>`).join('');
+
+  // Risk color
+  const rfill = t.riskScore/100;
+  const rOff = 283-(283*rfill);
+
+  page.innerHTML = `
+    <!-- HERO -->
+    <div class="topic-hero glass-card reveal">
+      <div class="hero-glow" style="background:radial-gradient(circle,${t.glow},transparent 70%)"></div>
+      <div class="hero-emoji">${t.icon}</div>
+      <div class="hero-text">
+        <div class="hero-breadcrumb"><a href="home.html">Home</a><span>›</span><a href="home.html">Health Topics</a><span>›</span><span style="color:#1e1b2e">${t.title}</span></div>
+        <div class="hero-tag">🏥 ${t.tag}</div>
+        <h1 class="hero-title">${t.title}</h1>
+        <p class="hero-desc">${t.desc}</p>
+        <div class="hero-stats">
+          ${t.stats.map(s=>`<div class="hstat"><div class="hstat-val">${s.val}</div><div class="hstat-label">${s.label}</div></div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="quick-actions reveal">
+      <button class="qa-btn qa-primary" onclick="openPred('${topicId}')">🔮 Get AI Prediction</button>
+      <a href="history.html" class="qa-btn qa-ghost">📊 Log Health Data</a>
+      <button class="qa-btn qa-ghost" onclick="showToast('${t.title} guide saved! 📌')">📌 Save Guide</button>
+      <button class="qa-btn qa-ghost" onclick="shareGuide()">🔗 Share</button>
+    </div>
+
+    <!-- LAYOUT -->
+    <div class="topic-layout">
+      <div class="left-col">
+
+        <!-- PRECAUTIONS -->
+        <div class="sec-card glass-card sc-pink reveal">
+          <div class="sec-label sl-pink">⚠️ Precautions & Prevention</div>
+          <div class="prec-list">
+            ${t.prec.map((p,i)=>`
+              <div class="prec-item">
+                <div class="prec-num">${i+1}</div>
+                <div>
+                  <div class="prec-text">${p.text}</div>
+                  ${p.tip?`<div class="prec-tip">💡 ${p.tip}</div>`:''}
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- FOODS -->
+        <div class="sec-card glass-card sc-mint reveal">
+          <div class="sec-label sl-mint">🥗 Recommended Foods</div>
+          <div class="foods-grid">
+            ${t.foods.map(f=>`
+              <div class="food-card">
+                <div class="food-emoji">${f.emoji}</div>
+                <div class="food-name">${f.name}</div>
+                <div class="food-benefit">${f.benefit}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- EXERCISES -->
+        <div class="sec-card glass-card sc-lav reveal">
+          <div class="sec-label sl-lav">🏋️ Exercises & Activities</div>
+          <div class="ex-list">
+            ${t.exercises.map(e=>`
+              <div class="ex-item">
+                <div class="ex-icon">${e.icon}</div>
+                <div class="ex-body">
+                  <div class="ex-name">${e.name}</div>
+                  <div class="ex-desc">${e.desc}</div>
+                  <span class="ex-freq">📅 ${e.freq}</span>
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- DID YOU KNOW -->
+        <div class="sec-card glass-card sc-amber reveal">
+          <div class="sec-label sl-amber">💡 Did You Know?</div>
+          <div class="facts-list">
+            ${t.facts.map(f=>`
+              <div class="fact-item">
+                <div class="fact-ico">${f.ico}</div>
+                <div class="fact-text">${f.text}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COL -->
+      <div class="right-col">
+
+        <!-- RISK METER -->
+        <div class="risk-meter-card glass-card reveal">
+          <div class="rm-title">🎯 General Risk Level</div>
+          <div class="rm-gauge">
+            <svg viewBox="0 0 90 90">
+              <defs>
+                <linearGradient id="rmg" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="${t.riskColor}"/>
+                  <stop offset="100%" stop-color="${t.riskColor}99"/>
+                </linearGradient>
+              </defs>
+              <circle class="rm-track" cx="45" cy="45" r="35"/>
+              <circle class="rm-fill" id="rmFill" cx="45" cy="45" r="35" stroke="url(#rmg)"/>
+            </svg>
+            <div class="rm-center">
+              <div class="rm-num" style="color:${t.riskColor}">${t.riskScore}%</div>
+              <div class="rm-sub">risk</div>
+            </div>
+          </div>
+          <div class="rm-label" style="color:${t.riskColor}">${t.riskLabel}</div>
+          <div class="rm-desc">Based on average population data. Get an <a href="prediction.html" style="color:#8b5cf6;text-decoration:none;font-weight:500;">AI Prediction</a> for your personal risk.</div>
+        </div>
+
+        <!-- QUICK STATS -->
+        <div class="qstats-card glass-card reveal">
+          <div class="qs-title">✅ Daily Goals</div>
+          <div class="qs-items">
+            ${t.qstats.map(q=>`
+              <div class="qs-item">
+                <div class="qs-icon">${q.icon}</div>
+                <div class="qs-body">
+                  <div class="qs-val">${q.val}</div>
+                  <div class="qs-key">${q.key}</div>
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- DAILY CHECKLIST -->
+        <div class="sec-card glass-card sc-mint reveal" style="padding:20px;">
+          <div class="sec-label sl-mint" style="margin-bottom:14px;">☑️ Daily Checklist</div>
+          <div class="checklist">
+            ${t.checklist.map((item,i)=>`
+              <div class="cl-item" onclick="toggleCheck(this)" id="cl${i}">
+                <div class="cl-box">✓</div>
+                <span class="cl-text">${item}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- RELATED TOPICS -->
+        <div class="related-card glass-card reveal">
+          <div class="rel-title">🔗 Related Topics</div>
+          <div class="rel-items">${relItems}</div>
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  // Animate risk ring after render
+  setTimeout(()=>{
+    const fill = document.getElementById('rmFill');
+    if(fill) fill.style.strokeDashoffset = rOff;
+  },300);
+
+  // Init reveal
+  document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+}
+
+function openPred(topicId){
+  const areaMap={brain:'Brain / Head',eye:'Eyes',ear:'Ears',heart:'Heart / Chest',lung:'Lungs / Respiratory',liver:'Liver / Digestive',kidney:'Kidneys / Urinary',bone:'Bones / Joints',skin:'Skin',mental:'Mental Health',digestive:'Liver / Digestive',immunity:'Immunity / General'};
+  window.location.href='prediction.html?body_area='+encodeURIComponent(areaMap[topicId]||'Immunity / General')+'&age=28&gender=Female&symptoms=General+checkup&sleep=7–8+hours&exercise=3–4x+%2F+week&diet=Balanced+%2F+Mixed&stress=Low&height=168&weight=62&conditions=None';
+}
+
+function shareGuide(){
+  if(navigator.clipboard) navigator.clipboard.writeText(window.location.href).then(()=>showToast('Link copied! 🔗'));
+  else showToast('Link copied! 🔗');
+}
+
+/* ══ NAV ══ */
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{navbar.classList.toggle('nav-hidden',window.scrollY>80);},{passive:true});
+document.addEventListener('mousemove',e=>{if(e.clientY<80)navbar.classList.remove('nav-hidden');});
+document.addEventListener('touchstart',e=>{if(e.touches[0].clientY<80)navbar.classList.remove('nav-hidden');},{passive:true});
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
+document.addEventListener('click',e=>{const m=document.getElementById('mobileMenu');if(m.classList.contains('open')&&!m.contains(e.target)&&!e.target.closest('.nav-hamburger'))m.classList.remove('open');});
+
+document.addEventListener('DOMContentLoaded', render);
+</script>
+<script src="js/navbar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+</body>
+</html>

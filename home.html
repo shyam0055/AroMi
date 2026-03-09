@@ -56,10 +56,8 @@ body{font-family:'DM Sans',sans-serif;color:#1e1b2e;overflow-x:hidden;min-height
 .notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:#ec4899;border:1.5px solid #fff;}
 .nav-profile{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.7);font-size:15px;text-decoration:none;cursor:pointer;transition:all .25s ease;}
 .nav-profile:hover{transform:scale(1.1);box-shadow:0 4px 16px rgba(139,92,246,.3);}
-/* hamburger */
 .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
 .nav-hamburger span{display:block;width:22px;height:2px;background:#4b4563;border-radius:2px;transition:all .3s ease;}
-/* mobile menu */
 .mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;z-index:999;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,190,220,.3);padding:16px 20px;flex-direction:column;gap:4px;}
 .mobile-menu.open{display:flex;}
 .mobile-menu a{padding:12px 16px;border-radius:14px;text-decoration:none;color:#4b4563;font-size:15px;font-weight:500;transition:all .2s;}
@@ -76,7 +74,6 @@ body{font-family:'DM Sans',sans-serif;color:#1e1b2e;overflow-x:hidden;min-height
 .hero-p{font-size:17px;color:#7c6f9a;line-height:1.75;font-weight:300;max-width:480px;margin-bottom:40px;}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
 
-/* floating left stats */
 .stat-float{position:absolute;z-index:3;animation:cardFloat 5s ease-in-out infinite;}
 .stat-float:nth-child(1){bottom:18%;left:1%;animation-delay:0s;}
 .stat-float:nth-child(2){top:22%;left:1%;animation-delay:1.8s;}
@@ -87,7 +84,6 @@ body{font-family:'DM Sans',sans-serif;color:#1e1b2e;overflow-x:hidden;min-height
 .stat-val{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#1e1b2e;}
 .stat-sub{font-size:11px;color:#7c6f9a;margin-top:2px;}
 
-/* hero right */
 .hero-right{position:relative;height:480px;display:flex;align-items:center;justify-content:center;}
 #brain-canvas{position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:24px;width:100%;height:100%;}
 .hcard{position:absolute;z-index:3;animation:cardFloat 5s ease-in-out infinite;}
@@ -113,7 +109,6 @@ body{font-family:'DM Sans',sans-serif;color:#1e1b2e;overflow-x:hidden;min-height
 .section-tag{font-size:11px;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;color:#10b981;margin-bottom:12px;}
 .section-h2{font-family:'Playfair Display',serif;font-size:clamp(30px,4.5vw,56px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;color:#1e1b2e;margin-bottom:50px;}
 
-/* health grid */
 .health-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
 .hc{padding:26px 22px;cursor:pointer;transition:transform .35s cubic-bezier(.34,1.4,.64,1),box-shadow .35s ease;position:relative;overflow:hidden;}
 .hc::after{content:'';position:absolute;inset:0;border-radius:24px;background:linear-gradient(135deg,rgba(255,255,255,.4) 0%,transparent 70%);opacity:0;transition:opacity .3s;}
@@ -124,7 +119,6 @@ body{font-family:'DM Sans',sans-serif;color:#1e1b2e;overflow-x:hidden;min-height
 .hc-desc{font-size:13px;color:#7c6f9a;line-height:1.6;margin-bottom:14px;}
 .hc-link{font-size:12px;color:#8b5cf6;font-weight:600;letter-spacing:.3px;}
 
-/* scroll reveal */
 .reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s cubic-bezier(.4,0,.2,1);}
 .reveal.in{opacity:1;transform:none;}
 
@@ -147,96 +141,86 @@ body{font-family:'DM Sans',sans-serif;color:#1e1b2e;overflow-x:hidden;min-height
 .mtag{padding:5px 13px;border-radius:50px;font-size:12px;font-weight:500;background:rgba(139,92,246,.1);color:#8b5cf6;border:1px solid rgba(139,92,246,.2);}
 .mfoot{display:flex;gap:12px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap;}
 
-/* PREDICTION MODAL */
-.pred-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;color:#1e1b2e;margin-bottom:4px;}
-.pred-sub{font-size:13px;color:#7c6f9a;margin-bottom:22px;}
+/* ─── PREDICTION MODAL STYLES ─── */
+.pred-modal-header{
+  display:flex;align-items:center;gap:14px;
+  padding-bottom:20px;margin-bottom:4px;
+  border-bottom:1px solid rgba(196,181,253,.2);
+}
+.pred-modal-orb{
+  width:48px;height:48px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,#ec4899,#8b5cf6,#10b981);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  box-shadow:0 4px 16px rgba(139,92,246,.35);
+  animation:pulse 3s ease-in-out infinite;
+}
+.pred-modal-htitle{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;color:#1e1b2e;}
+.pred-modal-hsub{font-size:13px;color:#8b5cf6;margin-top:2px;font-weight:500;}
+
+/* form rows */
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.fg{margin-bottom:16px;}
-.fg label{display:block;font-size:12px;font-weight:600;color:#4b4563;margin-bottom:6px;letter-spacing:.3px;}
-.fg input,.fg select,.fg textarea{width:100%;padding:11px 15px;border-radius:13px;border:1.5px solid rgba(196,181,253,.45);background:rgba(255,255,255,.65);backdrop-filter:blur(8px);font-family:'DM Sans',sans-serif;font-size:14px;color:#1e1b2e;outline:none;transition:all .25s ease;appearance:none;}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#8b5cf6;background:rgba(255,255,255,.9);box-shadow:0 0 0 3px rgba(139,92,246,.12);}
-.fg textarea{resize:vertical;min-height:76px;}
+.fg{margin-bottom:14px;}
+.fg label{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;color:#4b4563;
+  margin-bottom:6px;letter-spacing:.3px;
+}
+.fg label .fl-icon{font-size:14px;}
+.fg input,.fg select,.fg textarea{
+  width:100%;padding:11px 15px;
+  border-radius:13px;border:1.5px solid rgba(196,181,253,.45);
+  background:rgba(255,255,255,.65);backdrop-filter:blur(8px);
+  font-family:'DM Sans',sans-serif;font-size:14px;color:#1e1b2e;
+  outline:none;transition:all .25s ease;appearance:none;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{
+  border-color:#8b5cf6;background:rgba(255,255,255,.9);
+  box-shadow:0 0 0 3px rgba(139,92,246,.12);
+}
+.fg textarea{resize:vertical;min-height:72px;}
+
+/* field value preview chips */
+.field-preview{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:4px;padding:2px 10px;border-radius:50px;
+  font-size:11px;font-weight:600;color:#8b5cf6;
+  background:rgba(139,92,246,.08);
+  transition:all .2s;
+}
+
+/* submit button area */
+.pred-submit-area{
+  display:flex;gap:12px;justify-content:flex-end;
+  margin-top:20px;padding-top:16px;
+  border-top:1px solid rgba(196,181,253,.2);
+  flex-wrap:wrap;
+}
+
+/* data flow indicator */
+.data-flow-hint{
+  margin-top:16px;padding:10px 14px;
+  background:rgba(16,185,129,.07);
+  border:1px solid rgba(16,185,129,.2);
+  border-radius:12px;
+  font-size:12px;color:#059669;
+  display:flex;align-items:center;gap:8px;
+}
+.flow-dot{width:6px;height:6px;border-radius:50%;background:#10b981;flex-shrink:0;animation:blink 1.4s ease infinite;}
 
 /* FOOTER */
 footer{position:relative;z-index:1;text-align:center;padding:32px 24px;font-size:13px;color:#7c6f9a;border-top:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.2);backdrop-filter:blur(12px);}
 footer a{color:#8b5cf6;text-decoration:none;}
 footer a:hover{text-decoration:underline;}
 
-/* SCROLLBAR */
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(139,92,246,.3);border-radius:10px;}
 
-/* ═══════════════════════════════
-   RESPONSIVE BREAKPOINTS
-═══════════════════════════════ */
-
-/* Tablet landscape (≤1100px) */
-@media(max-width:1100px){
-  .health-grid{grid-template-columns:repeat(3,1fr);}
-  #hero{padding:100px 32px 60px;}
-  #health-section{padding:60px 32px;}
-  #navbar{padding:0 32px;}
-}
-
-/* Tablet portrait (≤900px) */
-@media(max-width:900px){
-  #navbar{padding:0 20px;}
-  .nav-links{display:none;}
-  .nav-hamburger{display:flex;}
-  #hero{padding:90px 24px 50px;min-height:auto;}
-  .hero-inner{grid-template-columns:1fr;gap:36px;}
-  .hero-right{height:320px;width:100%;order:-1;}
-  .hcard:nth-child(2){top:4%;right:0;}
-  .hcard:nth-child(3){bottom:4%;right:0;}
-  .hcard:nth-child(4){display:none;}
-  .stat-float{display:none;}
-  .hero-h1{font-size:clamp(32px,7vw,52px);letter-spacing:-1px;}
-  .hero-p{font-size:15px;max-width:100%;}
-  #health-section{padding:50px 20px 40px;}
-  .section-h2{font-size:clamp(28px,6vw,42px);margin-bottom:36px;}
-  .health-grid{grid-template-columns:repeat(2,1fr);gap:14px;}
-}
-
-/* Phone (≤600px) */
-@media(max-width:600px){
-  #navbar{padding:0 16px;height:58px;}
-  .mobile-menu{top:58px;}
-  .nav-name{font-size:18px;}
-  .nav-dot{width:28px;height:28px;}
-  .nav-dot svg{width:13px;height:13px;margin:7.5px;}
-  #hero{padding:80px 16px 40px;}
-  .hero-badge{font-size:12px;padding:6px 14px;}
-  .hero-h1{font-size:clamp(28px,8.5vw,40px);letter-spacing:-.5px;margin-bottom:16px;}
-  .hero-p{font-size:14px;margin-bottom:28px;}
-  .hero-btns{flex-direction:column;align-items:stretch;}
-  .btn-main,.btn-ghost{justify-content:center;padding:13px 24px;font-size:14px;}
-  .hero-right{height:260px;}
-  .param-box{min-width:160px;padding:12px 14px;}
-  .heart-box{min-width:150px;padding:10px 14px;}
-  .param-lbl{font-size:10px;}
-  .p-tag{font-size:11px;padding:4px 10px;}
-  #health-section{padding:40px 14px 32px;}
-  .section-h2{font-size:26px;margin-bottom:24px;}
-  .health-grid{grid-template-columns:1fr 1fr;gap:10px;}
-  .hc{padding:18px 14px;}
-  .hc-icon{font-size:28px;margin-bottom:10px;}
-  .hc-title{font-size:15px;}
-  .hc-desc{font-size:12px;}
-  /* modals */
-  .mbox{padding:24px 18px;}
-  .m-htitle{font-size:20px;}
-  .frow{grid-template-columns:1fr;}
-  .mfoot{flex-direction:column-reverse;}
-  .mfoot .btn-main,.mfoot .btn-ghost{text-align:center;justify-content:center;}
-}
-
-/* Very small (≤380px) */
-@media(max-width:380px){
-  .health-grid{grid-template-columns:1fr;}
-  .hero-h1{font-size:26px;}
-  .section-h2{font-size:22px;}
-}
+/* RESPONSIVE */
+@media(max-width:1100px){.health-grid{grid-template-columns:repeat(3,1fr);}#hero{padding:100px 32px 60px;}#health-section{padding:60px 32px;}#navbar{padding:0 32px;}}
+@media(max-width:900px){#navbar{padding:0 20px;}.nav-links{display:none;}.nav-hamburger{display:flex;}#hero{padding:90px 24px 50px;min-height:auto;}.hero-inner{grid-template-columns:1fr;gap:36px;}.hero-right{height:320px;width:100%;order:-1;}.hcard:nth-child(2){top:4%;right:0;}.hcard:nth-child(3){bottom:4%;right:0;}.hcard:nth-child(4){display:none;}.stat-float{display:none;}.hero-h1{font-size:clamp(32px,7vw,52px);letter-spacing:-1px;}.hero-p{font-size:15px;max-width:100%;}#health-section{padding:50px 20px 40px;}.section-h2{font-size:clamp(28px,6vw,42px);margin-bottom:36px;}.health-grid{grid-template-columns:repeat(2,1fr);gap:14px;}}
+@media(max-width:600px){#navbar{padding:0 16px;height:58px;}.mobile-menu{top:58px;}.nav-name{font-size:18px;}.nav-dot{width:28px;height:28px;}.nav-dot svg{width:13px;height:13px;margin:7.5px;}#hero{padding:80px 16px 40px;}.hero-badge{font-size:12px;padding:6px 14px;}.hero-h1{font-size:clamp(28px,8.5vw,40px);letter-spacing:-.5px;margin-bottom:16px;}.hero-p{font-size:14px;margin-bottom:28px;}.hero-btns{flex-direction:column;align-items:stretch;}.btn-main,.btn-ghost{justify-content:center;padding:13px 24px;font-size:14px;}.hero-right{height:260px;}.param-box{min-width:160px;padding:12px 14px;}.heart-box{min-width:150px;padding:10px 14px;}.param-lbl{font-size:10px;}.p-tag{font-size:11px;padding:4px 10px;}#health-section{padding:40px 14px 32px;}.section-h2{font-size:26px;margin-bottom:24px;}.health-grid{grid-template-columns:1fr 1fr;gap:10px;}.hc{padding:18px 14px;}.hc-icon{font-size:28px;margin-bottom:10px;}.hc-title{font-size:15px;}.hc-desc{font-size:12px;}.mbox{padding:24px 18px;}.m-htitle{font-size:20px;}.frow{grid-template-columns:1fr;}.mfoot{flex-direction:column-reverse;}.mfoot .btn-main,.mfoot .btn-ghost{text-align:center;justify-content:center;}.pred-submit-area{flex-direction:column-reverse;}}
+@media(max-width:380px){.health-grid{grid-template-columns:1fr;}.hero-h1{font-size:26px;}.section-h2{font-size:22px;}}
 </style>
 </head>
 <body>
@@ -253,7 +237,7 @@ footer a:hover{text-decoration:underline;}
   <ul class="nav-links">
     <li><a href="home.html" class="active">🏠 Home</a></li>
     <li><a href="history.html">📊 History</a></li>
-    <li><a href="prediction.html">🔮 Predictions</a></li>
+    <li><a href="prediction-results.html">🔮 Predictions</a></li>
     <li><a href="profile.html">👤 Profile</a></li>
   </ul>
   <div class="nav-right">
@@ -269,7 +253,7 @@ footer a:hover{text-decoration:underline;}
 <div class="mobile-menu" id="mobileMenu">
   <a href="home.html" onclick="toggleMenu()">🏠 Home</a>
   <a href="history.html" onclick="toggleMenu()">📊 History</a>
-  <a href="prediction.html" onclick="toggleMenu()">🔮 Predictions</a>
+  <a href="prediction-results.html" onclick="toggleMenu()">🔮 Predictions</a>
   <a href="profile.html" onclick="toggleMenu()">👤 Profile</a>
 </div>
 
@@ -299,7 +283,7 @@ footer a:hover{text-decoration:underline;}
       <p class="hero-p">Analyze your health in real time, receive personalized AI insights, and live your best life — every single day.</p>
       <div class="hero-btns">
         <button class="btn-main" onclick="openPred()">🔮 Get Prediction</button>
-        <!-- <a href="auth-choice.html" class="btn-ghost">Get the app →</a> -->
+        <a href="auth-choice.html" class="btn-ghost">Get the app →</a>
       </div>
     </div>
 
@@ -348,7 +332,7 @@ footer a:hover{text-decoration:underline;}
   <p style="margin-top:7px;font-size:12px;">AroMi is not a substitute for professional medical advice.</p>
 </footer>
 
-<!-- ══ HEALTH MODAL ══ -->
+<!-- ══ HEALTH TOPIC MODAL ══ -->
 <div class="overlay" id="health-modal" onclick="overlayClose(event,'health-modal')">
   <div class="mbox glass-card">
     <button class="mclose" onclick="closeM('health-modal')">✕</button>
@@ -367,54 +351,169 @@ footer a:hover{text-decoration:underline;}
 </div>
 
 <!-- ══ PREDICTION MODAL ══ -->
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  DATA FLOW:                                                  ║
+  ║  User fills form → submitPred() collects all fields         ║
+  ║  → builds URL query string with all params                  ║
+  ║  → navigates to prediction-results.html?age=...&gender=...  ║
+  ║  → prediction-results.html reads URLSearchParams            ║
+  ║  → passes data to Claude AI API for analysis                ║
+  ║  → renders personalized health report                       ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
 <div class="overlay" id="pred-modal" onclick="overlayClose(event,'pred-modal')">
   <div class="mbox glass-card">
     <button class="mclose" onclick="closeM('pred-modal')">✕</button>
-    <div class="pred-title">🔮 Health Prediction</div>
-    <div class="pred-sub">Fill in your details for an AI-powered health assessment</div>
-    <form id="pred-form" onsubmit="submitPred(event)">
+
+    <!-- Header -->
+    <div class="pred-modal-header">
+      <div class="pred-modal-orb">🔮</div>
+      <div>
+        <div class="pred-modal-htitle">Health Prediction</div>
+        <div class="pred-modal-hsub">Fill in your details for an AI-powered health assessment</div>
+      </div>
+    </div>
+
+    <!-- Form — all fields map 1-to-1 to URL params read by prediction-results.html -->
+    <form id="pred-form" onsubmit="submitPred(event)" style="margin-top:18px;">
+
+      <!-- Row 1: Age + Gender -->
       <div class="frow">
-        <div class="fg"><label>Age</label><input type="number" name="age" min="1" max="120" placeholder="e.g. 28" required></div>
-        <div class="fg"><label>Gender</label>
-          <select name="gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select>
+        <div class="fg">
+          <label><span class="fl-icon">🎂</span>Age</label>
+          <input type="number" name="age" id="f-age" min="1" max="120" placeholder="e.g. 28" required
+            oninput="previewField(this)">
+        </div>
+        <div class="fg">
+          <label><span class="fl-icon">👤</span>Gender</label>
+          <select name="gender" id="f-gender" required onchange="previewField(this)">
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
         </div>
       </div>
-      <div class="fg"><label>Current Symptoms</label><textarea name="symptoms" placeholder="Describe symptoms (e.g. headache, fatigue...)" required></textarea></div>
-      <div class="fg"><label>Body Part / Health Area</label>
-        <select name="body_area" required>
+
+      <!-- Current Symptoms -->
+      <div class="fg">
+        <label><span class="fl-icon">🩺</span>Current Symptoms</label>
+        <textarea name="symptoms" id="f-symptoms"
+          placeholder="Describe your symptoms (e.g. headache, fatigue, chest pain...)" required
+          oninput="previewField(this)"></textarea>
+      </div>
+
+      <!-- Body Area -->
+      <div class="fg">
+        <label><span class="fl-icon">📍</span>Body Part / Health Area</label>
+        <select name="body_area" id="f-body_area" required onchange="previewField(this)">
           <option value="">Select area</option>
-          <option>Brain / Head</option><option>Eyes</option><option>Ears</option>
-          <option>Heart / Chest</option><option>Lungs / Respiratory</option>
-          <option>Liver / Digestive</option><option>Kidneys / Urinary</option>
-          <option>Bones / Joints</option><option>Skin</option>
-          <option>Mental Health</option><option>Immunity / General</option><option>Other</option>
+          <option value="Brain / Head">🧠 Brain / Head</option>
+          <option value="Eyes">👁️ Eyes</option>
+          <option value="Ears">👂 Ears</option>
+          <option value="Heart / Chest">❤️ Heart / Chest</option>
+          <option value="Lungs / Respiratory">🫁 Lungs / Respiratory</option>
+          <option value="Liver / Digestive">🫀 Liver / Digestive</option>
+          <option value="Kidneys / Urinary">🩺 Kidneys / Urinary</option>
+          <option value="Bones / Joints">🦴 Bones / Joints</option>
+          <option value="Skin">✨ Skin</option>
+          <option value="Mental Health">🧘 Mental Health</option>
+          <option value="Immunity / General">🛡️ Immunity / General</option>
+          <option value="Other">Other</option>
         </select>
       </div>
-      <div class="fg"><label>Existing Conditions</label><input type="text" name="conditions" placeholder="e.g. Diabetes, Hypertension…"></div>
+
+      <!-- Existing Conditions -->
+      <div class="fg">
+        <label><span class="fl-icon">📋</span>Existing Conditions</label>
+        <input type="text" name="conditions" id="f-conditions"
+          placeholder="e.g. Diabetes, Hypertension, Asthma… (or None)"
+          oninput="previewField(this)">
+      </div>
+
+      <!-- Row 3: Sleep + Exercise -->
       <div class="frow">
-        <div class="fg"><label>Avg. Sleep</label>
-          <select name="sleep"><option>Less than 5h</option><option>5–6 hours</option><option selected>7–8 hours</option><option>More than 8h</option></select>
+        <div class="fg">
+          <label><span class="fl-icon">😴</span>Avg. Sleep</label>
+          <select name="sleep" id="f-sleep" onchange="previewField(this)">
+            <option value="Less than 5h">Less than 5h</option>
+            <option value="5–6 hours">5–6 hours</option>
+            <option value="7–8 hours" selected>7–8 hours</option>
+            <option value="More than 8h">More than 8h</option>
+          </select>
         </div>
-        <div class="fg"><label>Exercise Frequency</label>
-          <select name="exercise"><option>Never</option><option>1–2x / week</option><option>3–4x / week</option><option>Daily</option></select>
+        <div class="fg">
+          <label><span class="fl-icon">🏋️</span>Exercise Frequency</label>
+          <select name="exercise" id="f-exercise" onchange="previewField(this)">
+            <option value="Never">Never</option>
+            <option value="1–2x / week">1–2x / week</option>
+            <option value="3–4x / week" selected>3–4x / week</option>
+            <option value="Daily">Daily</option>
+          </select>
         </div>
       </div>
+
+      <!-- Row 4: Height + Weight -->
       <div class="frow">
-        <div class="fg"><label>Height (cm)</label><input type="number" name="height" placeholder="e.g. 170"></div>
-        <div class="fg"><label>Weight (kg)</label><input type="number" name="weight" placeholder="e.g. 68"></div>
+        <div class="fg">
+          <label><span class="fl-icon">📏</span>Height (cm)</label>
+          <input type="number" name="height" id="f-height" placeholder="e.g. 170"
+            oninput="updateBMIPreview()">
+        </div>
+        <div class="fg">
+          <label><span class="fl-icon">⚖️</span>Weight (kg)</label>
+          <input type="number" name="weight" id="f-weight" placeholder="e.g. 68"
+            oninput="updateBMIPreview()">
+        </div>
       </div>
+
+      <!-- BMI live preview -->
+      <div id="bmi-preview" style="display:none;margin:-6px 0 14px;padding:8px 14px;background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.18);border-radius:10px;font-size:12px;color:#4b4563;">
+        <span style="font-weight:600;color:#8b5cf6;">BMI:</span> <span id="bmi-val">—</span>
+        <span id="bmi-cat" style="margin-left:6px;font-weight:600;"></span>
+        <span style="margin-left:8px;color:rgba(74,32,112,0.5);font-size:11px;">· used in your AI risk assessment</span>
+      </div>
+
+      <!-- Row 5: Diet + Stress -->
       <div class="frow">
-        <div class="fg"><label>Diet Type</label>
-          <select name="diet"><option>Balanced / Mixed</option><option>Vegetarian</option><option>Vegan</option><option>High Protein / Low Carb</option><option>Irregular / Junk Food</option></select>
+        <div class="fg">
+          <label><span class="fl-icon">🥗</span>Diet Type</label>
+          <select name="diet" id="f-diet" onchange="previewField(this)">
+            <option value="Balanced / Mixed">Balanced / Mixed</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Vegan">Vegan</option>
+            <option value="High Protein / Low Carb">High Protein / Low Carb</option>
+            <option value="Irregular / Junk Food">Irregular / Junk Food</option>
+          </select>
         </div>
-        <div class="fg"><label>Stress Level</label>
-          <select name="stress"><option>Low</option><option>Moderate</option><option>High</option><option>Severe</option></select>
+        <div class="fg">
+          <label><span class="fl-icon">😰</span>Stress Level</label>
+          <select name="stress" id="f-stress" onchange="previewField(this)">
+            <option value="Low">Low</option>
+            <option value="Moderate">Moderate</option>
+            <option value="High">High</option>
+            <option value="Severe">Severe</option>
+          </select>
         </div>
       </div>
-      <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap;">
-        <button type="button" class="btn-ghost" style="padding:11px 24px;font-size:14px;" onclick="closeM('pred-modal')">Cancel</button>
-        <!-- TODO: Replace with backend API call when backend is ready -->
-        <button type="submit" class="btn-main" style="padding:11px 24px;font-size:14px;">Analyze Now 🔬</button>
+
+      <!-- Data flow hint -->
+      <div class="data-flow-hint">
+        <span class="flow-dot"></span>
+        All data above will be sent to our AI for a <strong>personalized health analysis</strong>
+      </div>
+
+      <!-- Submit -->
+      <div class="pred-submit-area">
+        <button type="button" class="btn-ghost" style="padding:11px 24px;font-size:14px;"
+          onclick="closeM('pred-modal')">Cancel</button>
+        <!-- ✅ WIRED: Submits all form data as URL params to prediction-results.html -->
+        <!-- prediction-results.html reads every param via URLSearchParams and feeds them to Claude AI -->
+        <button type="submit" class="btn-main" style="padding:11px 24px;font-size:14px;"
+          id="analyze-btn">
+          Analyze Now 🔬
+        </button>
       </div>
     </form>
   </div>
@@ -422,7 +521,9 @@ footer a:hover{text-decoration:underline;}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* ── NAV ── */
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
 const navbar = document.getElementById('navbar');
 let lastY = 0;
 window.addEventListener('scroll',()=>{
@@ -437,25 +538,100 @@ function toggleMenu(){
 }
 document.addEventListener('click', e=>{
   const menu = document.getElementById('mobileMenu');
-  if(menu.classList.contains('open') && !menu.contains(e.target) && !e.target.closest('.nav-hamburger')) menu.classList.remove('open');
+  if(menu.classList.contains('open') && !menu.contains(e.target) && !e.target.closest('.nav-hamburger'))
+    menu.classList.remove('open');
 });
 
-/* ── MODALS ── */
+/* ══════════════════════════════════════
+   MODALS
+══════════════════════════════════════ */
 function openM(id){ document.getElementById(id).classList.add('on'); document.body.style.overflow='hidden'; }
 function closeM(id){ document.getElementById(id).classList.remove('on'); document.body.style.overflow=''; }
 function overlayClose(e,id){ if(e.target===document.getElementById(id)) closeM(id); }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.overlay.on').forEach(el=>closeM(el.id)); });
 function openPred(){ openM('pred-modal'); }
 
-/* ── PREDICTION SUBMIT ── */
-function submitPred(e){
-  e.preventDefault();
-  const params = new URLSearchParams(new FormData(e.target));
-  // TODO: Replace with backend API call when backend is ready
-  window.location.href = 'prediction.html?' + params.toString();
+/* ══════════════════════════════════════
+   LIVE BMI PREVIEW
+   Runs whenever height or weight changes.
+   Shows instant BMI + category in the modal.
+   The same values are sent to prediction-results.html.
+══════════════════════════════════════ */
+function updateBMIPreview(){
+  const h = parseFloat(document.getElementById('f-height').value);
+  const w = parseFloat(document.getElementById('f-weight').value);
+  const preview = document.getElementById('bmi-preview');
+  if(!h || !w || h < 50 || w < 10){ preview.style.display = 'none'; return; }
+  const bmi = (w / Math.pow(h/100, 2)).toFixed(1);
+  const cat = bmi < 18.5 ? 'Underweight' : bmi < 25 ? 'Normal' : bmi < 30 ? 'Overweight' : 'Obese';
+  const catColors = {Underweight:'#f59e0b', Normal:'#10b981', Overweight:'#f59e0b', Obese:'#ef4444'};
+  document.getElementById('bmi-val').textContent = bmi;
+  const catEl = document.getElementById('bmi-cat');
+  catEl.textContent = '(' + cat + ')';
+  catEl.style.color = catColors[cat];
+  preview.style.display = 'block';
 }
 
-/* ── TOPICS DATA ── */
+/* ══════════════════════════════════════
+   FIELD PREVIEW (optional UX feedback)
+══════════════════════════════════════ */
+function previewField(el){
+  // No-op visual feedback — fields are highlighted on focus via CSS
+}
+
+/* ══════════════════════════════════════
+   ✅ PREDICTION SUBMIT
+   ─────────────────────────────────────
+   Collects ALL 11 form fields into a
+   URLSearchParams object, then navigates
+   to prediction-results.html with them
+   as query string params.
+
+   prediction-results.html reads them via:
+     const p = new URLSearchParams(window.location.search);
+     const age = p.get('age');        ← "28"
+     const gender = p.get('gender');  ← "Female"
+     ... etc for all 11 fields ...
+   Then sends the complete profile to
+   Claude AI for personalized analysis.
+══════════════════════════════════════ */
+function submitPred(e){
+  e.preventDefault();
+  const form = e.target;
+
+  // Show loading state on button
+  const btn = document.getElementById('analyze-btn');
+  btn.innerHTML = '⏳ Analyzing…';
+  btn.disabled = true;
+
+  // Collect all 11 form fields
+  const data = {
+    age:       form.age.value.trim(),
+    gender:    form.gender.value,
+    symptoms:  form.symptoms.value.trim() || 'None',
+    body_area: form.body_area.value,
+    conditions:form.conditions.value.trim() || 'None',
+    sleep:     form.sleep.value,
+    exercise:  form.exercise.value,
+    height:    form.height.value.trim() || '',
+    weight:    form.weight.value.trim() || '',
+    diet:      form.diet.value,
+    stress:    form.stress.value
+  };
+
+  // Build URL query string
+  // Each key matches exactly what prediction-results.html reads with p.get(key)
+  const params = new URLSearchParams(data);
+
+  // Navigate — prediction-results.html takes over from here
+  // TODO: When backend is ready, POST data to /api/predict instead,
+  //       then navigate with the returned prediction_id
+  window.location.href = 'prediction-results.html?' + params.toString();
+}
+
+/* ══════════════════════════════════════
+   TOPICS DATA
+══════════════════════════════════════ */
 const topics = [
   {id:'brain',icon:'🧠',title:'Brain Health',desc:'Protect your cognitive function and mental sharpness.',
    prec:['Avoid excessive screen time','Get 7–8 hours sleep nightly','Manage stress proactively','Limit alcohol consumption'],
@@ -501,13 +677,15 @@ const topics = [
    prec:['Eat slowly & mindfully','Avoid overeating','Stay hydrated','Manage stress'],
    foods:['Yogurt','Kefir','Whole grains','Ginger','Bananas','Fennel'],
    exer:['Walk after meals','Yoga twists','Core strengthening','Deep breathing']},
-  {id:'immunity',icon:'🛡️',title:'Immune Health',desc:'Build your body natural defense system.',
+  {id:'immunity',icon:'🛡️',title:'Immune Health',desc:'Build your body\'s natural defense system.',
    prec:['Get adequate sleep','Wash hands regularly','Stay vaccinated','Reduce chronic stress'],
    foods:['Citrus fruits','Garlic','Ginger','Spinach','Almonds','Turmeric'],
    exer:['Moderate aerobic','Yoga','Tai chi','Avoid overtraining']}
 ];
 
-/* ── RENDER CARDS ── */
+/* ══════════════════════════════════════
+   RENDER HEALTH CARDS
+══════════════════════════════════════ */
 function renderCards(){
   const g = document.getElementById('health-grid');
   g.innerHTML = topics.map(t=>`
@@ -532,7 +710,9 @@ function openHealth(id){
   openM('health-modal');
 }
 
-/* ── SCROLL REVEAL ── */
+/* ══════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════ */
 function initReveal(){
   const obs = new IntersectionObserver(entries=>{
     entries.forEach((entry,i)=>{
@@ -542,8 +722,10 @@ function initReveal(){
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 }
 
-/* ── MINI HEART CHART ── */
-function buildMiniChart(){  
+/* ══════════════════════════════════════
+   MINI HEART CHART
+══════════════════════════════════════ */
+function buildMiniChart(){
   const c = document.getElementById('mini-chart'); if(!c) return;
   [60,75,55,80,65,90,70,85,60,95,72,88].forEach(v=>{
     const b = document.createElement('div');
@@ -552,7 +734,9 @@ function buildMiniChart(){
   });
 }
 
-/* ── THREE.JS BRAIN ── */
+/* ══════════════════════════════════════
+   THREE.JS BRAIN
+══════════════════════════════════════ */
 function initThree(){
   if(typeof THREE==='undefined') return;
   const canvas = document.getElementById('brain-canvas');
@@ -563,12 +747,10 @@ function initThree(){
   const scene = new THREE.Scene();
   const cam = new THREE.PerspectiveCamera(50,W/H,.1,100);
   cam.position.set(0,0,5.5);
-
   scene.add(new THREE.AmbientLight(0xffffff,.5));
   const l1=new THREE.DirectionalLight(0xff80c0,2.5); l1.position.set(4,5,5); scene.add(l1);
   const l2=new THREE.DirectionalLight(0x9090ff,1.8); l2.position.set(-5,-2,3); scene.add(l2);
   const l3=new THREE.DirectionalLight(0x80ffd0,1.2); l3.position.set(0,6,-4); scene.add(l3);
-
   const group=new THREE.Group();
   [{pos:[0,.25,0],r:1.1,c:0xf9a8d4},{pos:[-1,.3,.2],r:.75,c:0xc4b5fd},{pos:[1,.3,.2],r:.75,c:0xa5b4fc},
    {pos:[0,-.6,.15],r:.8,c:0xfbcfe8},{pos:[0,.85,-.2],r:.6,c:0xddd6fe},{pos:[-.55,-.28,.55],r:.6,c:0x93c5fd},
@@ -579,24 +761,19 @@ function initThree(){
     mesh.position.set(...b.pos); group.add(mesh);
   });
   scene.add(group);
-
   const orbs=[];
   [[2.2,.8,.5,0xf9a8d4],[2,-.5,.3,0x6ee7b7],[-2.1,.6,.4,0xc4b5fd],[-1.9,-.7,.6,0xfde68a],[.5,2,-.5,0xa5f3fc]].forEach(([x,y,z,c])=>{
     const m=new THREE.Mesh(new THREE.SphereGeometry(.22,16,16),new THREE.MeshPhongMaterial({color:c,transparent:true,opacity:.65}));
     m.position.set(x,y,z); m.userData={oy:y,spd:.3+Math.random()*.4,off:Math.random()*Math.PI*2};
     scene.add(m); orbs.push(m);
   });
-
   let mx=0,my=0;
   document.addEventListener('mousemove',e=>{ mx=(e.clientX/window.innerWidth-.5)*.6; my=(e.clientY/window.innerHeight-.5)*.6; });
-
-  // handle resize
   function onResize(){
     const W2=canvas.parentElement.clientWidth||480, H2=canvas.parentElement.clientHeight||440;
     renderer.setSize(W2,H2); cam.aspect=W2/H2; cam.updateProjectionMatrix();
   }
   window.addEventListener('resize',onResize);
-
   let t=0;
   (function anim(){
     requestAnimationFrame(anim); t+=.008;
@@ -608,11 +785,13 @@ function initThree(){
   })();
 }
 
-/* ── INIT ── */
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded',()=>{
   renderCards(); buildMiniChart(); initReveal();
 });
 window.addEventListener('load', initThree);
 </script>
 </body>
-</html>
+</html> 

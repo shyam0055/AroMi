@@ -353,7 +353,7 @@
 
   function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
-  function handleLogin() {
+  async function handleLogin() {
     const email = document.getElementById('email').value.trim();
     const pwd   = document.getElementById('password').value;
     let valid = true;
@@ -369,24 +369,55 @@
     }
     if (!valid) return;
 
-    // Show loading
-    document.getElementById('loginBtnText').textContent = 'Signing in…';
-    document.getElementById('loginSpinner').style.display = 'block';
-    document.getElementById('loginBtn').disabled = true;
+    const btn = document.getElementById('loginBtn');
+    const btnText = document.getElementById('loginBtnText');
+    const spinner = document.getElementById('loginSpinner');
 
-    // TODO: Replace with backend authentication API call
-    setTimeout(() => {
+    btnText.textContent = 'Signing in…';
+    spinner.style.display = 'block';
+    btn.disabled = true;
+
+    try {
+      if (typeof aromi_signIn !== 'function') {
+        throw new Error('Authentication client not initialized');
+      }
+
+      const { data, error } = await aromi_signIn(email, pwd);
+      if (error || !data || !data.user) {
+        throw new Error(error?.message || 'Invalid email or password');
+      }
+
+      try {
+        // Keep navbar avatar working by syncing a lightweight user object
+        localStorage.setItem('aromi_user', JSON.stringify({
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.user_metadata?.full_name || data.user.email
+        }));
+      } catch (_) {}
+
       const overlay = document.getElementById('successOverlay');
       overlay.classList.add('show');
-      setTimeout(() => { window.location.href = 'home.html'; }, 1600);
-    }, 1200);
+      setTimeout(() => { window.location.href = 'home.html'; }, 1200);
+    } catch (err) {
+      alert('Sign-in failed: ' + (err.message || 'please check your credentials and try again.'));
+      btnText.textContent = 'Sign In';
+      spinner.style.display = 'none';
+      btn.disabled = false;
+    }
   }
 
   function handleGoogleLogin() {
-    // TODO: Replace with Google OAuth backend flow
-    const overlay = document.getElementById('successOverlay');
-    overlay.classList.add('show');
-    setTimeout(() => { window.location.href = 'home.html'; }, 1600);
+    try {
+      if (typeof aromi_signInWithGoogle === 'function') {
+        // Supabase will handle the full OAuth redirect flow
+        aromi_signInWithGoogle('home.html');
+      } else {
+        alert('Google sign-in is not available right now. Please try email login.');
+      }
+    } catch (err) {
+      alert('Google sign-in failed: ' + (err.message || 'please try again later.'));
+    }
   }
 
   function showForgot(e) {

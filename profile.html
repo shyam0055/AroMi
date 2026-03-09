@@ -766,15 +766,74 @@ function updateBMI(){
 }
 
 /* ── SAVE PROFILE ── */
-function saveProfile(){
+async function saveProfile(){
   // Disable all editing
   Object.keys(editState).forEach(s=>{
     if(editState[s]){ editState[s]=false; editSections[s].forEach(id=>{ const el=document.getElementById(id); if(el) el.disabled=true; }); }
   });
   document.querySelectorAll('.sec-edit-btn').forEach(b=>b.textContent='Edit');
   syncDisplayName();
-  // TODO: Replace with backend API call when backend is ready
-  showToast('✅ Profile saved successfully!', 3500);
+
+  try{
+    if(typeof aromi_getUser !== 'function' || typeof aromi_updateProfile !== 'function'){
+      throw new Error('Profile backend is not available right now.');
+    }
+    const user = await aromi_getUser();
+    if(!user){
+      throw new Error('You are not signed in. Please log in again.');
+    }
+
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName  = document.getElementById('lastName').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const dob       = document.getElementById('dob').value;
+    const gender    = document.getElementById('gender').value;
+    const height    = parseFloat(document.getElementById('height').value) || null;
+    const weight    = parseFloat(document.getElementById('weight').value) || null;
+
+    let age = null;
+    if(dob){
+      const d = new Date(dob);
+      if(!isNaN(d.getTime())){
+        const diffMs = Date.now() - d.getTime();
+        const ageDate = new Date(diffMs);
+        age = Math.abs(ageDate.getUTCFullYear() - 1970);
+      }
+    }
+
+    const gv = (gender || '').toLowerCase();
+    let genderNorm = null;
+    if(gv === 'female') genderNorm = 'female';
+    else if(gv === 'male') genderNorm = 'male';
+    else if(gv === 'non-binary') genderNorm = 'other';
+    else if(gv === 'prefer not to say') genderNorm = 'prefer_not_to_say';
+
+    const updates = {
+      full_name: `${firstName} ${lastName}`.trim() || null,
+      email: email || null,
+      age: age || null,
+      gender: genderNorm,
+      height_cm: height,
+      weight_kg: weight
+    };
+
+    const { error } = await aromi_updateProfile(user.id, updates);
+    if(error){
+      throw new Error(error.message || 'Unable to save your profile right now.');
+    }
+
+    try{
+      localStorage.setItem('aromi_user', JSON.stringify({
+        id: user.id,
+        email: email || user.email,
+        name: updates.full_name || user.email
+      }));
+    }catch(_){}
+
+    showToast('✅ Profile saved successfully!', 3500);
+  }catch(err){
+    showToast('❌ ' + (err.message || 'Failed to save profile'), 4000);
+  }
 }
 
 /* ── TAGS INPUT ── */
@@ -823,7 +882,13 @@ function exportData(){
   // TODO: Replace with backend export API call when backend is ready
 }
 function confirmLogout(){
-  if(confirm('Are you sure you want to sign out?')) window.location.href='index.html';
+  if(confirm('Are you sure you want to sign out?')){
+    if(typeof aromi_signOut === 'function'){
+      aromi_signOut();
+    }else{
+      window.location.href='index.html';
+    }
+  }
 }
 function confirmDelete(){
   if(confirm('⚠️ This will permanently delete your account and all data.\nThis action cannot be undone.\n\nAre you sure?')){
@@ -835,5 +900,65 @@ function confirmDelete(){
 <script src="js/navbar.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+<script>
+// Ensure only authenticated users can access the profile page
+window.addEventListener('load', async () => {
+  try {
+    if (typeof aromi_requireAuth === 'function') {
+      const user = await aromi_requireAuth('login.html');
+      if (!user) return;
+
+      try {
+        const { data: profile } = await aromi_getProfile(user.id);
+        const firstNameEl = document.getElementById('firstName');
+        const lastNameEl  = document.getElementById('lastName');
+        const emailEl     = document.getElementById('email');
+        const dobEl       = document.getElementById('dob');
+        const genderEl    = document.getElementById('gender');
+        const heightEl    = document.getElementById('height');
+        const weightEl    = document.getElementById('weight');
+
+        if (emailEl) emailEl.value = profile?.email || user.email || emailEl.value;
+
+        if (profile?.full_name && firstNameEl && lastNameEl) {
+          const parts = profile.full_name.split(' ');
+          firstNameEl.value = parts[0] || firstNameEl.value;
+          lastNameEl.value  = parts.slice(1).join(' ') || lastNameEl.value;
+        }
+
+        if (typeof profile?.height_cm === 'number' && heightEl) {
+          heightEl.value = String(profile.height_cm);
+        }
+        if (typeof profile?.weight_kg === 'number' && weightEl) {
+          weightEl.value = String(profile.weight_kg);
+        }
+
+        if (genderEl && profile?.gender) {
+          const g = profile.gender;
+          if (g === 'female') genderEl.value = 'Female';
+          else if (g === 'male') genderEl.value = 'Male';
+          else if (g === 'other') genderEl.value = 'Non-binary';
+          else if (g === 'prefer_not_to_say') genderEl.value = 'Prefer not to say';
+        }
+
+        // Sync header display and BMI cards from loaded values
+        syncDisplayName();
+
+        try {
+          localStorage.setItem('aromi_user', JSON.stringify({
+            id: user.id,
+            email: emailEl ? emailEl.value : user.email,
+            name: (profile && profile.full_name) || user.email
+          }));
+        } catch (_) {}
+      } catch (_) {
+        // Best-effort profile hydrate; page still works without it
+      }
+    }
+  } catch (_) {
+    // If auth helpers fail, let user land on login via other guards
+  }
+});
+</script>
 </body>
 </html>

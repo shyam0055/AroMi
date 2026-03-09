@@ -558,7 +558,7 @@
   }
 
   /* ── Signup handler ── */
-  function handleSignup() {
+  async function handleSignup() {
     let valid = true;
 
     const firstName  = document.getElementById('firstName').value.trim();
@@ -612,28 +612,83 @@
 
     if (!valid) return;
 
-    // Activate step 3 in progress
     activateStep(3);
 
-    // Loading state
-    document.getElementById('signupBtnText').textContent = 'Creating account…';
-    document.getElementById('signupSpinner').style.display = 'block';
-    document.getElementById('signupBtn').disabled = true;
+    const btn = document.getElementById('signupBtn');
+    const btnText = document.getElementById('signupBtnText');
+    const spinner = document.getElementById('signupSpinner');
 
-    // TODO: Replace with backend API call when backend is ready
-    setTimeout(() => {
+    btnText.textContent = 'Creating account…';
+    spinner.style.display = 'block';
+    btn.disabled = true;
+
+    try {
+      if (typeof aromi_signUp !== 'function') {
+        throw new Error('Sign-up client not initialized');
+      }
+
+      // Derive profile fields for Supabase
+      let age = null;
+      if (dob) {
+        const dobDate = new Date(dob);
+        if (!isNaN(dobDate.getTime())) {
+          const diffMs = Date.now() - dobDate.getTime();
+          const ageDate = new Date(diffMs);
+          age = Math.abs(ageDate.getUTCFullYear() - 1970);
+        }
+      }
+
+      const genderValue = (gender || '').toLowerCase();
+      let genderNorm = null;
+      if (genderValue === 'female') genderNorm = 'female';
+      else if (genderValue === 'male') genderNorm = 'male';
+      else if (genderValue === 'non-binary') genderNorm = 'other';
+      else if (genderValue === 'prefer not to say') genderNorm = 'prefer_not_to_say';
+
+      const profileData = {
+        full_name: `${firstName} ${lastName}`.trim(),
+        age: age || null,
+        gender: genderNorm,
+        height_cm: null,
+        weight_kg: null
+      };
+
+      const { data, error } = await aromi_signUp(email, pwd, profileData);
+      if (error || !data || !data.user) {
+        throw new Error(error?.message || 'Unable to create account right now.');
+      }
+
+      try {
+        localStorage.setItem('aromi_user', JSON.stringify({
+          id: data.user.id,
+          email: data.user.email,
+          name: profileData.full_name || data.user.email
+        }));
+      } catch (_) {}
+
       document.getElementById('step3').classList.add('done');
       const overlay = document.getElementById('successOverlay');
       overlay.classList.add('show');
-      setTimeout(() => { window.location.href = 'home.html'; }, 1800);
-    }, 1400);
+      setTimeout(() => { window.location.href = 'home.html'; }, 1500);
+    } catch (err) {
+      alert('Sign-up failed: ' + (err.message || 'please try again.'));
+      btnText.textContent = 'Create My Account 🚀';
+      spinner.style.display = 'none';
+      btn.disabled = false;
+      activateStep(2);
+    }
   }
 
   function handleGoogleSignup() {
-    // TODO: Replace with Google OAuth backend flow
-    const overlay = document.getElementById('successOverlay');
-    overlay.classList.add('show');
-    setTimeout(() => { window.location.href = 'home.html'; }, 1600);
+    try {
+      if (typeof aromi_signInWithGoogle === 'function') {
+        aromi_signInWithGoogle('home.html');
+      } else {
+        alert('Google sign-up is not available right now. Please try email sign-up.');
+      }
+    } catch (err) {
+      alert('Google sign-up failed: ' + (err.message || 'please try again later.'));
+    }
   }
 
   // Enter key

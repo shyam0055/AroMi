@@ -626,6 +626,16 @@ function pillarScores() {
 }
 const pillars = pillarScores();
 
+// Derive overall textual risk level for persistence
+function deriveRiskLevel(score, riskBuckets) {
+  // Prioritise explicit high category if any
+  const anyHigh = Object.values(riskBuckets).some(v => v >= 70);
+  if (score >= 75 && !anyHigh) return 'low';
+  if (score >= 55 && !anyHigh) return 'moderate';
+  return anyHigh ? 'high' : 'moderate';
+}
+const derivedRiskLevel = deriveRiskLevel(overallScore, risks);
+
 // ===== LOADING ANIMATION =====
 const steps = document.querySelectorAll('.load-step');
 const loadBar = document.getElementById('loadBar');
@@ -967,6 +977,9 @@ function renderAIContent(r) {
         <div style="font-size:12px;color:rgba(74,32,112,0.65);margin-top:2px;">${s.reason}</div>
       </div>
     </div>`).join('');
+
+  // Persist this prediction for logged-in users
+  savePredictionToSupabase(r.heroSubtitle || '');
 }
 
 // ===== FALLBACK (if API fails) =====
@@ -1038,6 +1051,41 @@ function renderFallback() {
     {n:'Omega-3 Fish Oil',r:'Reduces inflammation and supports brain and heart health',d:'1g EPA+DHA/day'},
     {n:'Magnesium Glycinate',r:'Improves sleep quality and reduces stress and anxiety',d:'300mg before bed'}
   ].map(s => `<div style="display:flex;gap:10px;margin-bottom:12px;padding:10px;background:rgba(255,255,255,0.5);border-radius:10px;"><span style="font-size:18px;">💊</span><div><div style="font-size:13px;font-weight:600;color:#1a0a2e;">${s.n} <span style="font-size:11px;color:#8b5cf6;">${s.d}</span></div><div style="font-size:12px;color:rgba(74,32,112,0.65);margin-top:2px;">${s.r}</div></div></div>`).join('');
+
+  savePredictionToSupabase('AI analysis (offline fallback)');
+}
+
+// Persist prediction to Supabase if a user is signed in
+async function savePredictionToSupabase(summaryText) {
+  try {
+    if (typeof aromi_getUser !== 'function' || typeof aromi_savePrediction !== 'function') {
+      return;
+    }
+    const user = await aromi_getUser();
+    if (!user) return;
+
+    const predictionData = {
+      age: parseInt(userData.age) || null,
+      gender: userData.gender || null,
+      symptoms: userData.symptoms || null,
+      body_part: userData.body_area || null,
+      existing_conditions: userData.conditions || null,
+      lifestyle_info: JSON.stringify({
+        sleep: userData.sleep,
+        exercise: userData.exercise,
+        diet: userData.diet,
+        stress: userData.stress,
+        bmi,
+        bmiLabel
+      }),
+      result_summary: summaryText || null,
+      risk_level: derivedRiskLevel
+    };
+
+    await aromi_savePrediction(user.id, predictionData);
+  } catch (err) {
+    console.warn('Could not save prediction:', err.message || err);
+  }
 }
 
 // ===== UTILITIES =====

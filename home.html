@@ -798,5 +798,27 @@ window.addEventListener('load', initThree);
 <script src="js/prediction.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+<script>
+// Enforce authentication for dashboard access using Supabase auth
+window.addEventListener('load', async () => {
+  try {
+    if (typeof aromi_requireAuth === 'function') {
+      const user = await aromi_requireAuth('login.html');
+      if (user) {
+        try {
+          // Keep navbar avatar in sync with real session
+          localStorage.setItem('aromi_user', JSON.stringify({
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata?.full_name || user.email
+          }));
+        } catch (_) {}
+      }
+    }
+  } catch (_) {
+    // If auth check fails, let explicit redirects or login handle it
+  }
+});
+</script>
 </body>
 </html> 

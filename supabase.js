@@ -41,6 +41,16 @@ async function aromi_signIn(email, password) {
   return { data, error };
 }
 
+/** Sign in with Google OAuth (redirect-based) */
+async function aromi_signInWithGoogle(redirectToPath = "home.html") {
+  const redirectTo = new URL(redirectToPath, window.location.origin).href;
+  const { data, error } = await _supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo }
+  });
+  return { data, error };
+}
+
 /** Log out */
 async function aromi_signOut() {
   await _supabase.auth.signOut();

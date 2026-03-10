@@ -315,136 +315,16 @@ footer a{color:#8b5cf6;text-decoration:none;}
     </div>
   </div>
 
-  <!-- Stats -->
-  <div class="stats-row reveal">
-    <div class="stat-card glass sc-p">
-      <div class="stat-icon">❤️</div><div class="stat-val">72</div>
-      <div class="stat-label">Avg Heart Rate</div><span class="stat-change up">↑ 2 bpm</span>
-    </div>
-    <div class="stat-card glass sc-l">
-      <div class="stat-icon">😴</div><div class="stat-val">7.2h</div>
-      <div class="stat-label">Avg Sleep</div><span class="stat-change up">↑ 0.4h</span>
-    </div>
-    <div class="stat-card glass sc-m">
-      <div class="stat-icon">🏃</div><div class="stat-val">7,840</div>
-      <div class="stat-label">Avg Steps</div><span class="stat-change down">↓ 320</span>
-    </div>
-    <div class="stat-card glass sc-a">
-      <div class="stat-icon">🥗</div><div class="stat-val">1,820</div>
-      <div class="stat-label">Avg Calories</div><span class="stat-change neu">→ stable</span>
-    </div>
-    <div class="stat-card glass sc-b">
-      <div class="stat-icon">😊</div><div class="stat-val">7.4</div>
-      <div class="stat-label">Avg Mood</div><span class="stat-change up">↑ 0.6</span>
-    </div>
-  </div>
-
-  <!-- Controls -->
-  <div class="controls-bar reveal">
-    <div class="tab-pills">
-      <button class="tab-pill active" onclick="setTab(this,'all')">All</button>
-      <button class="tab-pill" onclick="setTab(this,'vitals')">❤️ Vitals</button>
-      <button class="tab-pill" onclick="setTab(this,'sleep')">😴 Sleep</button>
-      <button class="tab-pill" onclick="setTab(this,'activity')">🏃 Activity</button>
-      <button class="tab-pill" onclick="setTab(this,'nutrition')">🥗 Nutrition</button>
-      <button class="tab-pill" onclick="setTab(this,'mood')">😊 Mood</button>
-    </div>
-    <div class="filter-right">
-      <select class="filter-select" onchange="filterRange(this.value)">
-        <option value="7">Last 7 days</option>
-        <option value="30" selected>Last 30 days</option>
-        <option value="90">Last 3 months</option>
-        <option value="365">Last year</option>
-      </select>
-      <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input class="search-input" type="text" placeholder="Search logs…" oninput="searchLogs(this.value)"/>
-      </div>
-    </div>
-  </div>
-
-  <!-- Layout -->
+  <!-- History content -->
   <div class="history-layout">
     <div class="left-col">
-      <!-- Chart -->
-      <div class="chart-card glass-card reveal">
-        <div class="chart-header">
-          <div class="chart-title">📈 Wellness Trends</div>
-          <div class="chart-legend">
-            <span class="legend-item"><span class="legend-dot" style="background:#ec4899"></span>Heart Rate</span>
-            <span class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span>Sleep</span>
-            <span class="legend-item"><span class="legend-dot" style="background:#10b981"></span>Steps</span>
-            <span class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>Mood</span>
-          </div>
-        </div>
-        <div class="chart-area"><canvas id="mainChart"></canvas></div>
-        <div class="metric-chips">
-          <span class="mchip active-pink" onclick="toggleMetric(this,'Heart Rate')">❤️ Heart Rate</span>
-          <span class="mchip active-lav" onclick="toggleMetric(this,'Sleep')">😴 Sleep</span>
-          <span class="mchip active-mint" onclick="toggleMetric(this,'Steps')">🏃 Steps</span>
-          <span class="mchip active-amber" onclick="toggleMetric(this,'Mood')">😊 Mood</span>
-          <span class="mchip" onclick="toggleMetric(this,'Calories')">🔥 Calories</span>
-        </div>
-      </div>
-
-      <!-- Entries -->
-      <div class="reveal">
-        <div class="log-section-title">Recent Logs</div>
-        <div class="log-entries" id="logEntries"></div>
-        <div class="load-more-wrap">
-          <button class="load-more-btn" onclick="loadMore()">Load More Entries ↓</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right -->
-    <div class="right-col">
-      <div class="calendar-card glass-card reveal">
-        <div class="cal-title">
-          <span id="calMonthYear"></span>
-          <div class="cal-nav">
-            <button onclick="prevMonth()">‹</button>
-            <button onclick="nextMonth()">›</button>
-          </div>
-        </div>
-        <div class="cal-days-hdr">
-          <div class="cal-day-hdr">Su</div><div class="cal-day-hdr">Mo</div>
-          <div class="cal-day-hdr">Tu</div><div class="cal-day-hdr">We</div>
-          <div class="cal-day-hdr">Th</div><div class="cal-day-hdr">Fr</div>
-          <div class="cal-day-hdr">Sa</div>
-        </div>
-        <div class="cal-days" id="calDays"></div>
-      </div>
-
-      <div class="streak-card glass-card reveal">
-        <div class="streak-title">🔥 Current Streak</div>
-        <div class="streak-row">
-          <div class="streak-num">12</div>
-          <div><div class="streak-label">Days logged</div><div class="streak-sub">Personal best: 21 days</div></div>
-        </div>
-        <div class="streak-icons" id="streakIcons"></div>
-      </div>
-
-      <div class="week-radar glass-card reveal">
-        <div class="wr-title">📊 This Week</div>
-        <div class="week-bars">
-          <div class="wb-row"><span class="wb-label">Heart Rate</span><div class="wb-track"><div class="wb-fill" data-w="72" style="width:0;background:linear-gradient(90deg,#ec4899,#f9a8d4)"></div></div><span class="wb-val">72</span></div>
-          <div class="wb-row"><span class="wb-label">Sleep</span><div class="wb-track"><div class="wb-fill" data-w="85" style="width:0;background:linear-gradient(90deg,#8b5cf6,#c4b5fd)"></div></div><span class="wb-val">85%</span></div>
-          <div class="wb-row"><span class="wb-label">Steps</span><div class="wb-track"><div class="wb-fill" data-w="78" style="width:0;background:linear-gradient(90deg,#10b981,#6ee7b7)"></div></div><span class="wb-val">78%</span></div>
-          <div class="wb-row"><span class="wb-label">Nutrition</span><div class="wb-track"><div class="wb-fill" data-w="61" style="width:0;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div><span class="wb-val">61%</span></div>
-          <div class="wb-row"><span class="wb-label">Mood</span><div class="wb-track"><div class="wb-fill" data-w="90" style="width:0;background:linear-gradient(90deg,#3b82f6,#93c5fd)"></div></div><span class="wb-val">90%</span></div>
-        </div>
-      </div>
-
-      <div class="cat-summary glass-card reveal">
-        <div class="cs-title">📁 Log Summary</div>
-        <div class="cat-items">
-          <div class="cat-item"><div class="ci-icon ci-pink">❤️</div><div style="flex:1"><div class="ci-name">Vitals</div><div class="ci-count">Last 30 days</div></div><div class="ci-badge">24</div></div>
-          <div class="cat-item"><div class="ci-icon ci-lav">😴</div><div style="flex:1"><div class="ci-name">Sleep</div><div class="ci-count">Last 30 days</div></div><div class="ci-badge">28</div></div>
-          <div class="cat-item"><div class="ci-icon ci-mint">🏃</div><div style="flex:1"><div class="ci-name">Activity</div><div class="ci-count">Last 30 days</div></div><div class="ci-badge">19</div></div>
-          <div class="cat-item"><div class="ci-icon ci-amber">🥗</div><div style="flex:1"><div class="ci-name">Nutrition</div><div class="ci-count">Last 30 days</div></div><div class="ci-badge">31</div></div>
-          <div class="cat-item"><div class="ci-icon ci-blue">😊</div><div style="flex:1"><div class="ci-name">Mood</div><div class="ci-count">Last 30 days</div></div><div class="ci-badge">22</div></div>
-        </div>
+      <div class="glass-card" style="padding:28px;text-align:center;">
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#1e1b2e;margin-bottom:10px;">
+          Health history is coming soon
+        </h2>
+        <p style="font-size:0.9rem;color:#7c6f9a;line-height:1.7;">
+          This page previously showed demo data only. We’ve disabled it until it is fully wired to your account and real logs in the backend.
+        </p>
       </div>
     </div>
   </div>
@@ -524,170 +404,24 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 const barObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.wb-fill').forEach((b,i)=>{setTimeout(()=>{b.style.width=b.dataset.w+'%';},300+i*120);});barObs.unobserve(e.target);}});},{threshold:.3});
 document.querySelectorAll('.week-radar').forEach(el=>barObs.observe(el));
 
-/* LOG DATA */
-const allLogs=[
-  {id:1,type:'vitals',icon:'❤️',color:'pink',title:'Heart Rate & Blood Pressure',time:'Today · 10:32 AM',sub:'Resting HR normal. BP slightly elevated — monitor this week.',tags:['tag-pink','tag-lav'],tagTxt:['72 bpm','120/80 mmHg'],num:'72',unit:'bpm',detail:{fields:[{l:'Heart Rate',v:'72 bpm'},{l:'Blood Pressure',v:'120/80 mmHg'},{l:'SpO₂',v:'98%'},{l:'Temperature',v:'36.7°C'}],notes:'Feeling relaxed. BP slightly above average — reduce sodium intake and monitor for the next few days.'}},
-  {id:2,type:'sleep',icon:'😴',color:'lav',title:'Sleep Quality Log',time:'Today · 8:05 AM',sub:'7h 40min — deep sleep well-maintained. Bedtime 11:20 PM.',tags:['tag-lav','tag-mint'],tagTxt:['7h 40m','Deep Sleep: 2h'],num:'7.6',unit:'hrs',detail:{fields:[{l:'Duration',v:'7h 40m'},{l:'Deep Sleep',v:'2h 10m'},{l:'REM',v:'1h 25m'},{l:'Quality',v:'Good'}],notes:'Went to bed a bit later than usual. Sleep quality remained good despite the late start. No interruptions.'}},
-  {id:3,type:'activity',icon:'🏃',color:'mint',title:'Morning Run + Step Count',time:'Today · 7:15 AM',sub:'5.2 km run, 8,540 total steps. Active Zone: 28 min.',tags:['tag-mint','tag-amber'],tagTxt:['8,540 steps','342 kcal'],num:'8,540',unit:'steps',detail:{fields:[{l:'Steps',v:'8,540'},{l:'Distance',v:'5.2 km'},{l:'Calories',v:'342 kcal'},{l:'Active Zone',v:'28 min'}],notes:'Completed morning run. Felt energetic throughout. Weather was perfect — 22°C, light breeze.'}},
-  {id:4,type:'nutrition',icon:'🥗',color:'amber',title:'Breakfast & Lunch Log',time:'Yesterday · 1:30 PM',sub:'1,840 kcal total — high protein, balanced macros. 2.1L water.',tags:['tag-amber','tag-mint'],tagTxt:['1,840 kcal','High Protein'],num:'1,840',unit:'kcal',detail:{fields:[{l:'Calories',v:'1,840 kcal'},{l:'Protein',v:'92g'},{l:'Carbs',v:'180g'},{l:'Water',v:'2.1L'}],notes:'Breakfast: oats with berries. Lunch: grilled chicken salad with quinoa. Snack: walnuts.'}},
-  {id:5,type:'mood',icon:'😊',color:'blue',title:'Evening Mood Check-in',time:'Yesterday · 9:00 PM',sub:'Mood 8/10 — Focused and calm. Low stress day overall.',tags:['tag-blue','tag-mint'],tagTxt:['Mood: 8/10','Stress: Low'],num:'8',unit:'/10',detail:{fields:[{l:'Mood Score',v:'8 / 10'},{l:'Stress Level',v:'Low'},{l:'Energy',v:'High'},{l:'Focus',v:'Strong'}],notes:'Had a productive day. Completed all tasks. Evening meditation really helped decompress.'}},
-  {id:6,type:'vitals',icon:'🩸',color:'pink',title:'Blood Glucose Check',time:'Yesterday · 7:45 AM',sub:'Fasting glucose 94 mg/dL — within healthy range.',tags:['tag-pink'],tagTxt:['94 mg/dL'],num:'94',unit:'mg/dL',detail:{fields:[{l:'Glucose',v:'94 mg/dL'},{l:'Type',v:'Fasting'},{l:'Status',v:'Normal'},{l:'Time',v:'7:45 AM'}],notes:'Pre-breakfast fasting glucose. Within the normal range (70–100 mg/dL). Will check again post-meal.'}},
-  {id:7,type:'sleep',icon:'😴',color:'lav',title:'Sleep Log',time:'2 days ago · 7:50 AM',sub:'6h 55min — shorter than usual. Mild restlessness noted.',tags:['tag-lav'],tagTxt:['6h 55m','Restless'],num:'6.9',unit:'hrs',detail:{fields:[{l:'Duration',v:'6h 55m'},{l:'Deep Sleep',v:'1h 40m'},{l:'REM',v:'1h 10m'},{l:'Quality',v:'Fair'}],notes:'Slept later than intended. A few interruptions overnight. Will prioritize an earlier bedtime.'}},
-  {id:8,type:'activity',icon:'🏋️',color:'mint',title:'Strength Training Session',time:'2 days ago · 6:30 PM',sub:'45-min upper body workout. 4 exercises, 3 sets each.',tags:['tag-mint','tag-amber'],tagTxt:['45 min','280 kcal'],num:'280',unit:'kcal',detail:{fields:[{l:'Duration',v:'45 min'},{l:'Calories',v:'280 kcal'},{l:'Type',v:'Strength'},{l:'Intensity',v:'Moderate'}],notes:'Focused on chest, shoulders, and back. Progressive overload maintained. Increased bench press by 2.5kg.'}},
-  {id:9,type:'nutrition',icon:'🥗',color:'amber',title:'Full Day Nutrition Log',time:'3 days ago · 8:00 PM',sub:'2,050 kcal — slightly over goal. High sodium noticed.',tags:['tag-amber'],tagTxt:['2,050 kcal','⚠️ High Sodium'],num:'2,050',unit:'kcal',detail:{fields:[{l:'Calories',v:'2,050 kcal'},{l:'Protein',v:'78g'},{l:'Sodium',v:'2,800mg'},{l:'Water',v:'1.6L'}],notes:'Ate out for dinner — Thai food. Sodium was high. Need to drink more water tomorrow.'}},
-  {id:10,type:'mood',icon:'😐',color:'blue',title:'Midday Mood Check-in',time:'3 days ago · 12:15 PM',sub:'Mood 5/10 — Tired, mild anxiety before an important meeting.',tags:['tag-blue'],tagTxt:['Mood: 5/10','Stress: Moderate'],num:'5',unit:'/10',detail:{fields:[{l:'Mood Score',v:'5 / 10'},{l:'Stress Level',v:'Moderate'},{l:'Energy',v:'Low'},{l:'Trigger',v:'Work meeting'}],notes:'Had a stressful presentation at 2pm. Felt anxious beforehand. After the meeting mood improved significantly.'}},
-];
-
-const dateLabels=['Today','Today','Today','Yesterday','Yesterday','Yesterday','2 days ago','2 days ago','3 days ago','3 days ago'];
-let visibleCount=6, activeTab='all', searchQuery='';
-
-function getFiltered(){return allLogs.filter(l=>{const mt=activeTab==='all'||l.type===activeTab;const ms=!searchQuery||l.title.toLowerCase().includes(searchQuery)||l.sub.toLowerCase().includes(searchQuery);return mt&&ms;});}
-
-function renderLogs(){
-  const c=document.getElementById('logEntries');
-  const filtered=getFiltered().slice(0,visibleCount);
-  if(!filtered.length){c.innerHTML='<div style="text-align:center;padding:40px 20px;color:#a0a0b8;font-size:.9rem;">No entries found 🔍</div>';return;}
-  let html='',lastDate='';
-  filtered.forEach(log=>{
-    const dateStr=dateLabels[log.id-1]||'Earlier';
-    if(dateStr!==lastDate){html+=`<div class="date-divider"><div class="dd-line"></div><div class="dd-text">${dateStr}</div><div class="dd-line"></div></div>`;lastDate=dateStr;}
-    const tagsHtml=log.tags.map((t,i)=>`<span class="le-tag ${t}">${log.tagTxt[i]}</span>`).join('');
-    html+=`<div class="log-entry glass le-${log.color}" onclick="openDetail(${log.id})">
-      <div class="le-icon ${log.color}">${log.icon}</div>
-      <div class="le-body">
-        <div class="le-top"><div class="le-title">${log.title}</div><div class="le-time">${log.time.split('·')[1]||''}</div></div>
-        <div class="le-sub">${log.sub}</div>
-        <div class="le-tags">${tagsHtml}</div>
-      </div>
-      <div class="le-value"><div class="le-num">${log.num}</div><div class="le-unit">${log.unit}</div></div>
-    </div>`;
-  });
-  c.innerHTML=html;
-}
-
-function openDetail(id){
-  const log=allLogs.find(l=>l.id===id);if(!log)return;
-  document.getElementById('mIcon').textContent=log.icon;
-  document.getElementById('mTitle').textContent=log.title;
-  document.getElementById('mTime').textContent=log.time;
-  document.getElementById('mGrid').innerHTML=log.detail.fields.map(f=>`<div class="mg-item"><div class="mg-label">${f.l}</div><div class="mg-val">${f.v}</div></div>`).join('');
-  document.getElementById('mNotes').textContent=log.detail.notes;
-  openM('detailModal');
-}
-
-function setTab(btn,tab){document.querySelectorAll('.tab-pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');activeTab=tab;visibleCount=6;renderLogs();}
-function filterRange(v){showToast(`Showing last ${v==='7'?'7 days':v==='30'?'30 days':v==='90'?'3 months':'year'} 📅`);}
-function searchLogs(q){searchQuery=q.toLowerCase();visibleCount=6;renderLogs();}
-function loadMore(){visibleCount+=4;renderLogs();showToast('More entries loaded ✓');}
-function exportHistory(){showToast('📥 Preparing export… check your email shortly.');}
-
-/* LOG FORM */
-const logForms={
-  vitals:`<div class="fg"><label>Heart Rate (bpm)</label><input type="number" placeholder="e.g. 72" min="40" max="200"/></div><div class="fg"><label>Blood Pressure</label><input type="text" placeholder="e.g. 120/80"/></div><div class="fg"><label>SpO₂ (%)</label><input type="number" placeholder="e.g. 98"/></div><div class="fg"><label>Temperature (°C)</label><input type="number" placeholder="e.g. 36.6" step="0.1"/></div>`,
-  sleep:`<div class="fg"><label>Duration (hours)</label><input type="number" placeholder="e.g. 7.5" step="0.5"/></div><div class="fg"><label>Bedtime</label><input type="time" value="23:00"/></div><div class="fg"><label>Wake Time</label><input type="time" value="06:30"/></div><div class="fg"><label>Quality</label><select><option>Excellent</option><option selected>Good</option><option>Fair</option><option>Poor</option></select></div>`,
-  activity:`<div class="fg"><label>Activity Type</label><select><option>Running</option><option>Walking</option><option>Cycling</option><option>Swimming</option><option>Strength Training</option><option>Yoga</option><option>Other</option></select></div><div class="fg"><label>Duration (min)</label><input type="number" placeholder="e.g. 45"/></div><div class="fg"><label>Steps</label><input type="number" placeholder="e.g. 8500"/></div><div class="fg"><label>Calories Burned</label><input type="number" placeholder="e.g. 320"/></div>`,
-  nutrition:`<div class="fg"><label>Total Calories</label><input type="number" placeholder="e.g. 1800"/></div><div class="fg"><label>Protein (g)</label><input type="number" placeholder="e.g. 90"/></div><div class="fg"><label>Carbs (g)</label><input type="number" placeholder="e.g. 200"/></div><div class="fg"><label>Water Intake (L)</label><input type="number" placeholder="e.g. 2.5" step="0.1"/></div>`,
-  mood:`<div class="fg"><label>Mood Score (1–10)</label><input type="range" min="1" max="10" value="7" oninput="this.nextElementSibling.textContent=this.value"/><span style="font-size:.85rem;color:#8b5cf6;font-weight:600;margin-left:8px;">7</span></div><div class="fg"><label>Stress Level</label><select><option>Low</option><option selected>Moderate</option><option>High</option><option>Severe</option></select></div><div class="fg"><label>Energy Level</label><select><option>High</option><option selected>Moderate</option><option>Low</option></select></div><div class="fg"><label>Notes</label><textarea placeholder="How are you feeling today?"></textarea></div>`,
-};
+// History logging and export are disabled until wired to backend
+function exportHistory(){showToast('History export will be available once backend logging is enabled.',3500);}
 
 function openLogModal(){
-  document.querySelectorAll('.ltp').forEach((b,i)=>b.classList.toggle('sel',i===0));
-  document.getElementById('logFormFields').innerHTML=logForms.vitals;
-  openM('logModal');
+  showToast('Manual logging will be available once backend storage is implemented.',3500);
 }
-function selectLogType(btn,type){document.querySelectorAll('.ltp').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');document.getElementById('logFormFields').innerHTML=logForms[type];}
-function submitLog(){closeM('logModal');showToast('Health log saved successfully! ✅',3000);}
+function selectLogType(){ /* disabled */ }
+function submitLog(){ /* disabled */ }
 
-/* CALENDAR */
-let calYear=2026,calMonth=2;
-const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
-const hasDataDays=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28];
-
-function renderCalendar(){
-  document.getElementById('calMonthYear').textContent=monthNames[calMonth]+' '+calYear;
-  const firstDay=new Date(calYear,calMonth,1).getDay();
-  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
-  const daysInPrev=new Date(calYear,calMonth,0).getDate();
-  const today=new Date();
-  let html='';
-  for(let i=firstDay-1;i>=0;i--) html+=`<button class="cal-day other-month" tabindex="-1">${daysInPrev-i}</button>`;
-  for(let d=1;d<=daysInMonth;d++){
-    const isToday=d===today.getDate()&&calMonth===today.getMonth()&&calYear===today.getFullYear();
-    const hasData=hasDataDays.includes(d)&&calMonth===2;
-    html+=`<button class="cal-day${isToday?' today':''}${hasData?' has-data':''}" onclick="selectDay(this,${d})">${d}</button>`;
+document.addEventListener('DOMContentLoaded', async ()=> {
+  try {
+    if (typeof aromi_requireAuth === 'function') {
+      await aromi_requireAuth('login.html');
+    }
+  } catch (_) {
+    // If auth check fails, let Supabase/index handling take over
   }
-  const total=firstDay+daysInMonth;
-  const rem=total%7===0?0:7-(total%7);
-  for(let i=1;i<=rem;i++) html+=`<button class="cal-day other-month" tabindex="-1">${i}</button>`;
-  document.getElementById('calDays').innerHTML=html;
-}
-function prevMonth(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
-function nextMonth(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
-function selectDay(btn,d){document.querySelectorAll('.cal-day.selected').forEach(b=>b.classList.remove('selected'));if(!btn.classList.contains('today'))btn.classList.add('selected');showToast(`Viewing logs for ${monthNames[calMonth]} ${d} 📅`);}
-
-/* STREAK */
-function buildStreakIcons(){
-  const days=['M','T','W','T','F','S','S'];
-  const s=document.getElementById('streakIcons');
-  if(!s)return;
-  s.innerHTML=days.map(d=>`<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div class="si filled">🔥</div><span style="font-size:.58rem;color:#a0a0b8;">${d}</span></div>`).join('');
-}
-
-/* CHART */
-function drawChart(){
-  const canvas=document.getElementById('mainChart');if(!canvas)return;
-  const parent=canvas.parentElement;
-  const W=parent.clientWidth||600,H=parent.clientHeight||200;
-  canvas.width=W*devicePixelRatio;canvas.height=H*devicePixelRatio;
-  canvas.style.width=W+'px';canvas.style.height=H+'px';
-  const ctx=canvas.getContext('2d');ctx.scale(devicePixelRatio,devicePixelRatio);
-
-  const labels=['Mar 1','Mar 5','Mar 9','Mar 13','Mar 17','Mar 21','Mar 25','Mar 29'];
-  const datasets=[
-    {color:'#ec4899',data:[68,72,74,70,75,71,72,72]},
-    {color:'#8b5cf6',data:[70,80,75,65,80,76,77,75]},
-    {color:'#10b981',data:[62,88,75,55,85,80,85,84]},
-    {color:'#f59e0b',data:[60,70,75,50,80,75,80,74]},
-  ];
-  const pL=36,pR=12,pT=14,pB=28;
-  const cW=W-pL-pR,cH=H-pT-pB;
-  const pts=labels.length,xStep=cW/(pts-1);
-
-  ctx.strokeStyle='rgba(200,190,220,.15)';ctx.lineWidth=1;
-  for(let g=0;g<=4;g++){
-    const y=pT+g*(cH/4);
-    ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(pL+cW,y);ctx.stroke();
-    ctx.fillStyle='#c0b8d0';ctx.font=`10px 'DM Sans',sans-serif`;ctx.textAlign='right';
-    ctx.fillText(100-g*25,pL-5,y+4);
-  }
-  ctx.fillStyle='#c0b8d0';ctx.font=`10px 'DM Sans',sans-serif`;ctx.textAlign='center';
-  [0,2,4,6,7].forEach(i=>ctx.fillText(labels[i],pL+i*xStep,H-pB+16));
-
-  datasets.forEach(ds=>{
-    const grd=ctx.createLinearGradient(0,pT,0,pT+cH);
-    grd.addColorStop(0,ds.color+'33');grd.addColorStop(1,ds.color+'00');
-    ctx.beginPath();
-    ds.data.forEach((v,i)=>{const x=pL+i*xStep,y=pT+cH-((v/100)*cH);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-    ctx.lineTo(pL+(pts-1)*xStep,pT+cH);ctx.lineTo(pL,pT+cH);ctx.fillStyle=grd;ctx.fill();
-    ctx.beginPath();
-    ds.data.forEach((v,i)=>{
-      const x=pL+i*xStep,y=pT+cH-((v/100)*cH);
-      if(i===0){ctx.moveTo(x,y);}else{const px=pL+(i-1)*xStep,py=pT+cH-((ds.data[i-1]/100)*cH);ctx.bezierCurveTo(px+xStep*.4,py,x-xStep*.4,y,x,y);}
-    });
-    ctx.strokeStyle=ds.color;ctx.lineWidth=2;ctx.stroke();
-    ds.data.forEach((v,i)=>{const x=pL+i*xStep,y=pT+cH-((v/100)*cH);ctx.beginPath();ctx.arc(x,y,2.5,0,Math.PI*2);ctx.fillStyle=ds.color;ctx.fill();});
-  });
-}
-
-function toggleMetric(chip,metric){
-  const hasActive=[...chip.classList].some(c=>c.startsWith('active'));
-  chip.className=hasActive?'mchip':`mchip ${chip.className.match(/active-\w+/)?.[0]||'active-lav'}`;
-  showToast(hasActive?`${metric} hidden from chart`:`${metric} shown on chart`);
-}
-
-document.addEventListener('DOMContentLoaded',()=>{renderLogs();renderCalendar();buildStreakIcons();});
-window.addEventListener('load',drawChart);
-window.addEventListener('resize',drawChart);
+});
 </script>
 <script src="js/navbar.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

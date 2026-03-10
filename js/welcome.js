@@ -28,17 +28,16 @@
      stored session token), skip the landing page
      and go directly to the dashboard.
   ═══════════════════════════════════════════ */
-  function checkAuthRedirect() {
+  async function checkAuthRedirect() {
     try {
-      // TODO: Replace with real JWT / Supabase session check when backend ready
-      const user = localStorage.getItem('aromi_user');
-      const token = localStorage.getItem('aromi_token');
-      if (user && token) {
-        // User is logged in — redirect to dashboard
-        window.location.replace('home.html');
+      if (typeof _supabase !== 'undefined') {
+        const { data: { user } } = await _supabase.auth.getUser();
+        if (user) {
+          window.location.replace('home.html');
+        }
       }
     } catch (_) {
-      // localStorage not available — proceed normally
+      // If Supabase is not available, just stay on landing
     }
   }
 

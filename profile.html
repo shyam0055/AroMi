@@ -331,8 +331,8 @@ textarea.field-input{resize:vertical;min-height:80px;}
           <div class="avatar-edit-btn" onclick="triggerAvatarUpload()">✏️</div>
           <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatarChange(event)"/>
         </div>
-        <div class="user-name" id="displayName">Sarah Johnson</div>
-        <div class="user-email" id="displayEmail">sarah@example.com</div>
+        <div class="user-name" id="displayName">Your Name</div>
+        <div class="user-email" id="displayEmail">your@email.com</div>
         <div class="user-badges">
           <span class="ubadge green">✓ Verified</span>
           <span class="ubadge">Pro Plan</span>
@@ -418,29 +418,29 @@ textarea.field-input{resize:vertical;min-height:80px;}
         <div class="form-grid" id="personalForm">
           <div class="field-group">
             <label>First Name</label>
-            <input class="field-input" id="firstName" value="Sarah" disabled/>
+            <input class="field-input" id="firstName" value="" disabled/>
           </div>
           <div class="field-group">
             <label>Last Name</label>
-            <input class="field-input" id="lastName" value="Johnson" disabled/>
+            <input class="field-input" id="lastName" value="" disabled/>
           </div>
           <div class="field-group">
             <label>Email Address</label>
-            <input class="field-input" id="email" value="sarah@example.com" type="email" disabled/>
+            <input class="field-input" id="email" value="" type="email" disabled/>
           </div>
           <div class="field-group">
             <label>Date of Birth</label>
-            <input class="field-input" id="dob" value="1995-04-22" type="date" disabled/>
+            <input class="field-input" id="dob" value="" type="date" disabled/>
           </div>
           <div class="field-group">
             <label>Gender</label>
             <select class="field-input" id="gender" disabled>
-              <option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option>
+              <option selected>Prefer not to say</option><option>Female</option><option>Male</option><option>Non-binary</option>
             </select>
           </div>
           <div class="field-group">
             <label>Phone Number</label>
-            <input class="field-input" id="phone" value="+91 98765 43210" disabled/>
+            <input class="field-input" id="phone" value="" disabled/>
           </div>
           <div class="field-group full">
             <label>Bio</label>
@@ -476,11 +476,11 @@ textarea.field-input{resize:vertical;min-height:80px;}
         <div class="form-grid three" id="metricsForm">
           <div class="field-group">
             <label>Height (cm)</label>
-            <input class="field-input" id="height" value="168" type="number" disabled oninput="updateBMI()"/>
+            <input class="field-input" id="height" value="" type="number" disabled oninput="updateBMI()"/>
           </div>
           <div class="field-group">
             <label>Weight (kg)</label>
-            <input class="field-input" id="weight" value="62" type="number" disabled oninput="updateBMI()"/>
+            <input class="field-input" id="weight" value="" type="number" disabled oninput="updateBMI()"/>
           </div>
           <div class="field-group">
             <label>Blood Type</label>
